@@ -19,7 +19,8 @@
             @if( count($menuGroup['submenu']) )
             <ul class="mt-3">
                 @foreach($menuGroup['submenu'] as $menu)
-                <li class="px-2 py-2 rounded-md mb-0.5 last:mb-0 @if( request()->routeIs({{ $menu['route'] }}) ) bg-orange-lightest @endif" >
+                @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
+                <li class="{{ $isActive ? 'bg-orange-lightest': '' }} px-2 py-2 rounded-md mb-0.5 last:mb-0" >
                     <a class="block text-gray-600 transition duration-150 hover:text-gray-800" href="{{ ($menu['route']) ? $menu['route'] : '#' }}">
                         <div class="flex items-center flex-grow">
                             @if($menu['icon'])
