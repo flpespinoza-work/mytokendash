@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             MunicipalitiesTableSeeder::class,
             MenusTableSeeder::class,
             MenuRoleTableSeeder::class,
+            UserTableSeeder::class,
         ]);
     }
 }

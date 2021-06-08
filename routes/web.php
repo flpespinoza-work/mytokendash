@@ -15,13 +15,21 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
+// Fortify routes
+require_once __DIR__ . '/fortify.php';
 
-Route::get('/menus', [MenuController::class, 'index'])->name('menus');
-Route::get('/menus-roles', [MenuController::class, 'roles'])->name('menus.roles');
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
 
+    //Dashboard
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
-// Users
-Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy']]);
+    // Menus
+    Route::get('/menus', [MenuController::class, 'index'])->name('menus');
+    Route::get('/menus-roles', [MenuController::class, 'roles'])->name('menus.roles');
+
+    // Users
+    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy']]);
+
+});

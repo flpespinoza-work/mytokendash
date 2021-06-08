@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -18,35 +18,13 @@
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
-<body class="m-0 font-sans text-base antialiased leading-none bg-white text-gray-dark">
-    <noscript>{{ __('You need to enable JavaScript to run this app.') }}</noscript>
-    <div class="flex min-h-screen">
-        <x-top-navigation/>
-
-        <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-            <header class="sticky top-0 z-30 bg-white border-b border-gray-light lg:hidden">
-                <div class="px-4 sm:px-6 lg:px8">
-                    <div class="flex items-center justify-between h-16 -mb-px">
-                        <div class="flex items-center">
-                            <button class="text-gray-darker lg:hidden" aria-controls="sidebar" aria-expanded="false">
-                                <span class="sr-only">Open sidebar</span>
-                                <x-icons.menu class="w-6 h-6"/>
-                            </button>
-                            <a class="block ml-2 lg:hidden active" href="/">
-                                <x-logo class="h-9"/>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <main class="h-screen text-gray-darker">
-                <div class="w-full">
-                    {{ $slot}}
-                </div>
-            </main>
+<body class="h-full m-0 font-sans leading-none text-gray-dark">
+    <div class="flex min-h-full bg-gray-50">
+        <div class="flex items-center justify-center w-full bg-white lg:max-w-md">
+            <div class="w-full mx-auto md:px-5">
+                {{ $slot }}
+            </div>
         </div>
-
     </div>
-
 </body>
 </html>

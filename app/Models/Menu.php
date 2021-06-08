@@ -53,7 +53,9 @@ class Menu extends Model
     {
         if($is_sidebar)
         {
-
+            return $this->whereHas('roles', function($query){
+                $query->where('role_id', session('user_role'))->orderby('menu_id');
+            })->orderby('menu_id')->get()->toArray();
         }
         else
         {

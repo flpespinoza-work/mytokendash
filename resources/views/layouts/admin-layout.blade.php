@@ -26,12 +26,12 @@
     <noscript>{{ __('You need to enable JavaScript to run this app.') }}</noscript>
     <div class="flex h-screen overflow-hidden">
         <div class="lg:w-64">
-            <div x-show="sidebarOpen" :class="{ 'opacity-100' : sidebarOpen }" class="fixed inset-0 z-40 transition-opacity duration-200 bg-opacity-25 opacity-0 pointer-events-none bg-black lg:hidden lg:z-auto" aria-hidden="true"></div>
+            <div x-show="sidebarOpen" :class="{ 'opacity-100' : sidebarOpen }" class="fixed inset-0 z-40 transition-opacity duration-200 bg-black bg-opacity-25 opacity-0 pointer-events-none lg:hidden lg:z-auto" aria-hidden="true"></div>
             <x-navigation/>
         </div>
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-            <header class="sticky top-0 z-30 bg-white border-b border-gray-light lg:hidden">
-                <div class="px-4 sm:px-6 lg:px8">
+            <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
+                <div class="px-4 mx-auto max-w-screen-2xl sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16 -mb-px">
                         <div class="flex items-center">
                             <button class="text-gray-darker lg:hidden" aria-controls="sidebar" aria-expanded="false" @click="sidebarOpen = !sidebarOpen">
@@ -42,12 +42,32 @@
                                 <x-logo class="h-10"/>
                             </a>
                         </div>
+                        <div class="relative inline-block ml-auto text-left" x-data="{ profileOpen: false }">
+                            <button @click="profileOpen = !profileOpen"
+                            @keydown.escape="profileOpen = false"
+                            type="button" class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-transparent" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                {{ Auth()->user()->name }}
+                                <x-heroicon-s-chevron-down class="w-5 h-5 ml-2 -mr-1"/>
+                            </button>
+                            <div x-show="profileOpen"  @click.away="profileOpen = false" class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="menu-item-0">Mi perfil</a>
+                                <form method="POST" action="{{ route('logout') }}" role="none">
+                                    @csrf
+                                    <button type="submit" class="block w-full px-4 py-2 text-sm text-left text-gray-700" role="menuitem" tabindex="-1" id="menu-item-3">
+                                    Cerrar sesión
+                                    </button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
             <main class="h-screen text-gray-darker">
-                <div class="mx-auto max-w-screen-xl">
-                    <h3 class="text-gray-500 font-semibold text-lg py-5">{{ $title }}</h3>
+                <div class="max-w-screen-xl mx-auto sm:px-6 lg:px-8">
+                    <h3 class="py-5 text-lg font-semibold text-gray-500">{{ $title }}</h3>
                     {{ $slot}}
                 </div>
             </main>

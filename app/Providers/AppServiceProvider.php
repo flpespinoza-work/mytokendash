@@ -26,9 +26,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //View composer para el sidebar
-        View::composer("", function($view){
-            $menu = Menu::getMenu(true);
-            $view->with('menusComposer', $menu);
+        View::composer('components.navigation', function($view){
+            $role_id = session()->get('user_role');
+            $menuSidebar = cache()->tags('Menu')->rememberForever("MenuSidebar.roleid.$role_id", function(){
+                return Menu::getMenu(true);
+            });
+
+            $view->with('menuSidebar', $menuSidebar);
         });
     }
 }

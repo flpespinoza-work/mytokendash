@@ -1,4 +1,3 @@
-
 <sidebar :class="{ '-translate-x-64': !sidebarOpen }" id="sidebar" class="absolute top-0 left-0 z-40 flex-shrink-0 inline-block w-64 h-screen py-4 overflow-y-scroll transition-transform duration-200 ease-in-out transform bg-white border-r border-gray-light lg:static lg:left-auto lg:top-auto lg:translate-x-0 lg:overflow-y-auto no-scrollbar">
     <div class="flex justify-between px-4 pr-3 mb-10">
         <button class="text-gray-500 outline-none lg:hidden hover:text-gray-400"
@@ -13,28 +12,6 @@
         </a>
     </div>
     <div>
-        @foreach($menuSidebar as $menuGroup)
-        <div class="p-4 mt-3">
-            <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">{{ $menuGroup['name'] }}</h3>
-            @if( count($menuGroup['submenu']) )
-            <ul class="mt-3">
-                @foreach($menuGroup['submenu'] as $menu)
-                <li class="px-2 py-2 rounded-md mb-0.5 last:mb-0 @if( request()->routeIs({{ $menu['route'] }}) ) bg-orange-lightest @endif" >
-                    <a class="block text-gray-600 transition duration-150 hover:text-gray-800" href="{{ ($menu['route']) ? $menu['route'] : '#' }}">
-                        <div class="flex items-center flex-grow">
-                            @if($menu['icon'])
-                                {{ svg($menu['icon'], ['class'=>'w-5 h-5 mr-2 text-orange']) }}
-                            @endif
-                            <span class="text-xs font-medium capitalize">{{ $menu['name'] }}</span>
-                        </div>
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-            @endif
-        </div>
-        @endforeach
-
         <div class="p-4 mt-3">
             <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">Principal</h3>
             <ul class="mt-3">

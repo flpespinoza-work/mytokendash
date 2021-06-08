@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $user = User::create([
             'name' => 'superadmin',
             'email' => 'superadmin@tokencash.mx',
@@ -26,5 +27,30 @@ class UserTableSeeder extends Seeder
         ]);
         $role = Role::find(1);
         $user->assignRole($role);
+        */
+
+        $user = User::create([
+            'name' => 'administrador de grupo',
+            'email' => 'groupadmin@tokencash.mx',
+            'password' => Hash::make('password'),
+            'street' => 'Avenidad Hidalgo 3328',
+            'municipality_id' => 578,
+            'phone_number' => 3333333331
+        ]);
+        $role = Role::find(2);
+        $user->assignRole($role);
+
+        /*
+        $user = User::create([
+            'name' => 'gerente',
+            'email' => 'gerente@tokencash.mx',
+            'password' => Hash::make('password'),
+            'street' => 'Avenidad Hidalgo 3328',
+            'municipality_id' => 578,
+            'phone_number' => 3333333330
+        ]);
+        $role = Role::find(2);
+        $user->assignRole($role);
+        */
     }
 }
