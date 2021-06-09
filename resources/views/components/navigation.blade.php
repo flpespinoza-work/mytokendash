@@ -17,21 +17,7 @@
         <div class="p-4 mt-3">
             <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">{{ $menuGroup['name'] }}</h3>
             @if( count($menuGroup['submenu']) )
-            <ul class="mt-3">
-                @foreach($menuGroup['submenu'] as $menu)
-                @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
-                <li class="{{ $isActive ? 'bg-orange-lightest': '' }} px-2 py-2 rounded-md mb-0.5 last:mb-0" >
-                    <a class="block text-gray-600 transition duration-150 hover:text-gray-800" href="{{ ($menu['route']) ? $menu['route'] : '#' }}">
-                        <div class="flex items-center flex-grow">
-                            @if($menu['icon'])
-                                {{ svg($menu['icon'], ['class'=>'w-5 h-5 mr-2 text-orange']) }}
-                            @endif
-                            <span class="text-xs font-medium capitalize">{{ $menu['name'] }}</span>
-                        </div>
-                    </a>
-                </li>
-                @endforeach
-            </ul>
+                @include('components.submenu', ['menuGroup' => $menuGroup['submenu']])
             @endif
         </div>
         @endforeach
