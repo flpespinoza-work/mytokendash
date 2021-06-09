@@ -14,15 +14,10 @@
     </div>
     <div>
         @foreach($menuSidebar as $menuGroup)
-        <div class="p-4 mt-3">
-            <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">{{ $menuGroup['name'] }}</h3>
-            @if( count($menuGroup['submenu']) )
-                @include('components.submenu', ['menuGroup' => $menuGroup['submenu']])
-            @endif
-        </div>
+            @include('components.menugroup', [ 'menuGroup' => $menuGroup ])
         @endforeach
 
-        <div class="p-4 mt-3">
+        <!--div class="p-4 mt-3">
             <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">Principal</h3>
             <ul class="mt-3">
                 <li class="px-2 py-2 rounded-md mb-0.5 last:mb-0 {{ request()->is('/') ? 'bg-orange-lightest': '' }}">
@@ -43,7 +38,7 @@
                 </li>
             </ul>
         </div>
-        <!-- Principal -->
+
         <div class="p-4 mt-3" x-data="{ route: '{{ request()->path() }}', selected: null }"
             x-init="route = route.substring(0, route.lastIndexOf('/'));
             switch(route)
@@ -178,7 +173,7 @@
                 </li>
             </ul>
         </div>
-        <!-- Reportes -->
+
         <div class="p-4 mt-3">
             <h3 class="pl-3 text-xs font-light text-gray-400 uppercase">Administración</h3>
             <ul class="mt-3 text-gray-600">
@@ -213,7 +208,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
-        <!-- Administracion -->
+        </div-->
+
     </div>
 </sidebar>

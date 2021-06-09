@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        /*
+
         $user = User::create([
             'name' => 'superadmin',
             'email' => 'superadmin@tokencash.mx',
@@ -27,7 +27,7 @@ class UserTableSeeder extends Seeder
         ]);
         $role = Role::find(1);
         $user->assignRole($role);
-        */
+
 
         $user = User::create([
             'name' => 'administrador de grupo',
@@ -40,7 +40,7 @@ class UserTableSeeder extends Seeder
         $role = Role::find(2);
         $user->assignRole($role);
 
-        /*
+
         $user = User::create([
             'name' => 'gerente',
             'email' => 'gerente@tokencash.mx',
@@ -51,6 +51,6 @@ class UserTableSeeder extends Seeder
         ]);
         $role = Role::find(2);
         $user->assignRole($role);
-        */
+
     }
 }

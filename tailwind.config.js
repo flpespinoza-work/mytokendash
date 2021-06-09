@@ -11,6 +11,9 @@ module.exports = {
         fontFamily: {
             sans: ['Inter', ...defaultTheme.fontFamily.sans],
         },
+        fontSize: {
+            'xxs': '.65rem'
+        },
         colors: {
             white: '#FFFFFF',
             green: {
@@ -41,7 +44,9 @@ module.exports = {
                 lightest: '#FEF8F3',
                 light: '#FFAD71',
                 DEFAULT: '#FF750E',
-                dark: '#E86300'
+                dark: '#E86300',
+                darker: '#F26C08',
+                darkest: '#E16306'
             }
         }
     },
