@@ -55,7 +55,10 @@ class Menu extends Model
         {
             return $this->whereHas('roles', function($query){
                 $query->where('role_id', session('user_role'))->orderby('menu_id');
-            })->orderby('menu_id')->get()->toArray();
+            })
+            ->orderby('menu_id')
+            ->orderby('order')
+            ->get()->toArray();
         }
         else
         {
