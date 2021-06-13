@@ -3,10 +3,10 @@
         <div>
             <x-logo class="w-auto h-14"></x-logo>
         </div>
-        <div class="mt-4 text-sm text-gray-600">
+        <div class="mt-4 text-sm text-gray-600 w-96 lg:w-full">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
-        <div class="mt-4 w-full">
+        <div class="mx-auto mt-4 w-96 lg:w-full">
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="my-3">
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="my-5">
-                    <x-forms.button class="w-full h-12 justify-center">{{ __('Email Password Reset Link') }}</x-forms.button>
+                    <x-forms.button class="justify-center w-full h-12">{{ __('Email Password Reset Link') }}</x-forms.button>
                 </div>
 
             </form>

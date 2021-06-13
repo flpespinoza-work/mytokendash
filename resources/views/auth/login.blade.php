@@ -4,7 +4,7 @@
             <x-logo class="w-auto h-14"></x-logo>
         </div>
 
-        <div class="w-full mt-4">
+        <div class="mx-auto mt-4 w-96 lg:w-full">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="my-3">

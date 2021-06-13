@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\MenuController;
+use App\Http\Controllers\Admin\MenuController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
