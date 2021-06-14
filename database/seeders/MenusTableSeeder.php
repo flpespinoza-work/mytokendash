@@ -93,13 +93,20 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Grupos',
                 'order' => 2,
                 'icon' => 'heroicon-s-office-building',
-                'route' => null
+                'route' => 'groups.index'
             ],
             [
                 'menu_id' => 3,
                 'name' => 'Menús',
                 'order' => 3,
                 'icon' => 'heroicon-s-menu-alt-2',
+                'route' => null
+            ],
+            [
+                'menu_id' => 3,
+                'name' => 'Respuestas',
+                'order' => 4,
+                'icon' => 'heroicon-s-chat-alt',
                 'route' => null
             ],
             [

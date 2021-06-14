@@ -9,18 +9,27 @@ class Group extends Model
 {
     use HasFactory;
 
-    public function subgroups()
-    {
-        return $this->hasMany(SubGroup::class);
-    }
+    protected $fillable = [
+        'name',
+        'contact_name',
+        'contact_phone'
+    ];
 
     public function stores()
     {
-        return $this->hasManyThrough(Store::class, SubGroup::class, 'group_id', 'subgroup_id', 'id', 'id');
+        return $this->hasMany(Store::class);
     }
 
     public function users()
     {
         return $this->belongsToMany(User::class);
     }
+
+    public static function search($search)
+    {
+        return empty($search) ? static::query()
+            : static::query()
+              ->where('name', 'like', '%' . $search . '%');
+    }
+
 }

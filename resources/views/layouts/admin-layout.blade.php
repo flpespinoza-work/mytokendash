@@ -22,7 +22,7 @@
 </head>
 <body
     x-data="{ sidebarOpen: false }"
-    class="m-0 font-sans text-base antialiased leading-none bg-gray-50 text-gray-dark">
+    class="m-0 font-sans text-base antialiased leading-none bg-gray-lightest text-gray-dark">
     <noscript>{{ __('You need to enable JavaScript to run this app.') }}</noscript>
     <div class="flex h-screen overflow-hidden">
         <div class="lg:w-64">
@@ -38,7 +38,7 @@
                                 <span class="sr-only">Open sidebar</span>
                                 <x-heroicon-o-menu class="w-6 h-6"/>
                             </button>
-                            <a class="block ml-2 lg:hidden active" href="/">
+                            <a class="inline-block ml-4 lg:hidden" href="/">
                                 <x-logo class="h-7"/>
                             </a>
                         </div>
@@ -69,7 +69,7 @@
                 </div>
             </header>
             <main class="h-screen text-gray-darker">
-                <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
+                <div class="px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-8">
                     <div class="flex items-center w-full space-x-4 border-b border-gray-100">
                         <a href="{{ url()->previous() }}" class="p-2 bg-white border border-gray-100 rounded-md shadow-sm">
                             <x-heroicon-s-arrow-narrow-left class="w-3 h-3 text-gray-500 lg:w-4 lg:h-4"/>

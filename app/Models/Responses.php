@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Responses extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['response'];
 }

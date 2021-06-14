@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\MenuController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\GroupController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,5 +38,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+    // Grupos
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
+    Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::get('/groups/{group}/stores/create', [GroupController::class, 'store'])->name('groups.store');
 
 });

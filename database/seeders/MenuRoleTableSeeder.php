@@ -16,7 +16,7 @@ class MenuRoleTableSeeder extends Seeder
     {
         for($i = 1; $i <= 3; $i++)
         {
-            for($x=1; $x<=22; $x++)
+            for($x=1; $x<=23; $x++)
             {
                 if($i == 1)
                 {

@@ -21,8 +21,6 @@ class UserTableSeeder extends Seeder
             'name' => 'superadmin',
             'email' => 'superadmin@tokencash.mx',
             'password' => Hash::make('password'),
-            'street' => 'Avenidad Hidalgo 3328',
-            'municipality_id' => 578,
             'phone_number' => 3333333333
         ]);
         $role = Role::find(1);
@@ -33,8 +31,6 @@ class UserTableSeeder extends Seeder
             'name' => 'administrador de grupo',
             'email' => 'groupadmin@tokencash.mx',
             'password' => Hash::make('password'),
-            'street' => 'Avenidad Hidalgo 3328',
-            'municipality_id' => 578,
             'phone_number' => 3333333331
         ]);
         $role = Role::find(2);
@@ -45,8 +41,6 @@ class UserTableSeeder extends Seeder
             'name' => 'gerente',
             'email' => 'gerente@tokencash.mx',
             'password' => Hash::make('password'),
-            'street' => 'Avenidad Hidalgo 3328',
-            'municipality_id' => 578,
             'phone_number' => 3333333330
         ]);
         $role = Role::find(2);

@@ -17,8 +17,6 @@ class User extends Authenticatable
         'email',
         'password',
         'profile_image',
-        'street',
-        'municipality_id',
         'phone_number',
         'last_login_at',
         'last_login_ip'

@@ -9,9 +9,11 @@ class Store extends Model
 {
     use HasFactory;
 
-    public function subgroup()
+    protected $fillable = [];
+
+    public function group()
     {
-        return $this->belongsTo(SubGroup::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function users()

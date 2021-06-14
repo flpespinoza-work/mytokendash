@@ -25,7 +25,8 @@ class Index extends Component
     {
         $users = User::search($this->search)
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-                ->simplePaginate($this->perPage);
+                ->Paginate($this->perPage);
+
         return view('livewire.user.index', compact('users'));
     }
 }
