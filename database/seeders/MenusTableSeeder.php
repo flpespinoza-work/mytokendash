@@ -128,7 +128,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Impresos',
                 'order' => 0,
                 'icon' => null,
-                'route' => null
+                'route' => 'reports.coupons.printed'
             ],
             [
                 'menu_id' => 7,

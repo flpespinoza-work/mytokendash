@@ -34,7 +34,7 @@
         @foreach($menuGroup as $menu)
             @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
             <li class="flex items-center mb-2">
-                <a class="block transition duration-150 hover:text-gray-800 false active" href="">
+                <a class="block transition duration-150 hover:text-gray-800 false active" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
                     <span class="text-xs {{ ($isActive) ? 'font-bold': 'font-medium' }}">{{ $menu['name'] }}</span>
                 </a>
                 @if ($isActive)
