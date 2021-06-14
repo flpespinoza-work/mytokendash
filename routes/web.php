@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
     Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
     Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::get('/groups/{group}/show', [GroupController::class, 'show'])->name('groups.show');
     Route::get('/groups/{group}/stores/create', [GroupController::class, 'store'])->name('groups.store');
 
     //Reportes

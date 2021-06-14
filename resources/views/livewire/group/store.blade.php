@@ -17,13 +17,13 @@
                             <div class="grid grid-cols-6 gap-4">
                                 <div class="col-span-6 sm:col-span-4">
                                     <x-forms.label for="store.name" value="Nombre" />
-                                    <x-forms.input wire:model.debounce.1s='store.name' type="text" name="name" id="name" />
+                                    <x-forms.input wire:model.lazy='store.name' type="text" name="name" id="name" />
                                     @error('store.name') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
                                 </div>
 
                                 <div class="col-span-6 sm:col-span-2">
                                     <x-forms.label for="store.tokencash_nodo" value="Nodo Tokencash" />
-                                    <x-forms.input wire:model.debounce.1s='store.tokencash_nodo' type="text" name="nodo" id="nodo" />
+                                    <x-forms.input wire:model.lazy='store.tokencash_nodo' type="text" name="nodo" id="nodo" />
                                     @error('store.tokencash_nodo') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
                                 </div>
 
@@ -74,7 +74,10 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                            <x-forms.button>Guardar</x-forms.button>
+                            <x-forms.button>
+                                <x-heroicon-s-check class="w-4 h-4 mr-2"/>
+                                Guardar
+                            </x-forms.button>
                         </div>
                     </div>
                 </form>

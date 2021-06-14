@@ -18,6 +18,11 @@ class GroupController extends Controller
         return view('admin.group.create');
     }
 
+    public function show(Group $group)
+    {
+        return view('admin.group.show', compact('group'));
+    }
+
     public function edit(Group $group)
     {
         return view('admin.group.edit', compact('group'));

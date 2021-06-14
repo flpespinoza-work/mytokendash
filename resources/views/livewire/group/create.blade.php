@@ -34,7 +34,10 @@
                             </div>
                         </div>
                         <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                            <x-forms.button>Guardar</x-forms.button>
+                            <x-forms.button>
+                                <x-heroicon-s-check class="w-4 h-4 mr-2"/>
+                                Guardar
+                            </x-forms.button>
                         </div>
                     </div>
                 </form>

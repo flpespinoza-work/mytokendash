@@ -44,8 +44,15 @@
                           <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
                             {{ $group->contact_phone }}
                           </td>
-                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                          <a href="{{ route('groups.edit', $group) }}" class="text-gray-600 hover:text-gray-900">Editar</a>
+                        <td class="px-3 py-2 text-sm text-right lg:px-6 lg:py-3 whitespace-nowrap">
+                            <a href="{{ route('groups.edit', $group) }}" class="inline-flex items-center px-2 py-1 text-xs bg-green-600 rounded-md text-green-50 hover:bg-green-700">
+                                <x-heroicon-s-pencil class="w-3 h-3 md:mr-1"/>
+                                <span class="hidden md:inline">Editar</span>
+                            </a>
+                            <a href="{{ route('groups.show', $group) }}" class="inline-flex items-center px-2 py-1 text-xs bg-gray-600 rounded-md text-gray-50 hover:bg-gray-700">
+                                <x-heroicon-s-eye class="w-3 h-3 md:mr-1"/>
+                                <span class="hidden md:inline">Ver</span>
+                            </a>
                         </td>
                       </tr>
                       @empty

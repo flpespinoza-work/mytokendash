@@ -31,7 +31,8 @@ class Store extends Component
     protected $messages = [
         'store.name.required' => 'El nombre del establecimiento es requerido',
         'store.name.unique' => 'El establecimiento ya existe',
-        'store.contact_phone.digits' => 'El campo solo puede contener 10 números'
+        'store.contact_phone.digits' => 'El campo solo puede contener 10 números',
+        'store.tokencash_nodo.unique' => 'Este nodo ya se registro en otro establecimiento'
     ];
 
 
@@ -71,5 +72,10 @@ class Store extends Component
         else {
             $this->municipalities = [];
         }
+    }
+
+    public function updatedTokencashNodo()
+    {
+        $this->validateOnly('store.tokencash_nodo');
     }
 }

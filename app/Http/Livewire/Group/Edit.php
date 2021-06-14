@@ -32,6 +32,7 @@ class Edit extends Component
         $this->group = $group;
         $this->stores = $this->group->stores;
     }
+
     public function render()
     {
         return view('livewire.group.edit');

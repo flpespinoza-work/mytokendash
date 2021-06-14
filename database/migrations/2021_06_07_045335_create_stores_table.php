@@ -20,7 +20,7 @@ class CreateStoresTable extends Migration
             $table->unsignedBigInteger('group_id');
             $table->string('street')->nullable();
             $table->unsignedBigInteger('municipality_id')->nullable();
-            $table->string('postal_code');
+            $table->string('postal_code')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('contact_name')->nullable();
             $table->string('contact_phone')->nullable();
