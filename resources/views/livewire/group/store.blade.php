@@ -11,6 +11,7 @@
             </div>
             <div class="mt-5 md:mt-0 md:col-span-3">
                 <form wire:submit.prevent="submit">
+                    <input type="hidden" wire:model='"store.group_id'>
                     <div class="overflow-hidden rounded-md shadow">
                         <div class="px-4 py-5 bg-white sm:p-6">
                             <div class="grid grid-cols-6 gap-4">
@@ -38,7 +39,7 @@
 
                                 <div class="col-span-6 sm:col-span-3">
                                     <x-forms.label for="municipality" value="Municipio" />
-                                    <select class="w-full mt-1 text-sm border border-gray-300 rounded-md shadow-sm focus:border-gray-400 focus:ring-1 focus:ring-gray-200" wire:model="municipality" name="municipality" id="municipality">
+                                    <select class="w-full mt-1 text-sm border border-gray-300 rounded-md shadow-sm focus:border-gray-400 focus:ring-1 focus:ring-gray-200" wire:model="store.municipality_id" name="municipality" id="municipality">
                                         <option value="">Municipio...</option>
                                         @forelse ($municipalities as $id => $municipality)
                                         <option value="{{ $id }}">{{ $municipality }}</option>

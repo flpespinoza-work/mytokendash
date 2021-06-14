@@ -63,6 +63,15 @@ return [
             ]) : [],
         ],
 
+        // Conexion con la base de datos de tokencash
+        'tokencash' => [
+            'driver' => 'mysql',
+            'host'      => env('TOKENCASH_DB_HOST'),
+            'database'  => env('TOKENCASH_DB_NAME'),
+            'username'  => env('TOKENCASH_DB_USERNAME'),
+            'password'  => env('TOKENCASH_DB_PASSWORD')
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

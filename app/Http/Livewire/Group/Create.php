@@ -43,7 +43,7 @@ class Create extends Component
         }
         catch(\Illuminate\Database\QueryException $e)
         {
-            dd($e);
+
         }
     }
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\CouponReportsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,4 +46,6 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
     Route::get('/groups/{group}/stores/create', [GroupController::class, 'store'])->name('groups.store');
 
+    //Reportes
+    Route::get('/reports/coupons/printed', [CouponReportsController::class, 'printed'])->name('reports.coupons.printed');
 });
