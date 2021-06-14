@@ -1,12 +1,12 @@
 <x-guest-layout>
-    <div class="flex flex-col items-center justify-center w-full px-10">
+    <div class="flex flex-col items-center justify-center w-full px-5">
         <div>
             <x-logo class="w-auto h-14"></x-logo>
         </div>
-        <div class="mt-4 text-sm text-gray-600 w-96 lg:w-full">
+        <div class="max-w-sm mx-auto mt-4 text-sm text-gray-600">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
-        <div class="mx-auto mt-4 w-96 lg:w-full">
+        <div class="max-w-sm mx-auto mt-4">
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="my-3">

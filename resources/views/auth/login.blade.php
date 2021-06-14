@@ -4,12 +4,12 @@
             <x-logo class="w-auto h-14"></x-logo>
         </div>
 
-        <div class="mx-auto mt-4 w-96 lg:w-full">
+        <div class="max-w-sm mx-auto mt-4 lg:w-full">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="my-3">
                     <x-forms.label for="email" value="{{ __('Email') }}"/>
-                    <x-forms.input type="text" id="email" name="email" class="w-full p-2 block mt-2 {{ $errors->has('email') ? 'border-red' : '' }}" placeholder="example@email.com"/>
+                    <x-forms.input value="{{ old('email') }}" type="text" id="email" name="email" class="w-full p-2 block mt-2 {{ $errors->has('email') ? 'border-red' : '' }}" placeholder="example@email.com"/>
                     @if($errors->has('email'))
                         <span class="text-red text-xs font-semibold mt-0.5">
                             {{ $errors->first('email') }}

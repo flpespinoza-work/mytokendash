@@ -56,4 +56,9 @@ class User extends Authenticatable
               ->orWhere('email', 'like', '%' . $search . '%');
     }
 
+    public function getProfileImageAttribute()
+    {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=fef8f3&background=ed7338';
+    }
+
 }

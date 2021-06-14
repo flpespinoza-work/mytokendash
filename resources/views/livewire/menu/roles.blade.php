@@ -21,7 +21,7 @@
                                 @if ($menu["menu_id"] != null)
                                     @break
                                 @endif
-                                @include('menu.roles.item', ['menu' => $menu, 'is_child' => false])
+                                @include('admin.menu.roles.item', ['menu' => $menu, 'is_child' => false])
                             @endforeach
                         </tbody>
                     </table>

@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\MenuController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\Admin\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,18 +18,24 @@ use App\Http\Controllers\Admin\UserController;
 // Fortify routes
 require_once __DIR__ . '/fortify.php';
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function(){
+Route::group(['middleware' => ['auth']], function(){
 
     //Dashboard
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
+    // Notificaciones
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+
     // Menus
     Route::get('/menus', [MenuController::class, 'index'])->name('menus');
     Route::get('/menus-roles', [MenuController::class, 'roles'])->name('menus.roles');
 
     // Users
-    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'destroy']]);
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 
 });

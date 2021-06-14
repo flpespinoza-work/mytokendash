@@ -3,7 +3,7 @@
         <div>
             <x-logo class="w-auto h-14"></x-logo>
         </div>
-        <div class="mx-auto mt-4 w-96 lg:w-full">
+        <div class="mx-auto mt-4 max-w-96 lg:w-full">
             <form method="POST" action="{{ route('password.update') }}">
                 @csrf
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">

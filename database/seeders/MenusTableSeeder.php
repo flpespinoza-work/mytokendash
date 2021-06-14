@@ -13,135 +13,157 @@ class MenusTableSeeder extends Seeder
         $groups = [
             [
                 'menu_id' => null,
-                'name' => 'principal',
+                'name' => 'Principal',
                 'order' => 0,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => null,
-                'name' => 'reportes',
+                'name' => 'Reportes',
                 'order' => 1,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => null,
-                'name' => 'administración',
+                'name' => 'Administración',
                 'order' => 2,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 1,
-                'name' => 'dashboard',
+                'name' => 'Dashboard',
                 'order' => 0,
-                'icon' => 'heroicon-s-view-grid'
+                'icon' => 'heroicon-s-view-grid',
+                'route' => 'dashboard'
             ],
             [
                 'menu_id' => 1,
-                'name' => 'notificaciones',
+                'name' => 'Notificaciones',
                 'order' => 1,
-                'icon' => 'heroicon-s-bell'
+                'icon' => 'heroicon-s-bell',
+                'route' => 'notifications'
             ],
             [
                 'menu_id' => 2,
-                'name' => 'usuarios',
+                'name' => 'Usuarios',
                 'order' => 0,
-                'icon' => 'heroicon-s-users'
+                'icon' => 'heroicon-s-users',
+                'route' => null
             ],
             [
                 'menu_id' => 2,
-                'name' => 'cupones',
+                'name' => 'Cupones',
                 'order' => 1,
-                'icon' => 'heroicon-s-tag'
+                'icon' => 'heroicon-s-tag',
+                'route' => null
             ],
             [
                 'menu_id' => 2,
-                'name' => 'ventas',
+                'name' => 'Ventas',
                 'order' => 2,
-                'icon' => 'heroicon-s-currency-dollar'
+                'icon' => 'heroicon-s-currency-dollar',
+                'route' => null
             ],
             [
                 'menu_id' => 2,
-                'name' => 'saldo disponible',
+                'name' => 'Saldo disponible',
                 'order' => 3,
-                'icon' => 'heroicon-s-credit-card'
+                'icon' => 'heroicon-s-credit-card',
+                'route' => null
             ],
             [
                 'menu_id' => 3,
-                'name' => 'usuarios',
+                'name' => 'Usuarios',
                 'order' => 0,
-                'icon' => 'heroicon-s-user-circle'
+                'icon' => 'heroicon-s-user-circle',
+                'route' => 'users.index'
             ],
             [
                 'menu_id' => 3,
-                'name' => 'roles y permisos',
+                'name' => 'Roles y permisos',
                 'order' => 1,
-                'icon' => 'heroicon-s-identification'
+                'icon' => 'heroicon-s-identification',
+                'route' => null
             ],
             [
                 'menu_id' => 3,
-                'name' => 'grupos',
+                'name' => 'Grupos',
                 'order' => 2,
-                'icon' => 'heroicon-s-office-building'
+                'icon' => 'heroicon-s-office-building',
+                'route' => null
             ],
             [
                 'menu_id' => 3,
-                'name' => 'menús',
+                'name' => 'Menús',
                 'order' => 3,
-                'icon' => 'heroicon-s-menu-alt-2'
+                'icon' => 'heroicon-s-menu-alt-2',
+                'route' => null
             ],
             [
                 'menu_id' => 6,
-                'name' => 'nuevos usuarios',
+                'name' => 'Nuevos usuarios',
                 'order' => 0,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 6,
-                'name' => 'acumulado',
+                'name' => 'Acumulado',
                 'order' => 1,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 7,
-                'name' => 'impresos',
+                'name' => 'Impresos',
                 'order' => 0,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 7,
-                'name' => 'canjeados',
+                'name' => 'Canjeados',
                 'order' => 1,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 7,
-                'name' => 'último cupón',
+                'name' => 'Último cupón',
                 'order' => 2,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 7,
-                'name' => 'impresos vs canjeados',
+                'name' => 'Impresos vs Canjeados',
                 'order' => 3,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 7,
-                'name' => 'acumulado canjeados e impresos',
+                'name' => 'Acumulado canjeados e impresos',
                 'order' => 4,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 8,
-                'name' => 'detallado',
+                'name' => 'Detallado',
                 'order' => 0,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
             [
                 'menu_id' => 8,
-                'name' => 'acumulado',
+                'name' => 'Acumulado',
                 'order' => 1,
-                'icon' => null
+                'icon' => null,
+                'route' => null
             ],
         ];
 

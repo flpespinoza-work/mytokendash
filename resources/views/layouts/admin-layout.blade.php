@@ -30,7 +30,7 @@
             <x-navigation/>
         </div>
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-            <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
+            <header class="sticky top-0 z-30 bg-white border-b border-gray-100">
                 <div class="px-4 mx-auto max-w-screen-2xl sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-16 -mb-px">
                         <div class="flex items-center">
@@ -39,16 +39,19 @@
                                 <x-heroicon-o-menu class="w-6 h-6"/>
                             </button>
                             <a class="block ml-2 lg:hidden active" href="/">
-                                <x-logo class="h-10"/>
+                                <x-logo class="h-7"/>
                             </a>
                         </div>
                         <div class="relative inline-block ml-auto text-left" x-data="{ profileOpen: false }">
-                            <button @click="profileOpen = !profileOpen"
-                            @keydown.escape="profileOpen = false"
-                            type="button" class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-transparent" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                {{ Auth()->user()->name }}
-                                <x-heroicon-s-chevron-down class="w-5 h-5 ml-2 -mr-1"/>
-                            </button>
+                            <div class="flex items-center" @click="profileOpen = !profileOpen"
+                            @keydown.escape="profileOpen = false">
+                                <img class="w-8 h-8 rounded-full cursor-pointer" src="{{ Auth()->user()->profile_image }}"/>
+                                <button type="button" class="justify-center hidden w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white md:inline-flex focus:outline-none focus:ring-0 focus:ring-offset-0 focus:ring-transparent" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                    {{ Auth()->user()->name }}
+                                    <x-heroicon-s-chevron-down class="w-5 h-5 ml-2 -mr-1"/>
+                                </button>
+                            </div>
+
                             <div x-show="profileOpen"  @click.away="profileOpen = false" class="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                                 <div class="py-1" role="none">
                                 <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
@@ -66,9 +69,17 @@
                 </div>
             </header>
             <main class="h-screen text-gray-darker">
-                <div class="max-w-screen-xl mx-auto sm:px-6 lg:px-8">
-                    <h3 class="py-5 text-lg font-semibold text-gray-500">{{ $title }}</h3>
-                    {{ $slot}}
+                <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-8">
+                    <div class="flex items-center w-full space-x-4 border-b border-gray-100">
+                        <a href="{{ url()->previous() }}" class="p-2 bg-white border border-gray-100 rounded-md shadow-sm">
+                            <x-heroicon-s-arrow-narrow-left class="w-3 h-3 text-gray-500 lg:w-4 lg:h-4"/>
+                        </a>
+                        <h3 class="py-5 text-sm font-medium text-gray-500 lg:text-base">{{ $title }}</h3>
+                    </div>
+                    <div class="mt-8">
+                        {{ $slot}}
+                    </div>
+
                 </div>
             </main>
         </div>
