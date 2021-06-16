@@ -5,17 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Coupon extends Model
+class Budget extends Model
 {
     use HasFactory;
 
     protected $connection = 'tokencash';
-    protected $table = 'dat_cupones';
-
-
-    public function getPrintedCoupons()
-    {
-
-    }
-
+    protected $table = 'cat_presupuestos';
 }

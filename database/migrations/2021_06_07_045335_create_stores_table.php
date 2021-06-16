@@ -19,11 +19,14 @@ class CreateStoresTable extends Migration
             $table->unsignedBigInteger('tokencash_nodo')->unique(); //ID del nodo del establecimiento en el dbm de tokencash
             $table->unsignedBigInteger('group_id');
             $table->string('street')->nullable();
+            $table->string('suburb')->nullable();
+            $table->string('reference')->nullable();
             $table->unsignedBigInteger('municipality_id')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('contact_name')->nullable();
             $table->string('contact_phone')->nullable();
+            $table->string('contact_email')->nullable();
             $table->timestamps();
             $table->foreign('group_id')->references('id')->on('groups');
         });
