@@ -11,7 +11,7 @@ class Printed extends Component
 
     public function render()
     {
-        $coupons = $this->getPrintedCoupons();
+        $coupons = [];
         return view('livewire.reports.coupons.printed', compact('coupons'));
     }
 }

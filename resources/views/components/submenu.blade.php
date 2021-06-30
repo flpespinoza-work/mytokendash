@@ -1,9 +1,10 @@
-
 @if($isMain)
     <ul class="mt-4">
     @foreach($menuGroup as $menu)
-        @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
-        <li @if(count($menu['submenu'])) x-data="{ isOpen: false }" @endif class="{{ ($isActive) ? 'bg-orange-lightest': '' }} rounded-md mb-0.5 last:mb-0" >
+        @php $isActive = ( ($menu['route-group'] !== null && request()->route()->named($menu['route-group'] . '*')) || request()->routeIs($menu['route']) ) ? true : false @endphp
+        @php $isOpen = ($menu['route-group'] !== null && request()->route()->named($menu['route-group'] . '*')) ? 'true' : 'false' @endphp
+
+        <li @if(count($menu['submenu'])) x-data="{ isOpen: {{ $isOpen }} }" @endif class="{{ ($isActive) ? 'bg-orange-lightest': '' }} rounded-md my-0.5" >
             <a @click="isOpen = !isOpen" class="block px-2 py-2 transition duration-150 cursor-pointer text-gray-dark hover:text-gray-800" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center flex-grow">
