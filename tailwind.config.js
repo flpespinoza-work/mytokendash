@@ -40,6 +40,8 @@ module.exports = {
                 darkest: '#0f121b'
             },
             red: {
+                lightest: '#FEE2DC',
+                lighter: '#FDB3A2',
                 light: '#FF9A84',
                 DEFAULT: '#FF5934',
                 dark: '#ea3911',

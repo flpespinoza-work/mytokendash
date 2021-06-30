@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,12 +44,34 @@ class User extends Authenticatable
         return empty($search) ? static::query()
             : static::query()
               ->where('name', 'like', '%' . $search . '%')
-              ->orWhere('email', 'like', '%' . $search . '%');
+              ->orWhere('email', 'like', '%' . $search . '%')
+              ->orWhere('phone_number', 'like', '%' . $search . '%');
     }
 
     public function getProfileImageAttribute()
     {
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=fef8f3&background=ed7338';
     }
+
+    public function getLastLoginAtAttribute($value)
+    {
+        if($value !== null)
+        {
+            return Carbon::parse($value)->diffForHumans();
+        }
+
+        return 'Sin actividad';
+    }
+
+    public function getPhoneNumberAttribute($value)
+    {
+        if(!empty($value) && $value !== NULL)
+        {
+            return $value;
+        }
+
+        return 'N/A';
+    }
+
 
 }

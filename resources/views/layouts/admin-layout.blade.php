@@ -72,11 +72,11 @@
             </header>
             <main class="h-screen text-gray-darker">
                 <div class="px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-4">
-                    <div class="flex items-center w-full space-x-4 border-b border-gray-100">
+                    <div class="flex items-center w-full space-x-4 border-b border-gray-light">
                         @isset($back_button)
                             {{ $back_button }}
                         @endisset
-                        <h3 class="py-5 text-sm font-medium text-gray-500 lg:text-base">{{ $title }}</h3>
+                        <h3 class="py-5 font-semibold text-md text-gray-dark lg:text-lg">{{ $title }}</h3>
                     </div>
                     <div class="mt-8">
                         {{ $slot}}

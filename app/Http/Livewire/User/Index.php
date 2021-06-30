@@ -16,6 +16,7 @@ class Index extends Component
     public $orderAsc = true;
 
     protected $queryString = [
+        'perPage',
         'search' => [
             'except' => '',
         ]
