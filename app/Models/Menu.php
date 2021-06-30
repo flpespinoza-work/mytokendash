@@ -14,6 +14,7 @@ class Menu extends Model
         'name',
         'menu_id',
         'route',
+        'route-group',
         'order',
         'icon'
     ];

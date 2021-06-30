@@ -19,6 +19,7 @@ class CreateMenusTable extends Migration
             $table->unsignedInteger('menu_id')->nullable()->default(null);
             $table->string('name', 50);
             $table->string('route', 100)->nullable()->default(null);
+            $table->string('route-group', 100)->nullable()->default(null);
             $table->integer('order')->default(0);
             $table->string('icon')->nullable()->default(null);
             $table->timestamps();

@@ -1,15 +1,16 @@
+
 @if($isMain)
-    <ul class="mt-3">
+    <ul class="mt-4">
     @foreach($menuGroup as $menu)
         @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
         <li @if(count($menu['submenu'])) x-data="{ isOpen: false }" @endif class="{{ ($isActive) ? 'bg-orange-lightest': '' }} rounded-md mb-0.5 last:mb-0" >
-            <a @click="isOpen = !isOpen" class="block px-2 py-2 text-gray-600 transition duration-150 cursor-pointer hover:text-gray-800" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
+            <a @click="isOpen = !isOpen" class="block px-2 py-2 transition duration-150 cursor-pointer text-gray-dark hover:text-gray-800" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center flex-grow">
                         @if($menu['icon'])
-                            {{ svg($menu['icon'], ['class' => "w-5 h-5 mr-2 text-orange" ]) }}
+                            {{ svg($menu['icon'], ['class' => "w-5 h-5 mr-2 text-orange-dark" ]) }}
                         @endif
-                        <span class="text-xs font-medium {{ ($isActive) ? 'text-orange-darkest': '' }}">{{ $menu['name'] }}</span>
+                        <span class="text-xs font-semibold {{ ($isActive) ? 'text-orange-darkest': '' }}">{{ $menu['name'] }}</span>
                     </div>
                     @if(count($menu['submenu']))
                     <div class="flex flex-shrink-0 ml-2">
@@ -34,11 +35,11 @@
         @foreach($menuGroup as $menu)
             @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
             <li class="flex items-center mb-2">
-                <a class="block transition duration-150 hover:text-gray-800 false active" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
+                <a class="block transition duration-150 hover:text-gray-darker false active" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
                     <span class="text-xs {{ ($isActive) ? 'font-bold': 'font-medium' }}">{{ $menu['name'] }}</span>
                 </a>
                 @if ($isActive)
-                <span class="ml-auto block w-1.5 h-1.5 rounded-full bg-orange-light"></span>
+                <span class="ml-auto block w-1.5 h-1.5 rounded-full bg-orange mr-2"></span>
                 @endif
             </li>
         @endforeach

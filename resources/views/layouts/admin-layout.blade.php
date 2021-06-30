@@ -26,7 +26,9 @@
     <noscript>{{ __('You need to enable JavaScript to run this app.') }}</noscript>
     <div class="flex h-screen overflow-hidden">
         <div class="lg:w-64">
-            <div x-show="sidebarOpen" :class="{ 'opacity-100' : sidebarOpen }" class="fixed inset-0 z-40 transition-opacity duration-200 bg-black bg-opacity-25 opacity-0 pointer-events-none lg:hidden lg:z-auto" aria-hidden="true"></div>
+            <div x-show="sidebarOpen" :class="{ 'opacity-100' : sidebarOpen }"
+            class="fixed inset-0 z-40 transition-opacity duration-200 bg-black bg-opacity-25 opacity-0 pointer-events-none lg:hidden lg:z-auto"
+            aria-hidden="true"></div>
             <x-navigation/>
         </div>
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
@@ -69,11 +71,11 @@
                 </div>
             </header>
             <main class="h-screen text-gray-darker">
-                <div class="px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-8">
+                <div class="px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-4">
                     <div class="flex items-center w-full space-x-4 border-b border-gray-100">
-                        <a href="{{ url()->previous() }}" class="p-2 bg-white border border-gray-100 rounded-md shadow-sm">
-                            <x-heroicon-s-arrow-narrow-left class="w-3 h-3 text-gray-500 lg:w-4 lg:h-4"/>
-                        </a>
+                        @isset($back_button)
+                            {{ $back_button }}
+                        @endisset
                         <h3 class="py-5 text-sm font-medium text-gray-500 lg:text-base">{{ $title }}</h3>
                     </div>
                     <div class="mt-8">
