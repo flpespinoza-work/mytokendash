@@ -9,20 +9,21 @@ class Group extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'contact_name',
-        'contact_phone'
-    ];
+    protected $guarded = [];
+
+    public function subgroups()
+    {
+        return $this->hasMany(SubGroup::class);
+    }
 
     public function stores()
     {
-        return $this->hasMany(Store::class);
+        return $this->hasManyThrough(Store::class, SubGroup::class, 'group_id', 'subgroup_id', 'id', 'id');
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(User::class);
     }
 
     public static function search($search)

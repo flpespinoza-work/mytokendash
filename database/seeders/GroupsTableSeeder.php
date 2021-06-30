@@ -16,19 +16,13 @@ class GroupsTableSeeder extends Seeder
     {
         $groups = [
             [
-                'name' => 'Gasomax',
-                'contact_name' => null,
-                'contact_phone' => '3333333333'
+                'name' => 'Gasomax'
             ],
             [
-                'name' => 'Shell',
-                'contact_name' => null,
-                'contact_phone' => '2222222222'
+                'name' => 'Shell'
             ],
             [
-                'name' => 'Redpetroil',
-                'contact_name' => null,
-                'contact_phone' => '4444444444'
+                'name' => 'Redpetroil'
             ],
         ];
 

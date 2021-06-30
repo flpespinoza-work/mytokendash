@@ -16,8 +16,11 @@ class CreateStoresTable extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('tokencash_nodo')->unique(); //ID del nodo del establecimiento en el dbm de tokencash
-            $table->unsignedBigInteger('group_id');
+            $table->string('business_name'); //Razon social
+            $table->string('system', 100); //Sistema usado
+            $table->string('tokencash_account', 10)->unique(); //Numero de telefono para la cuenta en tokencash
+            $table->unsignedBigInteger('tokencash_node')->unique(); //ID del nodo del establecimiento en el dbm de tokencash
+            $table->unsignedBigInteger('subgroup_id');
             $table->string('street')->nullable();
             $table->string('suburb')->nullable();
             $table->string('reference')->nullable();
@@ -28,7 +31,10 @@ class CreateStoresTable extends Migration
             $table->string('contact_phone')->nullable();
             $table->string('contact_email')->nullable();
             $table->timestamps();
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->softDeletes();
+
+            $table->foreign('subgroup_id')->references('id')->on('sub_groups');
+
         });
     }
 

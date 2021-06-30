@@ -12,15 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'profile_image',
-        'phone_number',
-        'last_login_at',
-        'last_login_ip'
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
@@ -31,9 +23,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function groups()
+    public function group()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function subgroups()
