@@ -1,10 +1,14 @@
 <x-guest-layout>
-    <div class="flex flex-col items-center justify-center w-full px-5">
+    <div class="flex flex-col items-center justify-center px-10">
         <div>
-            <x-logo class="w-auto h-14"></x-logo>
+            <a href="{{ route('login') }}">
+                <x-logo class="w-auto h-12"></x-logo>
+            </a>
         </div>
-        <div class="max-w-sm mx-auto mt-4 text-sm text-gray-600">
+        <div class="w-full max-w-sm mx-auto mt-4 text-sm text-gray-600">
+            <p class="px-3">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            </p>
         </div>
         <div class="max-w-sm mx-auto mt-4">
             <form method="POST" action="{{ route('password.email') }}">

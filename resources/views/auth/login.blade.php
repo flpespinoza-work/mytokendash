@@ -1,10 +1,12 @@
 <x-guest-layout>
-    <div class="flex flex-col items-center justify-center w-full px-10">
+    <div class="flex flex-col items-center justify-center px-10">
         <div>
-            <x-logo class="w-auto h-14"></x-logo>
+            <a href="{{ route('login') }}">
+                <x-logo class="w-auto h-12"></x-logo>
+            </a>
         </div>
 
-        <div class="max-w-sm mx-auto mt-4 lg:w-full">
+        <div class="w-full max-w-sm mx-auto mt-4">
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="my-3">

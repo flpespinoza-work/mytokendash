@@ -1,9 +1,11 @@
 <x-guest-layout>
-    <div class="flex flex-col items-center justify-center w-full px-10">
+    <div class="flex flex-col items-center justify-center px-10">
         <div>
-            <x-logo class="w-auto h-14"></x-logo>
+            <a href="{{ route('login') }}">
+                <x-logo class="w-auto h-12"></x-logo>
+            </a>
         </div>
-        <div class="mx-auto mt-4 max-w-96 lg:w-full">
+        <div class="w-full max-w-sm mx-auto mt-4">
             <form method="POST" action="{{ route('password.update') }}">
                 @csrf
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
@@ -36,7 +38,7 @@
                 </div>
 
                 <div class="my-5">
-                    <x-forms.button class="justify-center w-full h-10">{{ __('Log in') }}</x-forms.button>
+                    <x-forms.button class="justify-center w-full h-10">{{ __('Reset Password') }}</x-forms.button>
                 </div>
 
                 @if (Route::has('password.request'))

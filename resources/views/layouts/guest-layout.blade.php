@@ -19,8 +19,8 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 <body class="h-full m-0 font-sans leading-none text-gray-dark">
-    <div class="flex min-h-full bg-gray-50">
-        <div class="flex items-center justify-center w-full bg-white lg:max-w-md">
+    <div class="flex min-h-full bg-gray-lighter">
+        <div class="flex items-center justify-center w-full bg-white lg:max-w-xl">
             <div class="w-full mx-auto md:px-5">
                 {{ $slot }}
             </div>
