@@ -15,10 +15,10 @@
 
     <select wire:model="perPage"
     class="inline-block p-2 text-xs leading-tight bg-white border border-gray-200 rounded-md appearance-none w-36 md:text-sm md:p-3 focus:outline-none focus:ring-0 focus:border-gray-300">
-        <option value="10">Mostrar 10</option>
-        <option value="20">Mostrar 20</option>
-        <option value="30">Mostrar 30</option>
-        <option value="50">Mostrar 50</option>
+        <option value="10"><span class="hidden md:inline">Mostrar</span> 10</option>
+        <option value="20"><span class="hidden md:inline">Mostrar</span> 20</option>
+        <option value="30"><span class="hidden md:inline">Mostrar</span> 30</option>
+        <option value="50"><span class="hidden md:inline">Mostrar</span> 50</option>
     </select>
 </div>
 

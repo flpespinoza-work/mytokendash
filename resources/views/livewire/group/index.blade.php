@@ -19,9 +19,9 @@
                     <thead class="bg-gray-50">
                       <tr>
                         <x-table.heading value="Nombre"/>
-                        <x-table.heading value="Contacto"/>
-                        <x-table.heading value="Teléfono"/>
-                        <x-table.heading value="Correo electrónico"/>
+                        <x-table.heading value="Contacto" class="hidden md:table-cell"/>
+                        <x-table.heading value="Teléfono" class="hidden md:table-cell"/>
+                        <x-table.heading value="Correo electrónico" class="hidden md:table-cell"/>
                         <x-table.heading/>
                       </tr>
                     </thead>
@@ -29,9 +29,9 @@
                       @forelse ($groups as $group)
                       <tr class="text-sm">
                         <x-table.cell>{{ $group->name }}</x-table.cell>
-                        <x-table.cell>{{ $group->contact_name }}</x-table.cell>
-                        <x-table.cell>{{ $group->contact_phone }}</x-table.cell>
-                        <x-table.cell>{{ $group->contact_email }}</x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">{{ $group->contact_name }}</x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">{{ $group->contact_phone }}</x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">{{ $group->contact_email }}</x-table.cell>
                         <x-table.cell class="justify-end space-x-2 lg:space-x-4">
                             <div class="flex items-center justify-end space-x-2 lg:space-x-4">
                                 <a href="{{ route('groups.show', $group) }}" class="text-gray-400 hover:text-gray-dark">
