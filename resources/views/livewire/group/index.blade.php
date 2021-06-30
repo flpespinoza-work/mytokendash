@@ -1,15 +1,13 @@
 <div>
     <div class="flex flex-col w-full pb-10 space-y-4">
         <div class="flex items-center">
-            <div class="w-full mr-2 md:w-1/4">
-                <input wire:model.debounce.300ms="search" type="text"
-                class="block w-full p-2 text-sm leading-tight text-gray-700 bg-white border border-gray-200 rounded appearance-none focus:ring-0 md:p-3 focus:outline-none focus:bg-white focus:border-gray-300"
-                placeholder="Buscar...">
+            <div class="w-full mr-2">
+                <x-search-filters/>
             </div>
-            <a href="{{ route('groups.create') }}" class="flex items-center p-2 ml-auto text-xs font-bold tracking-wide bg-blue-700 rounded-md shadow md:p-3 text-blue-50" >
-                <x-heroicon-s-plus-circle class="w-4 h-4 md:mr-2"/>
+            <a href="{{ route('groups.create') }}" class="flex items-center flex-shrink-0 p-2 ml-auto text-xs font-bold leading-tight tracking-wide bg-blue-700 rounded-md shadow md:p-3 text-blue-50" >
+                <x-heroicon-s-plus-circle class="w-4 h-4 md:w-5 md:h-5 md:mr-2"/>
                 <span class="hidden md:inline-block">
-                    Crear grupo
+                    Nuevo grupo
                 </span>
             </a>
         </div>
@@ -20,40 +18,30 @@
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
-                        <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
-                          Nombre
-                        </th>
-                        <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
-                          Contacto
-                        </th>
-                        <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
-                          Teléfono
-                        </th>
-                        <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
+                        <x-table.heading value="Nombre"/>
+                        <x-table.heading value="Contacto"/>
+                        <x-table.heading value="Teléfono"/>
+                        <x-table.heading value="Correo electrónico"/>
+                        <x-table.heading/>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                       @forelse ($groups as $group)
-                      <tr>
-                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                          {{ $group->name }}
-                        </td>
-                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                            {{ $group->contact_name }}
-                          </td>
-                          <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                            {{ $group->contact_phone }}
-                          </td>
-                        <td class="px-3 py-2 text-sm text-right lg:px-6 lg:py-3 whitespace-nowrap">
-                            <a href="{{ route('groups.edit', $group) }}" class="inline-flex items-center px-2 py-1 text-xs bg-green-600 rounded-md text-green-50 hover:bg-green-700">
-                                <x-heroicon-s-pencil class="w-3 h-3 md:mr-1"/>
-                                <span class="hidden md:inline">Editar</span>
-                            </a>
-                            <a href="{{ route('groups.show', $group) }}" class="inline-flex items-center px-2 py-1 text-xs bg-gray-600 rounded-md text-gray-50 hover:bg-gray-700">
-                                <x-heroicon-s-eye class="w-3 h-3 md:mr-1"/>
-                                <span class="hidden md:inline">Ver</span>
-                            </a>
-                        </td>
+                      <tr class="text-sm">
+                        <x-table.cell>{{ $group->name }}</x-table.cell>
+                        <x-table.cell>{{ $group->contact_name }}</x-table.cell>
+                        <x-table.cell>{{ $group->contact_phone }}</x-table.cell>
+                        <x-table.cell>{{ $group->contact_email }}</x-table.cell>
+                        <x-table.cell class="justify-end space-x-2 lg:space-x-4">
+                            <div class="flex items-center justify-end space-x-2 lg:space-x-4">
+                                <a href="{{ route('groups.show', $group) }}" class="text-gray-400 hover:text-gray-dark">
+                                    <x-heroicon-s-eye class="w-5 h-5" />
+                                </a>
+                                <a href="{{ route('groups.edit', $group) }}" class="text-gray-400 hover:text-gray-dark">
+                                    <x-heroicon-s-pencil-alt class="w-5 h-5" />
+                                </a>
+                            </div>
+                        </x-table.cell>
                       </tr>
                       @empty
                       <tr>

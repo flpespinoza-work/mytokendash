@@ -18,49 +18,40 @@
                   <table class="min-w-full divide-y divide-gray-light">
                     <thead>
                       <tr>
-                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left capitalize text-gray-dark lg:py-3 lg:px-6">
-                          Nombre
-                        </th>
-                        <th scope="col" class="hidden px-3 py-3 text-xs font-medium tracking-wider text-left capitalize md:table-cell text-gray-dark lg:py-3 lg:px-6">
-                          Rol
-                        </th>
-                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left capitalize text-gray-dark lg:py-3 lg:px-6">
-                          Estado
-                        </th>
-                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left capitalize text-gray-dark lg:py-3 lg:px-6">
-                          Ultima sesión
-                        </th>
-                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left capitalize text-gray-dark lg:py-3 lg:px-6">
+                        <x-table.heading value="Nombre"/>
+                        <x-table.heading value="Role" class="hidden md:table-cell"/>
+                        <x-table.heading value="Estado"/>
+                        <x-table.heading value="Última sesión"/>
+                        <x-table.heading />
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-light">
                       @forelse ($users as $user)
                       <tr class="cursor-pointer hover:bg-gray-lightest">
-                        <td class="px-3 py-2 lg:px-6 lg:py-3 whitespace-nowrap">
-                          <div class="flex items-center">
-                            <div class="flex-shrink-0 hidden w-8 h-8 lg:block">
-                                <img class="w-8 h-8 rounded-full" src="{{ $user->profile_image }}" alt="">
+                        <x-table.cell>
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 hidden w-8 h-8 lg:block">
+                                    <img class="w-8 h-8 rounded-full" src="{{ $user->profile_image }}" alt="">
+                                </div>
+                                <div class="lg:ml-4">
+                                <div class="text-sm font-medium text-gray-dark">
+                                    {{ $user->name }}
+                                </div>
+                                <div class="text-gray text-xxs mt-0.5">
+                                    {{ $user->email }}
+                                </div>
+                                <div class="mt-1 text-gray text-xxs">
+                                    Tel: {{ $user->phone_number }}
+                                </div>
+                                </div>
                             </div>
-                            <div class="lg:ml-4">
-                              <div class="text-sm font-medium text-gray-dark">
-                                {{ $user->name }}
-                              </div>
-                              <div class="text-gray text-xxs mt-0.5">
-                                {{ $user->email }}
-                              </div>
-                              <div class="mt-1 text-gray text-xxs">
-                                Tel: {{ $user->phone_number }}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-
-                        <td class="hidden px-3 py-2 lg:px-6 lg:py-3 whitespace-nowrap md:table-cell">
+                        </x-table.cell>
+                        <x-table.cell class="hidden md:table-cell">
                             @foreach($user->roles as $key => $role)
                                 <span class="inline-flex font-semibold leading-5 capitalize text-xxs text-gray">{{ $role->name }}</span>
                             @endforeach
-                        </td>
-                        <td class="px-3 py-2 lg:px-6 lg:py-3 whitespace-nowrap">
+                        </x-table.cell>
+                        <x-table.cell>
                             @if(Cache::has('user-online-'. $user->id ))
                                 <span class="inline-flex w-3 h-3 font-semibold leading-5 rounded-full md:px-2 bg-green md:w-auto md:h-auto text-xxs md:bg-green-light text-green-dark">
                                     <span class="hidden md:inline-block">Conectado</span>
@@ -70,11 +61,11 @@
                                     <span class="hidden md:inline-block">Desconectado</span>
                                 </span>
                             @endif
-                        </td>
-                        <td class="px-3 py-2 text-xs lg:px-6 lg:py-3 whitespace-nowrap">
-                          {{ $user->last_login_at }}
-                        </td>
-                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
+                        </x-table.cell>
+                        <x-table.cell>
+                            <span class="inline-flex font-semibold leading-5 capitalize text-xxs text-gray">{{ $user->last_login_at }} </span>
+                        </x-table.cell>
+                        <x-table.cell>
                             <div class="flex items-center justify-end space-x-2 lg:space-x-4">
                                 <a href="{{ route('users.show', $user) }}" class="text-gray-400 hover:text-gray-dark">
                                     <x-heroicon-s-eye class="w-5 h-5" />
@@ -86,7 +77,7 @@
                                     <x-heroicon-s-trash class="w-5 h-5" />
                                 </a>
                             </div>
-                        </td>
+                        </x-table.cell>
                       </tr>
                       @empty
                       <tr>
