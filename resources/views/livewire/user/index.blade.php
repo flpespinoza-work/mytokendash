@@ -30,7 +30,7 @@
                           Estatus
                         </th>
                         <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
-                          Grupo
+                          Ultima actividad
                         </th>
                         <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
                       </tr>
@@ -66,8 +66,8 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                          Admin
+                        <td class="px-3 py-2 text-xs lg:px-6 lg:py-3 whitespace-nowrap">
+                          {{ $user->last_login_at }}
                         </td>
                         <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
                           <a href="{{ route('users.edit', $user->id) }}" class="text-gray-600 hover:text-gray-900">Editar</a>
