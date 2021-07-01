@@ -9,6 +9,7 @@ class Index extends Component
 {
     public $response = '';
     public $responses = [];
+    public $deletingResponse = false;
 
     protected function rules() {
         return [
@@ -49,5 +50,15 @@ class Index extends Component
         }
     }
 
+    public function confirmResponseDeletion($id)
+    {
+        $this->deletingResponse = $id;
+    }
+
+    public function deleteResponse(Response $response)
+    {
+        $response->delete();
+        $this->deletingResponse = false;
+    }
 
 }
