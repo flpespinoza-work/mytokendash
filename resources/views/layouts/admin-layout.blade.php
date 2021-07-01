@@ -34,7 +34,7 @@
         </div>
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
             <header class="sticky top-0 z-30 bg-white border-b border-gray-100">
-                <div class="px-4 mx-auto max-w-screen-2xl sm:px-6 lg:px-8">
+                <div class="max-w-screen-xl px-4 mx-auto sm:px-6 lg:px-0">
                     <div class="flex items-center justify-between h-16 -mb-px">
                         <div class="flex items-center">
                             <button class="text-gray-darker lg:hidden" aria-controls="sidebar" aria-expanded="false" @click="sidebarOpen = !sidebarOpen">
@@ -72,7 +72,7 @@
                 </div>
             </header>
             <main class="h-screen text-gray-darker">
-                <div class="px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-4">
+                <div class="relative px-4 mx-auto lg:max-w-4xl xl:max-w-screen-xl sm:px-6 lg:px-4">
                     <div class="flex items-center w-full space-x-4 border-b border-gray-light">
                         @isset($back_button)
                             {{ $back_button }}
