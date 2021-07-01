@@ -43,6 +43,7 @@ class Index extends Component
             ]);
 
             $this->resetForm();
+            session()->flash('success', 'Respuesta creada');
         }
         catch(\Illuminate\Database\QueryException $e)
         {

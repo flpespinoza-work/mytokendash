@@ -1,5 +1,9 @@
 <div class="sm:max-w-2xl">
-    <x-alert type="success" title="Éxito" message="Mensaje de prueba"/>
+    @if(session()->has('success'))
+    <x-alert type="success" title="Éxito" message="{{ session('success') }}"/>
+    @elseif (session()->has('error'))
+    <x-alert type="error" title="Error" message="{{ session('error') }}"/>
+    @endif
 
     <div class="flex flex-col p3">
         <label class="text-xs font-normal text-gray-500 md:text-sm" for="response">Ingresa el texto para la respuesta</label>
