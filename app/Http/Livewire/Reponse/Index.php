@@ -59,6 +59,7 @@ class Index extends Component
     {
         $response->delete();
         $this->deletingResponse = false;
+        session()->flash('success', 'Registro eliminado');
     }
 
 }

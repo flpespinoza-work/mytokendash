@@ -1,4 +1,6 @@
 <div class="sm:max-w-2xl">
+    <x-alert type="success" title="Éxito" message="Mensaje de prueba"/>
+
     <div class="flex flex-col p3">
         <label class="text-xs font-normal text-gray-500 md:text-sm" for="response">Ingresa el texto para la respuesta</label>
         <textarea name="response"
@@ -7,7 +9,7 @@
         wire:model.debounce.1000ms='response'></textarea>
         <x-forms.button wire:click="saveResponse" class="w-full mt-3 ml-auto md:w-auto" type="button">Guardar respuesta</x-forms-button>
     </div>
-    <div class="p-2 mt-4 bg-white">
+    <div class="p-2 mt-4 bg-white shadow-sm">
         <table class="min-w-full divide-y divide-gray-light">
                     <thead>
                       <tr>
