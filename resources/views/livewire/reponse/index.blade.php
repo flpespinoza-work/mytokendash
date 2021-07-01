@@ -25,7 +25,7 @@
                       @forelse ($responses as $response)
                       <tr class="cursor-pointer hover:bg-gray-lightest">
                         <x-table.cell>
-                            {{ $response->response}}
+                            <p class="text-sm">{{ $response->response}}</p>
                         </x-table.cell>
                         <x-table.cell>
                             <div class="flex items-center justify-end space-x-2 lg:space-x-4">
@@ -49,6 +49,9 @@
                       @endforelse
                     </tbody>
                   </table>
+                  <div>
+                        {!! $responses->links() !!}
+                </div>
     </div>
     <x-confirm-modal wire:model="deletingResponse" title="Eliminar">
         <x-slot name="icon">

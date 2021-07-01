@@ -4,16 +4,20 @@ namespace App\Http\Livewire\Reponse;
 
 use Livewire\Component;
 use App\Models\Response;
+use Livewire\WithPagination;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class Index extends Component
 {
+    use WithPagination;
+
+    public $perPage = 10;
     public $response = '';
-    public $responses = [];
     public $deletingResponse = false;
 
     protected function rules() {
         return [
-            'response' => 'required|max:120'
+            'response' => 'required|max:120|unique'
         ];
     }
 
@@ -29,8 +33,9 @@ class Index extends Component
 
     public function render()
     {
-        $this->responses = Response::all();
-        return view('livewire.reponse.index');
+        $responses = Response::paginate($this->perPage);
+        //dd($this->responses);
+        return view('livewire.reponse.index', compact('responses'));
     }
 
     public function saveResponse()
