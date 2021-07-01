@@ -19,6 +19,7 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+
 </head>
 <body
     x-data="{ sidebarOpen: false }"
@@ -89,5 +90,6 @@
     </div>
 
     @livewireScripts
+    @stack('scripts')
 </body>
 </html>
