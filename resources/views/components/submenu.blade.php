@@ -4,7 +4,7 @@
         @php $isActive = ( ($menu['route-group'] !== null && request()->route()->named($menu['route-group'] . '*')) || request()->routeIs($menu['route']) ) ? true : false @endphp
         @php $isOpen = ($menu['route-group'] !== null && request()->route()->named($menu['route-group'] . '*')) ? 'true' : 'false' @endphp
 
-        <li @if(count($menu['submenu'])) x-data="{ isOpen: {{ $isOpen }} }" @endif class="{{ ($isActive) ? 'bg-orange-lightest': '' }} rounded-md my-0.5" >
+        <li @if(count($menu['submenu'])) x-data="{ isOpen: false }" @endif class="{{ ($isActive) ? 'bg-orange-lightest': '' }} rounded-md my-0.5 hover:bg-orange-lightest" >
             <a @click="isOpen = !isOpen" class="block px-2 py-2 transition duration-150 cursor-pointer text-gray-dark hover:text-gray-800" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center flex-grow">
@@ -32,16 +32,17 @@
     :class="{ 'max-h-0' : !isOpen }" x-ref="container{{$ref}}"
     x-bind:style="isOpen ? 'max-height: ' + $refs.container{{$ref}}.scrollHeight + 'px' : ''"
     >
-        <ul class="pt-3 pl-8 pr-1">
+        <ul class="pt-2 pb-2 pr-1 pl-7">
         @foreach($menuGroup as $menu)
             @php $isActive = ( request()->routeIs($menu['route']) ) ? true : false @endphp
-            <li class="flex items-center mb-2">
-                <a class="block transition duration-150 hover:text-gray-darker false active" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
-                    <span class="text-xs {{ ($isActive) ? 'font-bold': 'font-medium' }}">{{ $menu['name'] }}</span>
+            <li class="flex items-center mb-3">
+                <a class="block transition duration-150 hover:font-semibold hover:text-gray-darker text-xs {{ ($isActive) ? 'font-semibold': 'font-medium' }}" href="{{ ($menu['route']) ? route($menu['route']) : '#' }}">
+                    @if ($isActive)
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-orange mr-1 -ml-3"></span>
+                    @endif
+                    <span>{{ $menu['name'] }}</span>
                 </a>
-                @if ($isActive)
-                <span class="ml-auto block w-1.5 h-1.5 rounded-full bg-orange mr-2"></span>
-                @endif
+
             </li>
         @endforeach
         </ul>

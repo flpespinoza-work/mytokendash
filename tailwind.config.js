@@ -60,7 +60,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+        fontWeight: ['hover']
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
