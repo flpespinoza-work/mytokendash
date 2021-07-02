@@ -1,4 +1,4 @@
- @php
+@php
     $cupones_totales = 0;
     $cupones_monto = 0;
 @endphp
@@ -24,13 +24,13 @@
             @forelse ($coupons as $coupon)
             <tr>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon->DIA }}
+                    {{ $coupon['DIA'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon->CUPONES }}
+                    {{ $coupon['CUPONES'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon->MONTO }}
+                    {{ $coupon['MONTO'] }}
                 </td>
             </tr>
             @empty

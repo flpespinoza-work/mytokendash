@@ -20,7 +20,7 @@ class UserActivity
     {
         if(auth()->check())
         {
-            $expiresAt = Carbon::now()->addMinutes(1);
+            $expiresAt = Carbon::now()->addMinutes(5);
             Cache::put('user-online-' . auth()->user()->id, true, $expiresAt);
         }
 

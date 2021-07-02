@@ -1,11 +1,13 @@
 <?php
-
+/**
+ * Revisar Cache::remember
+ * Cache::put, Cache::add
+ */
 namespace App\Http\Livewire\Reponse;
 
 use Livewire\Component;
 use App\Models\Response;
 use Livewire\WithPagination;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class Index extends Component
 {
@@ -17,7 +19,7 @@ class Index extends Component
 
     protected function rules() {
         return [
-            'response' => 'required|max:120|unique'
+            'response' => 'required|max:120|unique:'
         ];
     }
 
