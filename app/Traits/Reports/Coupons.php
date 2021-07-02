@@ -6,6 +6,38 @@ use Illuminate\Support\Facades\DB;
 trait Coupons
 {
 
+    function getRedemedCouponsHistory()
+    {
+        $extDb = DB::connection('tokencash');
+        $couponsArr = [];
+
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-historico', 60*1, function() use($extDb){
+            $tmpRes = [];
+            $extDb->table('dat_cupones')
+            ->join('dat_cupones_canjeados', 'dat_cupones.CUP_ID', '=', 'dat_cupones_canjeados.CUP_CAN_CUPON')
+            ->select(DB::raw('COUNT(CUP_ID) CUPONES, SUM(CUP_CAN_MONTO) MONTO'))
+            ->whereIn('CUP_GIFTCARD', ['SUPRA'])
+            ->groupBy('CUP_GIFTCARD')
+            ->orderBy('MONTO', 'desc')
+            ->chunk(10, function($coupons) use(&$tmpRes) {
+                foreach($coupons as $coupon)
+                {
+                    $tmpRes[] = [
+                        'COUNT' => $coupon->CUPONES,
+                        'MONTO' => $coupon->MONTO
+                    ];
+                }
+            });
+
+            return $tmpRes;
+        });
+
+        dd($couponsArr);
+
+        return $couponsArr;
+    }
+
+
     function getRedemedCoupons()
     {
         $extDb = DB::connection('tokencash');
@@ -22,20 +54,8 @@ trait Coupons
             ->select(DB::raw('DATE_FORMAT(CUP_CAN_FECHAHORA, "%Y/%m/%d") DIA, COUNT(CUP_ID) CUPONES, SUM(CUP_CAN_MONTO) MONTO, CUP_GIFTCARD GIFTCARD'))
             ->whereIn('CUP_GIFTCARD', ['SUPRA'])
             ->whereBetween('CUP_CAN_FECHAHORA', [$initialDate, $finalDate])
-            ->whereRaw(
-                "(
-                    BINARY substring(NOD_USU_CERTIFICADO, 11, 1) = 'o'
-                    and BINARY substring(NOD_USU_CERTIFICADO, 12, 1) in ('C','E','F','I','K','L','N','Q','S','T','W','X','Y','b','c','d','g','k','m','p','r','s','u','v','y','2','4','5','7','9')
-                    and BINARY substring(NOD_USU_CERTIFICADO, 63, 1) = 'o'
-                    and BINARY substring(NOD_USU_CERTIFICADO, 64, 1) in ('C','E','F','I','K','L','N','Q','S','T','W','X','Y','b','c','d','g','k','m','p','r','s','u','v','y','2','4','5','7','9')
-                    and BINARY substring(NOD_USU_CERTIFICADO,115, 1) = 'o'
-                    and BINARY substring(NOD_USU_CERTIFICADO,116, 1) in ('C','E','F','I','K','L','N','Q','S','T','W','X','Y','b','c','d','g','k','m','p','r','s','u','v','y','2','4','5','7','9')
-                )
-                OR
-                (
-                    NOD_USU_CERTIFICADO = \" \"
-                )"
-            )
+            ->whereRaw("BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]'")
+            ->orWhere('NOD_USU_CERTIFICADO', '=', '')
             ->groupBy('DIA', 'GIFTCARD')
             ->orderBy('GIFTCARD')
             ->orderBy('DIA')
