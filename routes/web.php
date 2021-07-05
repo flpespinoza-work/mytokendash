@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ResponseController;
 use App\Http\Controllers\Admin\CouponReportsController;
+use App\Http\Controllers\Admin\UserReportsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,4 +60,14 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/reports/coupons/printed-redeemed', [CouponReportsController::class, 'printedRedeemed'])->name('reports.coupons.printed-redeemed');
     Route::get('/reports/coupons/detail-redeemed', [CouponReportsController::class, 'detailRedeemed'])->name('reports.coupons.detail-redeemed');
     Route::get('/reports/coupons/printed-redeemed-history', [CouponReportsController::class, 'printedRedeemedHistory'])->name('reports.coupons.printed-redeemed-history');
+
+    Route::get('/reports/users/new-users', [UserReportsController::class, 'newUsers'])->name('reports.users.new');
+    Route::get('/reports/users/history', [UserReportsController::class, 'history'])->name('reports.users.history');
+
+    Route::get('/reports/sales/sales-detail', [SaleReportsController::class, 'detailSales'])->name('reports.sales.detail');
+    Route::get('/reports/sales/sales-history', [SaleReportsController::class, 'historySales'])->name('reports.users.history');
+    Route::get('/reports/sales/sales', [SaleReportsController::class, 'sales'])->name('reports.sales.sales');
+
+
+
 });

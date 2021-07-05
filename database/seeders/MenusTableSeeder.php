@@ -73,7 +73,7 @@ class MenusTableSeeder extends Seeder
                 'order' => 2,
                 'icon' => 'heroicon-s-currency-dollar',
                 'route' => null,
-                'route-group' => 'reports.sells'
+                'route-group' => 'reports.sales'
             ],
             [
                 'menu_id' => 2,
@@ -128,7 +128,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Nuevos usuarios',
                 'order' => 0,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.users.new',
                 'route-group' => null
             ],
             [
@@ -136,7 +136,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Acumulado',
                 'order' => 1,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.users.history',
                 'route-group' => null
             ],
             [
@@ -192,7 +192,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Detallado',
                 'order' => 0,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.sales.detail',
                 'route-group' => null
             ],
             [
@@ -200,7 +200,15 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Acumulado',
                 'order' => 1,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.sales.history',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 8,
+                'name' => 'Ventas realizadas',
+                'order' => 2,
+                'icon' => null,
+                'route' => 'reports.sales.sales',
                 'route-group' => null
             ],
         ];
