@@ -17,7 +17,7 @@ class CreateStoresTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('business_name'); //Razon social
-            $table->string('system', 100); //Sistema usado
+            $table->string('system', 100)->nullable(); //Sistema usado
             $table->string('tokencash_account', 10)->unique(); //Numero de telefono para la cuenta en tokencash
             $table->unsignedBigInteger('tokencash_node')->unique(); //ID del nodo del establecimiento en el dbm de tokencash
             $table->unsignedBigInteger('subgroup_id');

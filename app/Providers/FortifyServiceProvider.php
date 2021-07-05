@@ -55,6 +55,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if($role)
                 {
                     $request->session()->put('user_role', $role->id);
+                    // Obtener los subgrupos y establecimientos del usuario
                     return $user;
                 }
             }

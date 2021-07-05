@@ -15,16 +15,27 @@
                     <div class="overflow-hidden rounded-md shadow">
                         <div class="px-4 py-5 bg-white sm:p-6">
                             <div class="grid grid-cols-6 gap-4">
-                                <div class="col-span-6 sm:col-span-4">
+                                <div class="col-span-6">
                                     <x-forms.label for="store.name" value="Nombre" />
-                                    <x-forms.input wire:model.lazy='store.name' type="text" name="name" id="name" />
+                                    <x-forms.input wire:model='store.name' type="text" name="name" id="name" />
                                     @error('store.name') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
                                 </div>
 
-                                <div class="col-span-6 sm:col-span-2">
-                                    <x-forms.label for="store.tokencash_nodo" value="Nodo Tokencash" />
-                                    <x-forms.input wire:model.lazy='store.tokencash_nodo' type="text" name="nodo" id="nodo" />
-                                    @error('store.tokencash_nodo') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
+                                <div class="col-span-6">
+                                    <x-forms.label for="store.business_name" value="Razón social" />
+                                    <x-forms.input wire:model='store.business_name' type="text" name="business_name" id="business_name" />
+                                    @error('store.business_name') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
+                                </div>
+
+                                <div class="col-span-2 sm:col-span-3">
+                                    <x-forms.label for="store.tokencash_node" value="Nodo Tokencash" />
+                                    <x-forms.input wire:model.lazy='store.tokencash_node' type="text" name="node" id="node" />
+                                    @error('store.tokencash_node') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
+                                </div>
+                                <div class="col-span-4 sm:col-span-3">
+                                    <x-forms.label for="store.tokencash_account" value="Cuenta Tokencash" />
+                                    <x-forms.input wire:model.lazy='store.tokencash_account' type="text" name="account" id="account" />
+                                    @error('store.tokencash_account') <x-forms.input-error>{{ $message }}</x-forms.input-error> @enderror
                                 </div>
 
                                 <div class="col-span-6 sm:col-span-3">

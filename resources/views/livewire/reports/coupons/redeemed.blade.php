@@ -1,3 +1,4 @@
+
 <div class="flex flex-col">
   <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -23,10 +24,10 @@
                     {{ $dia }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon['CUPONES'] }}
+                    {{ $coupon['CANJES'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon['MONTO_IMPRESO'] }}
+                    {{ $coupon['MONTO_CANJE'] }}
                 </td>
             </tr>
             @empty
@@ -38,12 +39,12 @@
             @endforelse
             @if ($coupons['TOTALS'])
             <tr>
-              <td>&nbsp;</td>
+              <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"><span class="font-semibold text-gray-darker">Totales</span></td>
               <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                <span class="font-semibold text-gray-darker">Cupones totales: {{ $coupons['TOTALS']['printed_coupons']}}</span>
+                <span class="font-semibold text-gray-darker">Canjes totales: {{ $coupons['TOTALS']['redeemed_coupons']}}</span>
               </td>
               <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                <span class="font-semibold text-gray-darker">Monto total: ${{ number_format($coupons['TOTALS']['printed_ammount'], 2) }}</span>
+                <span class="font-semibold text-gray-darker">Monto total: ${{ number_format($coupons['TOTALS']['redeemed_ammount'], 2) }}</span>
               </td>
             </tr>
             @endif

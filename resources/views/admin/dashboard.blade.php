@@ -4,6 +4,7 @@
     </x-slot>
     <x-slot name="title">Dashboard</x-slot>
     <div>
+        {{ session()->getId() }}
         <livewire:dashboard/>
     </div>
 </x-admin-layout>

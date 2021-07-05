@@ -53,4 +53,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     //Reportes
     Route::get('/reports/coupons/printed', [CouponReportsController::class, 'printed'])->name('reports.coupons.printed');
+    Route::get('/reports/coupons/redeemed', [CouponReportsController::class, 'redeemed'])->name('reports.coupons.redeemed');
+    Route::get('/reports/coupons/last-printed', [CouponReportsController::class, 'lastPrinted'])->name('reports.coupons.last-printed');
+    Route::get('/reports/coupons/printed-redeemed', [CouponReportsController::class, 'printedRedeemed'])->name('reports.coupons.printed-redeemed');
+    Route::get('/reports/coupons/detail-redeemed', [CouponReportsController::class, 'detailRedeemed'])->name('reports.coupons.detail-redeemed');
+    Route::get('/reports/coupons/printed-redeemed-history', [CouponReportsController::class, 'printedRedeemedHistory'])->name('reports.coupons.printed-redeemed-history');
 });

@@ -12,6 +12,7 @@ class Store extends Component
 {
     public Group $group;
     public StoreModel $store;
+
     public $states;
     public $state;
     public $municipalities = [];
@@ -19,7 +20,9 @@ class Store extends Component
     protected function rules() {
         return [
             'store.name' => 'required|unique:stores,name',
-            'store.tokencash_nodo' => 'required|unique:stores,tokencash_nodo',
+            'store.tokencash_node' => 'required|unique:stores,tokencash_node',
+            'store.tokencash_account' => 'required|unique:stores,tokencash_account',
+            'store.business_name' => 'required',
             'store.municipality_id' => 'nullable|numeric',
             'store.street' => 'nullable|string',
             'store.postal_code' => 'nullable|digits:5',
@@ -32,7 +35,9 @@ class Store extends Component
         'store.name.required' => 'El nombre del establecimiento es requerido',
         'store.name.unique' => 'El establecimiento ya existe',
         'store.contact_phone.digits' => 'El campo solo puede contener 10 números',
-        'store.tokencash_nodo.unique' => 'Este nodo ya se registro en otro establecimiento'
+        'store.tokencash_node.unique' => 'Este nodo ya se registro en otro establecimiento',
+        'store.tokencash_node.unique' => 'Esta cuenta ya se registro en otro establecimiento',
+        'store.business_name.required' => 'La razón social es requerida'
     ];
 
 

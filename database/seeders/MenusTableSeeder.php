@@ -152,31 +152,39 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Canjeados',
                 'order' => 1,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.coupons.redeemed',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 7,
+                'name' => 'Detallado de cupones canjeados',
+                'order' => 2,
+                'icon' => null,
+                'route' => 'reports.coupons.detail-redeemed',
                 'route-group' => null
             ],
             [
                 'menu_id' => 7,
                 'name' => 'Último cupón',
-                'order' => 2,
+                'order' => 3,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.coupons.last-printed',
                 'route-group' => null
             ],
             [
                 'menu_id' => 7,
                 'name' => 'Impresos vs Canjeados',
-                'order' => 3,
+                'order' => 4,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.coupons.printed-redeemed',
                 'route-group' => null
             ],
             [
                 'menu_id' => 7,
                 'name' => 'Acumulado canjeados e impresos',
-                'order' => 4,
+                'order' => 5,
                 'icon' => null,
-                'route' => null,
+                'route' => 'reports.coupons.printed-redeemed-history',
                 'route-group' => null
             ],
             [
