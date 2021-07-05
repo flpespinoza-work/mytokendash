@@ -10,7 +10,7 @@
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
             </p>
         </div>
-        <div class="max-w-sm mx-auto mt-4">
+        <div class="w-full max-w-sm mx-auto mt-4">
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="my-3">

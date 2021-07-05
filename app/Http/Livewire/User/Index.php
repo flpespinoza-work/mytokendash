@@ -25,6 +25,7 @@ class Index extends Component
     public function render()
     {
         $users = User::search($this->search)
+                ->with('roles')
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
                 ->Paginate($this->perPage);
 

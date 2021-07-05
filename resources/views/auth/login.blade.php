@@ -11,7 +11,7 @@
                 @csrf
                 <div class="my-3">
                     <x-forms.label for="email" value="{{ __('Email') }}"/>
-                    <x-forms.input value="{{ old('email') }}" type="text" id="email" name="email" class="w-full p-2 block mt-2 {{ $errors->has('email') ? 'border-red' : '' }}" placeholder="example@email.com"/>
+                    <x-forms.input value="{{ old('email') }}" type="email" id="email" name="email" class="w-full p-2 block mt-2 {{ $errors->has('email') ? 'border-red' : '' }}" placeholder="example@email.com"/>
                     @if($errors->has('email'))
                         <span class="text-red text-xs font-semibold mt-0.5">
                             {{ $errors->first('email') }}
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="my-5">
-                    <x-forms.button class="justify-center w-full h-10">{{ __('Log in') }}</x-forms.button>
+                    <x-forms.button class="justify-center w-full h-10 capitalize">{{ __('Log in') }}</x-forms.button>
                 </div>
 
                 @if (Route::has('password.request'))
