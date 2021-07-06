@@ -77,10 +77,18 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 2,
-                'name' => 'Saldo disponible',
+                'name' => 'Globales',
                 'order' => 3,
-                'icon' => 'heroicon-s-credit-card',
+                'icon' => 'heroicon-s-globe',
                 'route' => null,
+                'route-group' => 'reports.globals'
+            ],
+            [
+                'menu_id' => 2,
+                'name' => 'Saldo disponible',
+                'order' => 4,
+                'icon' => 'heroicon-s-credit-card',
+                'route' => 'reports.balance',
                 'route-group' => null
             ],
             [
@@ -209,6 +217,22 @@ class MenusTableSeeder extends Seeder
                 'order' => 2,
                 'icon' => null,
                 'route' => 'reports.sales.sales',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 9,
+                'name' => 'Canjes diarios',
+                'order' => 0,
+                'icon' => null,
+                'route' => 'reports.globals.redeems',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 9,
+                'name' => 'Altas diarias',
+                'order' => 1,
+                'icon' => null,
+                'route' => 'reports.globals.registers',
                 'route-group' => null
             ],
         ];

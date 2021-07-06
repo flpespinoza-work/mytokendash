@@ -66,7 +66,7 @@ trait Coupons
         $reportId = md5(session()->getId());
         $couponsArr = [];
 
-        $couponsArr = cache()->remember('reporte-ultimo-cupon-' . $reportId, 60*1, function() use($extDb, $presupuestos){
+        $couponsArr = cache()->remember('reporte-ultimo-cupon-' . $reportId, 60*5, function() use($extDb, $presupuestos){
             $tmpRes = [];
             $extDb->table('dat_cupones')
             ->select(DB::raw('MAX(DATE_FORMAT(CUP_TS, "%Y/%m/%d %H:%i:%s")) DIA, CUP_GIFTCARD, CUP_PRESUPUESTO'))
@@ -85,6 +85,7 @@ trait Coupons
             });
             return $tmpRes;
         });
+        dd($couponsArr);
         return $couponsArr;
     }
 

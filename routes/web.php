@@ -8,7 +8,9 @@ use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\ResponseController;
 use App\Http\Controllers\Admin\CouponReportsController;
 use App\Http\Controllers\Admin\UserReportsController;
-
+use App\Http\Controllers\Admin\SaleReportsController;
+use App\Http\Controllers\Admin\BalanceReportsController;
+use App\Http\Controllers\Admin\GlobalReportsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,9 +67,13 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/reports/users/history', [UserReportsController::class, 'history'])->name('reports.users.history');
 
     Route::get('/reports/sales/sales-detail', [SaleReportsController::class, 'detailSales'])->name('reports.sales.detail');
-    Route::get('/reports/sales/sales-history', [SaleReportsController::class, 'historySales'])->name('reports.users.history');
+    Route::get('/reports/sales/sales-history', [SaleReportsController::class, 'historySales'])->name('reports.sales.history');
     Route::get('/reports/sales/sales', [SaleReportsController::class, 'sales'])->name('reports.sales.sales');
 
+    Route::get('/reports/balance', [BalanceReportsController::class, 'balance'])->name('reports.balance');
+
+    Route::get('/reports/globals.redeems', [GlobalReportsController::class, 'redeems'])->name('reports.globals.redeems');
+    Route::get('/reports/globals.registers', [GlobalReportsController::class, 'registers'])->name('reports.globals.registers');
 
 
 });

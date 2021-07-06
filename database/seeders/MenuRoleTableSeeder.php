@@ -14,9 +14,11 @@ class MenuRoleTableSeeder extends Seeder
      */
     public function run()
     {
+        //Obtener numero de items de menu registrados
+        $menuItems = DB::table('menus')->count('id');
         for($i = 1; $i <= 3; $i++)
         {
-            for($x=1; $x<=23; $x++)
+            for($x=1; $x<=$menuItems; $x++)
             {
                 if($i == 1)
                 {
