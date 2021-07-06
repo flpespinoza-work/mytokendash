@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-4 gap-2 mt-6">
+        <!--div class="grid grid-cols-4 gap-2 mt-6">
             @forelse ($groups as $group)
                 <div class="col-span-4 p-3 bg-white border border-gray-100 rounded-md md:col-span-2 xl:col-span-1">
                     <div class="flex flex-col space-x-2">
@@ -39,7 +39,7 @@
             @empty
 
             @endforelse
-        </div>
+        </div-->
 
         <div class="flex flex-col mt-10">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

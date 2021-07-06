@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserReportsController;
 use App\Http\Controllers\Admin\SaleReportsController;
 use App\Http\Controllers\Admin\BalanceReportsController;
 use App\Http\Controllers\Admin\GlobalReportsController;
+use App\Http\Controllers\Admin\ScoreController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,6 +55,9 @@ Route::group(['middleware' => ['auth']], function(){
 
     //Respuestas
     Route::get('/responses', [ResponseController::class, 'index'])->name('responses.index');
+
+    //Calificaciones
+    Route::get('/scores', [ScoreController::class, 'scores'])->name('scores');
 
     //Reportes
     Route::get('/reports/coupons/printed', [CouponReportsController::class, 'printed'])->name('reports.coupons.printed');

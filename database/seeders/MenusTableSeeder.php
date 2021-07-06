@@ -52,7 +52,15 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 2,
+                'menu_id' => 1,
+                'name' => 'Calificaciones',
+                'order' => 2,
+                'icon' => 'heroicon-s-star',
+                'route' => 'scores',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 2, //7
                 'name' => 'Usuarios',
                 'order' => 0,
                 'icon' => 'heroicon-s-users',
@@ -61,7 +69,7 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 2,
-                'name' => 'Cupones',
+                'name' => 'Cupones', //8
                 'order' => 1,
                 'icon' => 'heroicon-s-tag',
                 'route' => null,
@@ -69,7 +77,7 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 2,
-                'name' => 'Ventas',
+                'name' => 'Ventas', //9
                 'order' => 2,
                 'icon' => 'heroicon-s-currency-dollar',
                 'route' => null,
@@ -77,7 +85,7 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 2,
-                'name' => 'Globales',
+                'name' => 'Globales', //10
                 'order' => 3,
                 'icon' => 'heroicon-s-globe',
                 'route' => null,
@@ -85,7 +93,7 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 2,
-                'name' => 'Saldo disponible',
+                'name' => 'Saldo disponible', //11
                 'order' => 4,
                 'icon' => 'heroicon-s-credit-card',
                 'route' => 'reports.balance',
@@ -132,7 +140,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 6,
+                'menu_id' => 7,
                 'name' => 'Nuevos usuarios',
                 'order' => 0,
                 'icon' => null,
@@ -140,7 +148,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 6,
+                'menu_id' => 7,
                 'name' => 'Acumulado',
                 'order' => 1,
                 'icon' => null,
@@ -148,7 +156,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Impresos',
                 'order' => 0,
                 'icon' => null,
@@ -156,7 +164,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Canjeados',
                 'order' => 1,
                 'icon' => null,
@@ -164,7 +172,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Detallado de cupones canjeados',
                 'order' => 2,
                 'icon' => null,
@@ -172,7 +180,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Último cupón',
                 'order' => 3,
                 'icon' => null,
@@ -180,7 +188,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Impresos vs Canjeados',
                 'order' => 4,
                 'icon' => null,
@@ -188,7 +196,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 7,
+                'menu_id' => 8,
                 'name' => 'Acumulado canjeados e impresos',
                 'order' => 5,
                 'icon' => null,
@@ -196,7 +204,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 8,
+                'menu_id' => 9,
                 'name' => 'Detallado',
                 'order' => 0,
                 'icon' => null,
@@ -204,7 +212,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 8,
+                'menu_id' => 9,
                 'name' => 'Acumulado',
                 'order' => 1,
                 'icon' => null,
@@ -212,7 +220,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 8,
+                'menu_id' => 9,
                 'name' => 'Ventas realizadas',
                 'order' => 2,
                 'icon' => null,
@@ -220,7 +228,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 9,
+                'menu_id' => 10,
                 'name' => 'Canjes diarios',
                 'order' => 0,
                 'icon' => null,
@@ -228,7 +236,7 @@ class MenusTableSeeder extends Seeder
                 'route-group' => null
             ],
             [
-                'menu_id' => 9,
+                'menu_id' => 10,
                 'name' => 'Altas diarias',
                 'order' => 1,
                 'icon' => null,
