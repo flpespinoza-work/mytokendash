@@ -221,7 +221,7 @@ trait Coupons
     {
         $extDb = DB::connection('tokencash');
         $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-05 23:59:59';
+        $finalDate = '2021-07-07 23:59:59';
         $presupuestos = ['supra'];
         $reportId = md5(session()->getId() . $initialDate . $finalDate);
         $couponsArr = [];
