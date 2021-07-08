@@ -8,8 +8,8 @@ trait Scores
     function getScores()
     {
         $scores = [];
-        $initialDate = '2021-07-01';
-        $finalDate = '2021-07-06';
+        $initialDate = '2021-06-01';
+        $finalDate = '2021-06-09';
         if($finalDate < '2021-06-10')
         {
             $scores = $this->getOldScores();
@@ -23,6 +23,8 @@ trait Scores
 
         }
 
+        $scores = $this->orderScores($scores, $finalDate);
+        dd($scores);
         return $scores;
     }
 
@@ -36,9 +38,8 @@ trait Scores
         $presupuestos = ['PRESUPUESTO_supra'];
         $reportId = md5(session()->getId());
 
-        $commentsArr = cache()->remember('lista-comentarios-' . $reportId, 60*1, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-nuevos-' . $reportId, 60*1, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
-            $totalComments = 0;
             $extDb->table('dat_comentarios')
             ->join('doc_dbm_ventas', 'doc_dbm_ventas.VEN_ID', '=', 'dat_comentarios.COM_VENTA_ID')
             ->join('cat_dbm_nodos_usuarios', 'dat_comentarios.COM_USUARIO_ID', '=', 'cat_dbm_nodos_usuarios.NOD_USU_ID')
@@ -52,10 +53,9 @@ trait Scores
             ->whereBetween('VEN_FECHA_HORA', [$initialDate, $finalDate])
             ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
             ->orderBy('VEN_FECHA_HORA', 'desc')
-            ->chunk(10, function($comments) use(&$tmpRes, &$totalComments) {
+            ->chunk(10, function($comments) use(&$tmpRes) {
                 foreach($comments as $comment)
                 {
-                    $totalComments += 1;
                     $tmpRes['COMMENTS'][] = [
                         'TIPO' => 'NUEVO',
                         'FECHA_COMENTARIO' => $comment->COM_FECHA_HORA,
@@ -70,11 +70,8 @@ trait Scores
                     ];
                 }
             });
-            $tmpRes['TOTALS'] = $totalComments;
             return $tmpRes;
         });
-
-        dd($commentsArr);
 
         return $commentsArr;
     }
@@ -84,41 +81,133 @@ trait Scores
         $extDb = DB::connection('tokencash');
         $commentsArr = [];
         $initialDate = '2021-06-01 00:00:00';
-        $finalDate = '2021-06-07 23:59:59';
+        $finalDate = '2021-06-09 23:59:59';
         $bolsas = ['GIFTCARD_SUPRA'];
-        $presupuestos = [];
+        $presupuestos = ['PRESUPUESTO_supra'];
         $reportId = md5(session()->getId());
 
-        $commentsArr = cache()->remember('reporte-usuarios-' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-anterior-' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
-            $totalComments = 0;
             $extDb->table('doc_dbm_ventas')
-            ->join('cat_dbm_nodos_usuarios', 'doc_dbm_ventas.VEN_NODO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
-            ->select(DB::raw('VEN_TS, VEN_NODO, VEN_DESTINO, VEN_ADICIONAL'))
+            ->join('cat_dbm_nodos_usuarios', 'doc_dbm_ventas.VEN_DESTINO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
+            ->select(DB::raw('VEN_FECHA_HORA, VEN_TS, NOD_USU_NODO, VEN_DESTINO, VEN_ADICIONAL'))
             ->where(function($query) use($bolsas, $presupuestos){
                 $query->whereIn('VEN_BOLSA', $bolsas)
                       ->orWhereIn('VEN_BOLSA', $presupuestos);
             })
-            ->whereBetween('VEN_TS', [$initialDate, $finalDate])
+            ->where(function($query){
+                $query->where('VEN_ADICIONAL', 'like', '%CALIFICACION%')
+                      ->orWhere('VEN_ADICIONAL', 'like', '%COMENTARIOS%');
+            })
+            ->whereBetween('VEN_FECHA_HORA', [$initialDate, $finalDate])
             ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
-            ->orderBy('VEN_FEHCA_HORA')
-            ->chunk(10, function($comments) use(&$tmpRes, &$totalComments) {
+            ->orderBy('VEN_FECHA_HORA', 'desc')
+            ->chunk(10, function($comments) use($extDb, &$tmpRes) {
                 foreach($comments as $comment)
                 {
-                    $totalComments += 1;
+                    $tipoVta = '';
+                    $vendedor = '';
+
+                    //Tratar JSON si esta mal estructurado
+                    $comment->VEN_ADICIONAL = str_replace('REFERENCIA":"', 'REFERENCIA": [', $comment->VEN_ADICIONAL);
+                    $comment->VEN_ADICIONAL = str_replace('","RECOMPENSA_PERMANENTE', '],"RECOMPENSA_PERMANENTE', $comment->VEN_ADICIONAL);
+                    $comment->VEN_ADICIONAL = str_replace('\\', '', $comment->VEN_ADICIONAL);
+                    $comment->VEN_ADICIONAL = utf8_encode($comment->VEN_ADICIONAL);
+
+                    //Convertir el adicional a array y obtener el tipo
+                    $m_adicional = json_decode($comment->VEN_ADICIONAL, true);
+
+                    if(isset($m_adicional['CUPON_ID']))
+                    {
+                        $tipoVta = 'CANJE';
+                        $q = $extDb->table('dat_cupones_adicional')->select('CUP_ADI_NAME')->where('CUP_ADI_CUPON', $m_adicional['CUPON_ID'])->first();
+                        $vendedor = $q->CUP_ADI_NAME;
+                    }
+                    elseif(isset($m_adicional['TOKEN']))
+                    {
+                        $tipoVta = 'PAGO';
+                        $q = $extDb->table('dat_token_adicional')->select('TOK_ADI_NAME')->join('doc_tokens', 'dat_token_adicional.TOK_ADI_TOKEN', '=', 'doc_tokens.TOK_ID')->where('TOK_TOKEN', $m_adicional['TOKEN'])->first();
+                        $vendedor = $q->TOK_ADI_NAME;
+                    }
+
                     $tmpRes['COMMENTS'][] = [
-                        ''
+                        'TIPO' => 'ANTERIOR',
+                        'FECHA_VENTA' => $comment->VEN_FECHA_HORA,
+                        'FECHA_COMENTARIO' => $comment->VEN_FECHA_HORA,
+                        'USUARIO' =>$comment-> NOD_USU_NODO,
+                        'ESTABLECIMIENTO' => $comment->VEN_DESTINO,
+                        'TIPO_VENTA' => $tipoVta,
+                        'COMENTARIO' => (isset($m_adicional['COMENTARIOS']))? $m_adicional['COMENTARIOS'] : '',
+                        'CALIFICACION' => (isset($m_adicional['CALIFICACION']))? $m_adicional['CALIFICACION'] : '',
+                        'VENDEDOR' => $vendedor,
+                        'ADICIONAL' => $comment->VEN_ADICIONAL
                     ];
                 }
             });
-            $tmpRes['TOTALS'] = $totalComments;
             return $tmpRes;
         });
+
         return $commentsArr;
     }
 
-    function orderScores()
+    function orderScores($scoresArr, $finalDate)
     {
+        //Ordenar por calificacion
+        usort($scoresArr['COMMENTS'], function($a, $b){
+            return $a['CALIFICACION'] > $b['CALIFICACION'];
+        });
 
+        //Puntuacion para calificaciones
+        $a_calificacionValor =
+        [
+            "score_5" => 5,
+            "score_4" => ($finalDate <= '2019-10-08') ? 2.5 : 3,
+            "score_3" => 1,
+            "score_2" => 0.5,
+            "score_1" => -8
+        ];
+        $commentRow = 0;
+        $commentsMax = 10000;
+        $stars = array
+        (
+			"stars_1" => 0,
+			"stars_2" => 0,
+			"stars_3" => 0,
+			"stars_4" => 0,
+			"stars_5" => 0,
+			"stars_N" => 0,
+			"totalScores" => 0,
+			"totalStars" => 0,
+			"count5" => 0,
+			"count4" => 0,
+			"count3" => 0,
+			"count2" => 0,
+			"count1" => 0,
+			"count0" => 0,
+			"countX" => 0
+		);
+
+        //Recorrer comentarios y obtener totales
+        foreach($scoresArr['COMMENTS'] as $comment)
+        {
+            $commentRow++;
+            if(!$comment['CALIFICACION'] && (!empty($comment['COMENTARIO'] && $commentRow < $commentsMax)))
+            {
+                $stars['stars_N']++;
+                $stars['count0']++;
+                $stars['comments']['0'][] = $comment;
+            }
+            else
+            {
+                $stars['totalScores']++;
+                $stars['totalStars'] += $a_calificacionValor['score_' . $comment['CALIFICACION']];
+                $stars['stars_' . $comment['CALIFICACION']];
+                $stars['count' . $comment['CALIFICACION']];
+                $stars['comments']["{$comment['CALIFICACION']}"][] = $comment;
+            }
+
+        }
+
+        return $stars;
     }
 }
