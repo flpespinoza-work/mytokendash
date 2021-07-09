@@ -1,7 +1,14 @@
 <div>
-    <div class="flex flex-col w-full pb-10 space-y-4">
-        <div class="flex items-center">
+    <div class="flex flex-col w-full pb-10">
+        <div class="flex items-center space-x-4">
+            <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
+                <h5 class="text-sm font-medium text-gray-500">Tu calificación: </h5>
+                <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-6xl">{{ number_format($scores['scorePromedio']) }} %</span>
+            </div>
+        </div>
 
+        <div class="w-3/4 h-96">
+            <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model="$columnChartModel"/>
         </div>
 
         <div class="flex flex-col mt-10">
@@ -30,7 +37,7 @@
                                         @endif
                                     </div>
                                     <p class="text-xs">Atendió: <span class="text-xxs">{{ $comment['VENDEDOR'] }}</span></p>
-                                    <p class="text-sm">{{ $comment['COMENTARIO'] }}</p>
+                                    <p class="text-xs sm:text-sm md:text-base">{{ $comment['COMENTARIO'] }}</p>
                                 </div>
                             @endforeach
                         </div>
@@ -40,3 +47,6 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    @livewireChartsScripts
+@endpush
