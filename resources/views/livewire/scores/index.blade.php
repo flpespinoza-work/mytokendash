@@ -1,9 +1,13 @@
 <div>
     <div class="flex flex-col w-full pb-10">
         <div class="flex items-center space-x-4">
+        <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
+                <h5 class="text-sm font-medium text-gray-500">Calificaciones Totales </h5>
+                <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-5xl">{{ $scores['totalScores'] }}</span>
+            </div>
             <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
                 <h5 class="text-sm font-medium text-gray-500">Tu calificación: </h5>
-                <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-6xl">{{ number_format($scores['scorePromedio']) }} %</span>
+                <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-5xl">{{ $scores['scorePromedio'] }} %</span>
             </div>
         </div>
 
