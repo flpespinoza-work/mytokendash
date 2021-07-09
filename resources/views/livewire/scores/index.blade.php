@@ -1,6 +1,6 @@
 <div>
     <div class="flex flex-col w-full pb-10">
-        <div class="flex items-center space-x-4">
+        <div class="items-center space-y-3 sm:space-y-0 sm:space-x-4 sm:flex">
             <div class="w-full p-4 bg-white border border-gray-100 rounded-md shadow-sm sm:w-1/2 md:w-64">
                 <h5 class="text-sm font-medium text-gray-500">Calificaciones Totales </h5>
                 <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-5xl">{{ $scores['totalScores'] }}</span>
