@@ -8,37 +8,43 @@ trait Scores
     function getScores()
     {
         $scores = [];
-        $initialDate = '2021-06-01';
-        $finalDate = '2021-06-09';
+        $initialDate = '2021-07-01';
+        $finalDate = '2021-07-09';
+        $bolsas = ['GIFTCARD_SUPRA'];
+        $presupuestos = ['PRESUPUESTO_supra'];
+
         if($finalDate < '2021-06-10')
         {
-            $scores = $this->getOldScores();
+            $scores = $this->getOldScores($bolsas, $presupuestos, $initialDate . ' 00:00:00', $finalDate . ' 23:59:59');
         }
         elseif($initialDate > '2021-06-10')
         {
-            $scores = $this->getNewScores();
+            $scores = $this->getNewScores($bolsas, $presupuestos, $initialDate . ' 00:00:00', $finalDate . ' 23:59:59');
         }
         else
         {
+			$initial_a = $initialDate . ' 00:00:00';
+			$final_a = '2021-06-10 11:23:04';
+			$initial_b = '2021-06-10 11:23:05';
+			$final_b = $finalDate . ' 23:59:59';
+			$scores_a = $this->getOldScores($bolsas, $presupuestos, $initial_a, $final_a);
+			$scores_b = $this->getNewScores($bolsas, $presupuestos, $initial_b, $final_b);
 
+			//Unir los dos resultados
+			$scores = array_merge($scores_a, $scores_b);
         }
-
         $scores = $this->orderScores($scores, $finalDate);
-        dd($scores);
+
         return $scores;
     }
 
-    function getNewScores()
+    function getNewScores($bolsas, $presupuestos, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
         $commentsArr = [];
-        $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-07 23:59:59';
-        $bolsas = ['GIFTCARD_SUPRA'];
-        $presupuestos = ['PRESUPUESTO_supra'];
         $reportId = md5(session()->getId());
 
-        $commentsArr = cache()->remember('lista-comentarios-nuevos-' . $reportId, 60*1, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-nuevos-' . $reportId, 60*60*3, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
             $extDb->table('dat_comentarios')
             ->join('doc_dbm_ventas', 'doc_dbm_ventas.VEN_ID', '=', 'dat_comentarios.COM_VENTA_ID')
@@ -63,7 +69,7 @@ trait Scores
                         'USUARIO' => $comment->NOD_USU_NODO,
                         'ESTABLECIMIENTO' => $comment->COM_ESTABLECIMIENTO_ID,
                         'TIPO_VENTA' => $comment->COM_TIPO,
-                        'COMENTARIO' => $comment->COM_COMENTARIO,
+                        'COMENTARIO' => trim($comment->COM_COMENTARIO),
                         'CALIFICACION' => $comment->COM_CALIFICACION,
                         'VENDEDOR' => $comment->COM_VENDEDOR,
                         'ADICIONAL' => $comment->COM_ADICIONAL_ID
@@ -71,22 +77,18 @@ trait Scores
                 }
             });
             return $tmpRes;
-        });
 
+        });
         return $commentsArr;
     }
 
-    function getOldScores()
+    function getOldScores($bolsas, $presupuestos, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
         $commentsArr = [];
-        $initialDate = '2021-06-01 00:00:00';
-        $finalDate = '2021-06-09 23:59:59';
-        $bolsas = ['GIFTCARD_SUPRA'];
-        $presupuestos = ['PRESUPUESTO_supra'];
         $reportId = md5(session()->getId());
 
-        $commentsArr = cache()->remember('lista-comentarios-anterior-' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-anterior-' . $reportId, 60*60*3, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
             $extDb->table('doc_dbm_ventas')
             ->join('cat_dbm_nodos_usuarios', 'doc_dbm_ventas.VEN_DESTINO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
@@ -137,7 +139,7 @@ trait Scores
                         'USUARIO' =>$comment-> NOD_USU_NODO,
                         'ESTABLECIMIENTO' => $comment->VEN_DESTINO,
                         'TIPO_VENTA' => $tipoVta,
-                        'COMENTARIO' => (isset($m_adicional['COMENTARIOS']))? $m_adicional['COMENTARIOS'] : '',
+                        'COMENTARIO' => (isset($m_adicional['COMENTARIOS']))? trim($m_adicional['COMENTARIOS']) : '',
                         'CALIFICACION' => (isset($m_adicional['CALIFICACION']))? $m_adicional['CALIFICACION'] : '',
                         'VENDEDOR' => $vendedor,
                         'ADICIONAL' => $comment->VEN_ADICIONAL
@@ -145,6 +147,7 @@ trait Scores
                 }
             });
             return $tmpRes;
+
         });
 
         return $commentsArr;
@@ -157,6 +160,11 @@ trait Scores
             return $a['CALIFICACION'] > $b['CALIFICACION'];
         });
 
+        //Ordernar comentarios por fecha
+        usort($scoresArr['COMMENTS'], function($a, $b){
+            return $a['FECHA_COMENTARIO'] < $b['FECHA_COMENTARIO'];
+        });
+
         //Puntuacion para calificaciones
         $a_calificacionValor =
         [
@@ -166,6 +174,7 @@ trait Scores
             "score_2" => 0.5,
             "score_1" => -8
         ];
+
         $commentRow = 0;
         $commentsMax = 10000;
         $stars = array
@@ -191,22 +200,40 @@ trait Scores
         foreach($scoresArr['COMMENTS'] as $comment)
         {
             $commentRow++;
-            if(!$comment['CALIFICACION'] && (!empty($comment['COMENTARIO'] && $commentRow < $commentsMax)))
+            if($comment['CALIFICACION'] >= 1)
+            {
+                $stars['totalScores']++;
+                $stars['totalStars'] += $a_calificacionValor["score_{$comment['CALIFICACION']}"];
+                $stars['stars_' . $comment['CALIFICACION']]++;
+
+                if(isset($comment['COMENTARIO']) && !empty($comment['COMENTARIO']))
+                {
+                    $stars['count' . $comment['CALIFICACION']]++;
+                    if(!str_contains('Escribe tus comentarios aquí', $comment['COMENTARIO']))
+                        $stars['comments'][$comment['CALIFICACION']][] = $comment;
+                }
+            }
+            elseif((isset($comment['COMENTARIO']) && !empty($comment['COMENTARIO'])) && $commentRow < $commentsMax)
             {
                 $stars['stars_N']++;
                 $stars['count0']++;
-                $stars['comments']['0'][] = $comment;
-            }
-            else
-            {
-                $stars['totalScores']++;
-                $stars['totalStars'] += $a_calificacionValor['score_' . $comment['CALIFICACION']];
-                $stars['stars_' . $comment['CALIFICACION']];
-                $stars['count' . $comment['CALIFICACION']];
-                $stars['comments']["{$comment['CALIFICACION']}"][] = $comment;
+                if(!str_contains('Escribe tus comentarios aquí', $comment['COMENTARIO']))
+                    $stars['comments']['0'][] = $comment;
             }
 
         }
+
+        if($stars['totalStars'] > 0)
+        {
+            $stars['maxScore'] = $stars['totalScores'] * 5;
+            $scorePromedio = ($stars['totalStars'] / $stars['maxScore']) * 100;
+            $stars['scorePromedio'] = number_format($scorePromedio, 2);
+        }
+
+        //Ordenar comantarios en stars
+        uksort($stars['comments'], function($a, $b){
+            return $a < $b;
+        });
 
         return $stars;
     }
