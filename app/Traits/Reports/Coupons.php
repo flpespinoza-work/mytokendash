@@ -99,7 +99,6 @@ trait Coupons
             return $result;
         });
 
-
         return $couponsArr;
     }
 
@@ -226,7 +225,7 @@ trait Coupons
         $reportId = md5(session()->getId() . $initialDate . $finalDate);
         $couponsArr = [];
 
-        $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, 60*1, function() use($extDb, $initialDate, $finalDate, $presupuestos){
+        $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $presupuestos){
             $tmpRes = [];
             $totales = [ 'printed_coupons' => 0, 'printed_ammount' => 0];
             $extDb->table('dat_cupones')

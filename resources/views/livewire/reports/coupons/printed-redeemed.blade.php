@@ -10,6 +10,12 @@
     </div>
   </div>
 
+  <div class="items-center w-full mt-10 md:flex md:space-x-8">
+    <div class="w-full h-56 p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:h-96">
+        <livewire:livewire-line-chart :line-chart-model="$lineChartModel"/>
+    </div>
+  </div>
+
   <div class="mt-6 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
       <h5 class="text-sm font-medium text-gray-500 md:text-base">Detallado de cupones impresos vs canjeados</h5>
@@ -41,10 +47,14 @@
                     {{ $coupon['CUPONES'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon['CANJES'] }}
+                     {{ (isset($coupon['CANJES'])) ? $coupon['CANJES'] : 0 }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                    @if(isset($coupon['CANJES']))
                     {{ round($coupon['CANJES'] * 100 / $coupon['CUPONES'], 2) }} %
+                    @else
+                    0
+                    @endif
                 </td>
             </tr>
             @empty
@@ -91,10 +101,14 @@
                     {{ $coupon['MONTO_IMPRESO'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $coupon['MONTO_CANJE'] }}
+                    {{ (isset($coupon['MONTO_CANJE'])) ? $coupon['MONTO_CANJE'] : 0 }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                    @if(isset($coupon['MONTO_CANJE']))
                     {{ round($coupon['MONTO_CANJE'] * 100 / $coupon['MONTO_IMPRESO'], 2) }} %
+                    @else
+                    0
+                    @endif
                 </td>
             </tr>
             @empty
@@ -110,4 +124,6 @@
     </div>
   </div>
 </div>
-
+@push('scripts')
+    @livewireChartsScripts
+@endpush
