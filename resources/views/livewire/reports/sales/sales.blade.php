@@ -7,7 +7,14 @@
         </span>
     </div>
   </div>
-  <div class="mt-3 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+
+  <div class="items-center w-full mt-10 md:flex md:space-x-8">
+    <div class="w-full h-56 p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:h-96">
+        <livewire:livewire-area-chart :area-chart-model="$areaChartModel"/>
+    </div>
+  </div>
+
+  <div class="mt-10 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
       <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
@@ -31,7 +38,7 @@
             @forelse ($sales['VENTAS'] as $i => $venta)
             <tr>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $i+1 }}
+                    {{ $i+=1 }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                     {{ $venta['USUARIO'] }}
@@ -56,5 +63,7 @@
     </div>
   </div>
 </div>
-
+@push('scripts')
+    @livewireChartsScripts
+@endpush
 

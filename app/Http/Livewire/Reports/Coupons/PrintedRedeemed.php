@@ -19,6 +19,7 @@ class PrintedRedeemed extends Component
             $coupon = $couponsList[$key];
 
             $lineChartModel->addSeriesPoint('Cupones impresos', $key, $coupon['CUPONES']);
+
             if(isset($coupon['CANJES']))
                 $lineChartModel->addSeriesPoint('Cupones canjeados', $key, $coupon['CANJES']);
             else
@@ -35,7 +36,7 @@ class PrintedRedeemed extends Component
             ->setXAxisVisible(true)
             ->setColors(['#E86300', '#FFA35E'])
         );
-        //dd($lineChartModel);
+
         return view('livewire.reports.coupons.printed-redeemed')->with(['coupons' => $coupons, 'lineChartModel' => $lineChartModel]);
     }
 }

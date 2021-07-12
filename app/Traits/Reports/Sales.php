@@ -11,7 +11,7 @@ trait Sales
         $extDb = DB::connection('tokencash');
         $salesArr = [];
         $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-06 23:59:59';
+        $finalDate = '2021-07-12 23:59:59';
         $establecimientos = ['242624'];
         $reportId = md5(session()->getId());
 
@@ -83,7 +83,7 @@ trait Sales
         $extDb = DB::connection('tokencash');
         $salesArr = [];
         $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-06 23:59:59';
+        $finalDate = '2021-07-12 23:59:59';
         $establecimientos = ['242624'];
         $reportId = md5(session()->getId());
 
