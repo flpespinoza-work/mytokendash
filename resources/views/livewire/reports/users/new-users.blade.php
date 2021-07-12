@@ -1,5 +1,8 @@
 <div class="flex flex-col">
-  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+  <div class="w-full p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm h-96">
+    <livewire:livewire-area-chart :area-chart-model="$areaChartModel"/>
+  </div>
+  <div class="mt-8 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
       <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
@@ -14,13 +17,13 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            @forelse ($users['USUARIOS'] as $dia => $usuarios)
+            @forelse ($users['USUARIOS'] as $usuarios)
             <tr>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $dia }}
+                    {{ $usuarios['DIA'] }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                    {{ $usuarios }}
+                    {{ $usuarios['USUARIOS'] }}
                 </td>
             </tr>
             @empty
@@ -46,4 +49,7 @@
     </div>
   </div>
 </div>
+@push('scripts')
+    @livewireChartsScripts
+@endpush
 

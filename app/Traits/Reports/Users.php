@@ -10,8 +10,8 @@ trait Users
     {
         $extDb = DB::connection('tokencash');
         $usersArr = [];
-        $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-05 23:59:59';
+        $initialDate = '2021-06-01 00:00:00';
+        $finalDate = '2021-07-12 23:59:59';
         $bolsas = ['GIFTCARD_SUPRA'];
         $reportId = md5(session()->getId());
 
@@ -31,7 +31,10 @@ trait Users
                 foreach($users as $user)
                 {
                     $totalUsers += $user->USUARIOS;
-                    $tmpRes['USUARIOS'][$user->DIA] = $user->USUARIOS;
+                    $tmpRes['USUARIOS'][] = [
+                        'DIA' => $user->DIA,
+                        'USUARIOS' => $user->USUARIOS
+                    ];
                 }
             });
             $tmpRes['TOTALS'] = $totalUsers;
