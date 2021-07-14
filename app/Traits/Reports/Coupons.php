@@ -175,6 +175,27 @@ trait Coupons
         return $couponsArr;
     }
 
+    function getTodayRedeemedCoupons()
+    {
+        $extDb = DB::connection('tokencash');
+        $initialDate = date('Y-m-d 00:00:00');
+        $finalDate = date('Y-m-d H:i:s');
+        $giftcards = ['SUPRA'];
+        $couponsArr = [];
+
+        $couponsArr = $extDb->table('dat_cupones')
+            ->join('dat_cupones_canjeados', 'dat_cupones.CUP_ID', '=', 'dat_cupones_canjeados.CUP_CAN_CUPON')
+            ->join('cat_dbm_nodos_usuarios', 'dat_cupones_canjeados.CUP_CAN_NODO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
+            ->select(DB::raw('CUP_GIFTCARD GIFTCARD, COUNT(CUP_ID) CANJES, SUM(CUP_CAN_MONTO) MONTO'))
+            ->whereIn('CUP_GIFTCARD', $giftcards)
+            ->whereBetween('CUP_CAN_FECHAHORA', [$initialDate, $finalDate])
+            ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
+            ->groupBy('CUP_GIFTCARD')
+            ->orderBy('GIFTCARD')
+            ->get();
+        return $couponsArr;
+    }
+
     function getRedeemedCoupons()
     {
         $extDb = DB::connection('tokencash');
@@ -220,17 +241,17 @@ trait Coupons
         $extDb = DB::connection('tokencash');
         $initialDate = date('Y-m-d H:i:s', strtotime('-1 hour'));
         $finalDate = date('Y-m-d H:i:s');
-        $presupuestos = ['supra'];
+        $presupuestos = ['supra', 'isspx'];
         $couponsArr = [];
 
         $couponsArr = $extDb->table('dat_cupones')
         ->join('dat_cupones_adicional', 'dat_cupones.CUP_ID', '=', 'dat_cupones_adicional.CUP_ADI_CUPON')
         ->select(DB::raw('DATE_FORMAT(CUP_TS, "%H:%i") TIEMPO_CUPON, CUP_PRESUPUESTO PRESUPUESTO, COUNT(CUP_ID) CUPONES, SUM(CUP_ADI_AMOUNT) MONTO'))
         ->whereIn('CUP_PRESUPUESTO', $presupuestos)
-        ->whereBetween('CUP_TS', [$initialDate, $finalDate])
-        ->groupBy('TIEMPO_CUPON')
+        ->whereRaw('CUP_TS BETWEEN (NOW() - INTERVAL 1 HOUR) AND NOW()')
         ->groupBy('CUP_PRESUPUESTO')
-        ->orderBy('CUP_PRESUPUESTO')
+        ->groupBy('TIEMPO_CUPON')
+        ->orderBy('TIEMPO_CUPON')
         ->get();
 
         return $couponsArr;

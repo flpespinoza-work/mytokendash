@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Dashboard;
 use Livewire\Component;
 use App\Traits\Reports\Coupons;
 
-class CuponesImpresos extends Component
+class CuponesCanjeados extends Component
 {
     use Coupons;
 
@@ -18,8 +18,7 @@ class CuponesImpresos extends Component
 
     public function render()
     {
-        $coupons = [];
-        $coupons = $this->getTodayPrintedCoupons([$this->store])->toArray();
-        return view('livewire.dashboard.cupones-impresos')->with(['coupons' => $coupons[0]]);
+        $coupons = $this->getTodayRedeemedCoupons()->toArray();
+        return view('livewire.dashboard.cupones-canjeados')->with(['coupons' => $coupons[0]]);
     }
 }

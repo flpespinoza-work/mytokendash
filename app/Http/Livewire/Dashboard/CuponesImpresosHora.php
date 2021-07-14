@@ -18,6 +18,25 @@ class CuponesImpresosHora extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.cupones-impresos-hora');
+        /**
+         * Obtener desde el inicio del dia y agrupar por hora
+         */
+        $lineChartModel = null;
+        $coupons = $this->getLastHourPrintedCoupons([$this->store]);
+        //dd($coupons);
+        $lineChartModel = $coupons->reduce(function (LineChartModel $lineChartModel, $data) {
+
+            $lineChartModel->addSeriesPoint($data->PRESUPUESTO, $data->TIEMPO_CUPON, $data->CUPONES);
+            return  $lineChartModel;
+
+        }, (new LineChartModel())
+            ->setTitle('Cupones impresos la última hora')
+            ->multiLine()
+            ->setAnimated(true)
+            ->setSmoothCurve()
+            ->withGrid()
+        );
+
+        return view('livewire.dashboard.cupones-impresos-hora')->with(['lineChartModel' => $lineChartModel]);
     }
 }
