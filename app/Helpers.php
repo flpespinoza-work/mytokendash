@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Store;
+use App\Models\Group;
+
 
 //Obtener establecimientos desde dbm tokencash
 if(!function_exists('fn_obtener_establecimientos_tokencash'))
@@ -10,22 +12,20 @@ if(!function_exists('fn_obtener_establecimientos_tokencash'))
     {
         $extDb = DB::connection('tokencash');
         $query = $extDb->table('cat_dbm_nodos')
-        ->join('cat_dbm_nodos_usuarios', 'cat_dbm_nodos.NOD_ID', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
-        ->select('NOD_ID', 'NOD_USU_NOMBRE', 'NOD_USU_NODO');
+        ->select('NOD_ID', 'NOD_NOMBRE', 'NOD_CODIGO');
 
         if(!empty($filter))
         {
             $query->where(function($query) use($filter){
                 return $query->where('NOD_ID', 'LIKE', '%' . $filter . '%')
-                ->orWhere('NOD_USU_NOMBRE', 'LIKE', '%' . $filter . '%');
+                ->orWhere('NOD_CODIGO', 'LIKE', '%' . $filter . '%')
+                ->orWhere('NOD_NOMBRE', 'LIKE', '%' . $filter . '%');
             });
         }
 
         $query->where('NOD_RAIZ', '=', '2')
         ->where('NOD_ACTIVO', '=', '1')
         ->where('NOD_SUSPENDIDO', '!=', '1')
-        ->where('NOD_USU_ACTIVO', '=', '1')
-        ->where('NOD_USU_SUSPENDIDO', '!=', '1')
         ->orderBy('NOD_ID');
 
         return $query->get();
@@ -37,16 +37,49 @@ if(!function_exists('fn_obtener_establecimientos'))
 {
     function fn_obtener_establecimientos()
     {
+        $user = session()->user;
+        if($user->is_superadmin())
+        {
 
+        }
+       $group = session()->user()->group;
     }
 }
+
 //Obtener usuarios segun el rol del usuario logueado
 
 //Obtener presupuestos
+if(!function_exists('fn_obtener_presupuestos'))
+{
+    function fn_obtener_presupuestos()
+    {
+
+    }
+}
 
 //Obtener giftcards
+if(!function_exists('fn_obtener_giftcards'))
+{
+    function fn_obtener_giftcards()
+    {
+
+    }
+}
 
 //Generar identificador para los reportes
+if(!function_exists('fn_generar_reporte_id'))
+{
+    function fn_generar_reporte_id()
+    {
+
+    }
+}
 
 //Generar la cantidad de minutos que un reporte estara en la cache
+if(!function_exists('fn_recordar_reporte_tiempo'))
+{
+    function fn_recordar_reporte_tiempo()
+    {
 
+    }
+}

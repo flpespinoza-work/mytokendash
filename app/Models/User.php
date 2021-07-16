@@ -73,5 +73,9 @@ class User extends Authenticatable
         return 'N/A';
     }
 
+    public function isSuperAdmin()
+    {
+        return $this->hasRole('superadmin');
+    }
 
 }
