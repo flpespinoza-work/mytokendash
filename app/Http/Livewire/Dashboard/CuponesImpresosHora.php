@@ -22,7 +22,7 @@ class CuponesImpresosHora extends Component
          * Obtener desde el inicio del dia y agrupar por hora
          */
         $lineChartModel = null;
-        $coupons = $this->getLastHourPrintedCoupons([$this->store]);
+        $coupons = $this->getTodayPrintedDetailCoupons([$this->store]);
         //dd($coupons);
         $lineChartModel = $coupons->reduce(function (LineChartModel $lineChartModel, $data) {
 
@@ -30,7 +30,7 @@ class CuponesImpresosHora extends Component
             return  $lineChartModel;
 
         }, (new LineChartModel())
-            ->setTitle('Cupones impresos la última hora')
+            ->setTitle('Cupones impresos')
             ->multiLine()
             ->setAnimated(true)
             ->setSmoothCurve()

@@ -13,7 +13,7 @@ class Store extends Model
 
     public function subgroup()
     {
-        return $this->belongsTo(SubGroup::class);
+        return $this->belongsTo(SubGroup::class, 'subgroup_id', 'id');
     }
 
     public function users()

@@ -236,19 +236,17 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getLastHourPrintedCoupons($presupuestos)
+    function getTodayPrintedDetailCoupons($presupuestos)
     {
         $extDb = DB::connection('tokencash');
-        $initialDate = date('Y-m-d H:i:s', strtotime('-1 hour'));
-        $finalDate = date('Y-m-d H:i:s');
-        $presupuestos = ['supra', 'isspx'];
+        $presupuestos = ['supra'];
         $couponsArr = [];
 
         $couponsArr = $extDb->table('dat_cupones')
         ->join('dat_cupones_adicional', 'dat_cupones.CUP_ID', '=', 'dat_cupones_adicional.CUP_ADI_CUPON')
-        ->select(DB::raw('DATE_FORMAT(CUP_TS, "%H:%i") TIEMPO_CUPON, CUP_PRESUPUESTO PRESUPUESTO, COUNT(CUP_ID) CUPONES, SUM(CUP_ADI_AMOUNT) MONTO'))
+        ->select(DB::raw('DATE_FORMAT(CUP_TS, "%H") TIEMPO_CUPON, CUP_PRESUPUESTO PRESUPUESTO, COUNT(CUP_ID) CUPONES, SUM(CUP_ADI_AMOUNT) MONTO'))
         ->whereIn('CUP_PRESUPUESTO', $presupuestos)
-        ->whereRaw('CUP_TS BETWEEN (NOW() - INTERVAL 1 HOUR) AND NOW()')
+        ->whereRaw('CUP_TS BETWEEN CONCAT(CURRENT_DATE(), " 00:00:00") AND NOW()')
         ->groupBy('CUP_PRESUPUESTO')
         ->groupBy('TIEMPO_CUPON')
         ->orderBy('TIEMPO_CUPON')

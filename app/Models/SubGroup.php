@@ -9,8 +9,10 @@ class SubGroup extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function stores()
     {
-        return $this->hasMany(Store::class);
+        return $this->hasMany(Store::class, 'subgroup_id', 'id');
     }
 }

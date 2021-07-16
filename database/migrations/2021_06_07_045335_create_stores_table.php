@@ -20,6 +20,8 @@ class CreateStoresTable extends Migration
             $table->string('system', 100)->nullable(); //Sistema usado
             $table->string('tokencash_account', 10)->unique(); //Numero de telefono para la cuenta en tokencash
             $table->unsignedBigInteger('tokencash_node')->unique(); //ID del nodo del establecimiento en el dbm de tokencash
+            $table->string('giftcard')->nullable();
+            $table->string('budget')->nullable();
             $table->unsignedBigInteger('subgroup_id');
             $table->string('street')->nullable();
             $table->string('suburb')->nullable();
