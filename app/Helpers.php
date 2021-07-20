@@ -60,26 +60,33 @@ if(!function_exists('fn_obtener_presupuestos'))
 //Obtener giftcards
 if(!function_exists('fn_obtener_giftcards'))
 {
-    function fn_obtener_giftcards()
+    function fn_obtener_giftcards($establecimiento)
     {
-
+        $giftcards = Store::where('id', $establecimiento)->pluck('giftcard')->toArray();
+        return $giftcards;
     }
 }
+
 
 //Generar identificador para los reportes
 if(!function_exists('fn_generar_reporte_id'))
 {
-    function fn_generar_reporte_id()
+    function fn_generar_reporte_id($str)
     {
-
+        return md5($str);
     }
 }
 
 //Generar la cantidad de minutos que un reporte estara en la cache
 if(!function_exists('fn_recordar_reporte_tiempo'))
 {
-    function fn_recordar_reporte_tiempo()
+    function fn_recordar_reporte_tiempo($fecha)
     {
+        if(date('Y-m-d') > date('Y-m-d', strtotime($fecha)))
+        {
+            return 60*10; //10 minutos para reportes de hoy
+        }
 
+        return 60*60*24*7; // 7 dias para reportes anteriores
     }
 }

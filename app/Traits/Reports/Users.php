@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\DB;
 trait Users
 {
 
-    function getUsers()
+    function getUsers($establecimiento, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
         $usersArr = [];
-        $initialDate = '2021-06-01 00:00:00';
-        $finalDate = '2021-07-12 23:59:59';
-        $bolsas = ['GIFTCARD_SUPRA'];
-        $reportId = md5(session()->getId());
-
-        $usersArr = cache()->remember('reporte-usuarios-' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $bolsas){
+        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        $bolsas = fn_obtener_giftcards($establecimiento);
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
+        $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
+        $usersArr = cache()->remember('reporte-usuarios-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $bolsas) {
             $tmpRes = [];
             $totalUsers = 0;
             $extDb->table('cat_dbm_nodos_usuarios')

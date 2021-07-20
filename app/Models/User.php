@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     public function subgroups()
     {
-        return $this->belongsToMany(SubGroup::class);
+        return $this->belongsToMany(SubGroup::class, 'subgroup_user', 'user_id', 'subgroup_id');
     }
 
     public function stores()
