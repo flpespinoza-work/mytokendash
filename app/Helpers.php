@@ -51,9 +51,10 @@ if(!function_exists('fn_obtener_establecimientos'))
 //Obtener presupuestos
 if(!function_exists('fn_obtener_presupuestos'))
 {
-    function fn_obtener_presupuestos()
+    function fn_obtener_presupuestos($establecimiento)
     {
-
+        $presupuestos = Store::where('id', $establecimiento)->pluck('budget')->toArray();
+        return $presupuestos;
     }
 }
 

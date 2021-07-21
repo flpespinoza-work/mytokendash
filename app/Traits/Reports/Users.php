@@ -43,12 +43,12 @@ trait Users
         return $usersArr;
     }
 
-    function getUsersHistory()
+    function getUsersHistory($establecimiento)
     {
         $extDb = DB::connection('tokencash');
         $usersArr = [];
-        $bolsas = ['GIFTCARD_SUPRA'];
-        $reportId = md5(session()->getId());
+        $bolsas = fn_obtener_giftcards($establecimiento);
+        $reportId = md5(session()->getId() . $establecimiento);
 
         $usersArr = cache()->remember('reporte-acumulado-usuarios-' . $reportId, 60*5, function() use($extDb, $bolsas){
             $tmpRes = [];

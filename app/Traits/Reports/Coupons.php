@@ -196,16 +196,17 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getRedeemedCoupons()
+    function getRedeemedCoupons($establecimiento, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
-        $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-05 23:59:59';
-        $reportId = md5(session()->getId() . $initialDate . $finalDate);
-        $giftcards = ['SUPRA'];
+        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        $reportId = fn_generar_reporte_id($finalDate);
+        $giftcards = fn_obtener_giftcards($establecimiento);
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
         $couponsArr = [];
 
-        $couponsArr = cache()->remember('reporte-cupones-canjeados-' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $giftcards){
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $giftcards){
             $tmpRes = [];
             $totales = [ 'redeemed_coupons' => 0, 'redeemed_ammount' => 0];
 
@@ -275,16 +276,17 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getPrintedCoupons()
+    function getPrintedCoupons($establecimiento, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
-        $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-07 23:59:59';
-        $presupuestos = ['supra'];
-        $reportId = md5(session()->getId() . $initialDate . $finalDate);
+        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        $presupuestos = fn_obtener_presupuestos($establecimiento); //['supra']
+        $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
         $couponsArr = [];
 
-        $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, 60*5, function() use($extDb, $initialDate, $finalDate, $presupuestos){
+        $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $presupuestos){
             $tmpRes = [];
             $totales = [ 'printed_coupons' => 0, 'printed_ammount' => 0];
             $extDb->table('dat_cupones')
@@ -301,6 +303,7 @@ trait Coupons
                     $totales['printed_coupons'] += $coupon->CUPONES;
                     $totales['printed_ammount'] += $coupon->MONTO;
                     $tmpRes['REGISTROS'][$coupon->DIA] = [
+                        'DIA' => $coupon->DIA,
                         'CUPONES' => $coupon->CUPONES,
                         'MONTO_IMPRESO' => $coupon->MONTO
                     ];
