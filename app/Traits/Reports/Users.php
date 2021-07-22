@@ -64,7 +64,8 @@ trait Users
                 {
                     $tmpRes['USUARIOS'][] = [
                         'USUARIOS' => $user->USUARIOS,
-                        'MONTO' => $user->MONTO
+                        'MONTO' => $user->MONTO,
+                        'PROMEDIO' => $user->MONTO / $user->USUARIOS
                     ];
                 }
             });

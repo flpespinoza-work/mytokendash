@@ -1,5 +1,6 @@
 <div class="flex flex-col">
-  <div class="flex items-center space-x-4">
+@isset($coupons['REGISTROS'])
+    <div class="flex items-center mt-8 space-x-4">
     <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
         <h5 class="text-sm font-medium text-gray-500">Cupones canjeados: {{ $coupons['TOTALS']['redeemed_coupons']}}</h5>
         <span class="inline-block mt-2 text-lg font-semibold text-gray-darker md:text-xl xl:text-2xl">
@@ -87,6 +88,8 @@
       </div>
     </div>
   </div>
+@endisset
+
 </div>
 
 

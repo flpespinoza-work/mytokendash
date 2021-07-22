@@ -61,10 +61,18 @@ if(!function_exists('fn_obtener_presupuestos'))
 //Obtener giftcards
 if(!function_exists('fn_obtener_giftcards'))
 {
-    function fn_obtener_giftcards($establecimiento)
+    function fn_obtener_giftcards($establecimiento, $no_gift = false)
     {
         $giftcards = Store::where('id', $establecimiento)->pluck('giftcard')->toArray();
-        return $giftcards;
+        if(!$no_gift)
+            return $giftcards;
+        //Recorrer las giftcard y quitar GIFTCARD_
+        foreach($giftcards as $giftcard)
+        {
+            $ngiftcards[] = str_replace('GIFTCARD_', '', $giftcard);
+        }
+
+        return $ngiftcards;
     }
 }
 

@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class PrintedCouponsExport implements FromCollection, WithHeadings, WithColumnFormatting
+class RedeemedCouponsExport implements FromCollection, WithHeadings, WithColumnFormatting
 {
     use Exportable;
 
@@ -31,7 +31,7 @@ class PrintedCouponsExport implements FromCollection, WithHeadings, WithColumnFo
     {
         return [
             'Fecha',
-            'Cupones impresos',
+            'Cupones canjeados',
             'Monto'
         ];
     }

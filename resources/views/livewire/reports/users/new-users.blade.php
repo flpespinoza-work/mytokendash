@@ -27,7 +27,9 @@
         </form>
 
         @if($users)
-         <button wire:click="exportReport" type="button"  class="px-5 py-2 text-sm font-semibold bg-green-700 rounded-md text-green-50">Descargar</button>
+         <button wire:click="exportReport" type="button"  class="px-5 py-2 text-sm font-semibold bg-green-600 rounded-md hover:bg-green-700 text-green-50">
+            <x-heroicon-s-document-download class="w-4 h-4 md:h-5 md:w-5" />
+         </button>
         @endif
     </div>
 

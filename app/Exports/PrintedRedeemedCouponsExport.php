@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class PrintedCouponsExport implements FromCollection, WithHeadings, WithColumnFormatting
+class PrintedRedeemedCouponsExport implements FromCollection, WithHeadings, WithColumnFormatting
 {
     use Exportable;
 
@@ -32,14 +32,17 @@ class PrintedCouponsExport implements FromCollection, WithHeadings, WithColumnFo
         return [
             'Fecha',
             'Cupones impresos',
-            'Monto'
+            'Monto impreso',
+            'Cupones canjeados',
+            'Monto canjeado'
         ];
     }
 
     public function columnFormats(): array
     {
         return [
-            'C' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
+            'C' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+            'E' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
         ];
     }
 }

@@ -25,7 +25,9 @@
         </form>
 
         @if($coupons)
-         <button wire:click="exportReport" type="button"  class="px-5 py-2 text-sm font-semibold bg-green-700 rounded-md text-green-50">Descargar</button>
+         <button wire:click="exportReport" type="button"  class="px-5 py-2 text-sm font-semibold bg-green-600 rounded-md hover:bg-green-700 text-green-50">
+            <x-heroicon-s-document-download class="w-4 h-4 md:h-5 md:w-5" />
+         </button>
         @endif
     </div>
     @isset($coupons['REGISTROS'])
@@ -37,6 +39,10 @@
         <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
             <h5 class="text-sm font-medium text-gray-500">Dinero impreso:</h5>
             <span class="inline-block mt-2 text-lg font-semibold text-gray-darker md:text-xl xl:text-2xl">${{ number_format($coupons['TOTALS']['printed_ammount'], 2) }} </span>
+        </div>
+        <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
+            <h5 class="text-sm font-medium text-gray-500">Promedio por cupón:</h5>
+            <span class="inline-block mt-2 text-lg font-semibold text-gray-darker md:text-xl xl:text-2xl">${{ number_format($coupons['TOTALS']['average_ammount'], 3) }} </span>
         </div>
     </div>
     <div class="items-center w-full md:flex md:space-x-8">
