@@ -6,15 +6,18 @@ use Illuminate\Support\Facades\DB;
 trait Coupons
 {
 
-    function getRedemedCouponsDetail()
+    function getRedemedCouponsDetail($establecimiento, $initialDate, $finalDate)
     {
         $extDb = DB::connection('tokencash');
         $couponsArr = [];
-        $initialDate = '2021-07-01 00:00:00';
-        $finalDate = '2021-07-05 23:59:59';
-        $reportId = md5(session()->getId() . $initialDate . $finalDate);
+        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
+        $bolsas = fn_obtener_giftcards($establecimiento);
+        $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
 
-        $couponsArr = cache()->remember('reporte-cupones-canjeados-detallado-' . $reportId, 60*2, function() use($extDb, $initialDate, $finalDate){
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-detallado-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $presupuestos, $bolsas){
             $tmpRes = [];
             $totales = [ 'redeemed_coupons' => 0, 'redeemed_ammount' => 0];
 
@@ -22,13 +25,13 @@ trait Coupons
             ->join('dat_cupones_canjeados', 'dat_cupones.CUP_ID', '=', 'dat_cupones_canjeados.CUP_CAN_CUPON')
             ->join('cat_dbm_nodos_usuarios', 'dat_cupones_canjeados.CUP_CAN_NODO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
             ->join('bal_tae_saldos', 'cat_dbm_nodos_usuarios.NOD_USU_NODO', '=', 'bal_tae_saldos.TAE_SAL_NODO')
-            ->select(DB::raw('NOD_USU_NODO USUARIO_NODO, NOD_USU_NOMBRE USUARIO_NOMBRE, NOD_USU_NUMERO USUARIO_NUMERO, CUP_CAN_FECHAHORA CANJE_FECHA_HORA, CUP_CAN_MONTO CANJE_MONTO, CUP_GIFTCARD GIFTCARD_CUPON, TAE_SAL_MONTO SALDO_USUARIO, CUP_CODIGO CODIGO_CUPON, CUP_TS CUPON_FECHA_HORA, CUP_CAN_ID ID_CUPON'))
-            ->whereIn('CUP_PRESUPUESTO', ['supra'])
-            ->whereIn('TAE_SAL_BOLSA', ['GIFTCARD_SUPRA'])
+            ->select(DB::raw('NOD_USU_NODO USUARIO_NODO, CUP_CAN_FECHAHORA CANJE_FECHA_HORA, CUP_CAN_MONTO CANJE_MONTO, CUP_GIFTCARD GIFTCARD_CUPON, TAE_SAL_MONTO SALDO_USUARIO, CUP_CODIGO CODIGO_CUPON, CUP_TS CUPON_FECHA_HORA, CUP_CAN_ID ID_CUPON'))
+            ->whereIn('CUP_PRESUPUESTO', $presupuestos)
+            ->whereIn('TAE_SAL_BOLSA', $bolsas)
             ->whereBetween('CUP_CAN_FECHAHORA', [$initialDate, $finalDate])
             ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
             ->orderBy('CUPON_FECHA_HORA')
-            ->orderBy('USUARIO_NUMERO')
+            ->orderBy('USUARIO_NODO')
             ->orderBy('CANJE_FECHA_HORA', 'desc')
             ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
                 foreach($coupons as $coupon)
@@ -38,23 +41,20 @@ trait Coupons
 
                     $tmpRes['REGISTROS'][] = [
                         'USUARIO_NODO' => $coupon->USUARIO_NODO,
-                        'USUARIO_NOMBRE' => $coupon->USUARIO_NOMBRE,
-                        'USUARIO_NUMERO' => $coupon->USUARIO_NUMERO,
-                        'CANJE_FECHA_HORA' => $coupon->CANJE_FECHA_HORA,
-                        'CANJE_MONTO' => $coupon->CANJE_MONTO,
-                        'GIFTCARD_CUPON' => $coupon->GIFTCARD_CUPON,
-                        'SALDO_USUARIO' => $coupon->SALDO_USUARIO,
                         'CODIGO_CUPON' => $coupon->CODIGO_CUPON,
                         'CUPON_FECHA_HORA' => $coupon->CUPON_FECHA_HORA,
-                        'ID_CUPON' => $coupon->ID_CUPON
+                        'CANJE_FECHA_HORA' => $coupon->CANJE_FECHA_HORA,
+                        'CANJE_MONTO' => $coupon->CANJE_MONTO,
+                        'SALDO_USUARIO' => $coupon->SALDO_USUARIO,
                     ];
                 }
             });
             $tmpRes['TOTALS'] = $totales;
+            $tmpRes['TOTALS']['average_ammount'] = $totales['redeemed_ammount'] / $totales['redeemed_coupons'];
             return $tmpRes;
         });
 
-        return $couponsArr;
+        return mb_convert_encoding($couponsArr, 'UTF-8', 'UTF-8');
     }
 
     function getLastPrintedCoupon()

@@ -76,6 +76,16 @@ if(!function_exists('fn_obtener_giftcards'))
     }
 }
 
+//Obtener el nodo del establecimiento
+if(!function_exists('fn_obtener_nodo_establecimiento'))
+{
+    function fn_obtener_nodo_establecimiento($establecimiento)
+    {
+        $nodos = Store::where('id', $establecimiento)->pluck('tokencash_node')->toArray();
+        return $nodos;
+    }
+}
+
 
 //Generar identificador para los reportes
 if(!function_exists('fn_generar_reporte_id'))

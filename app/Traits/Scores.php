@@ -5,28 +5,28 @@ use Illuminate\Support\Facades\DB;
 
 trait Scores
 {
-    function getScores()
+    function getScores($establecimiento, $initialDate, $finalDate)
     {
         $scores = [];
-        $initialDate = '2021-07-01';
-        $finalDate = '2021-07-09';
-        $bolsas = ['GIFTCARD_SUPRA'];
-        $presupuestos = ['PRESUPUESTO_supra'];
+        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        $bolsas = fn_obtener_giftcards($establecimiento);
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
 
         if($finalDate < '2021-06-10')
         {
-            $scores = $this->getOldScores($bolsas, $presupuestos, $initialDate . ' 00:00:00', $finalDate . ' 23:59:59');
+            $scores = $this->getOldScores($bolsas, $presupuestos, $initialDate, $finalDate);
         }
         elseif($initialDate > '2021-06-10')
         {
-            $scores = $this->getNewScores($bolsas, $presupuestos, $initialDate . ' 00:00:00', $finalDate . ' 23:59:59');
+            $scores = $this->getNewScores($bolsas, $presupuestos, $initialDate, $finalDate);
         }
         else
         {
-			$initial_a = $initialDate . ' 00:00:00';
+			$initial_a = $initialDate;
 			$final_a = '2021-06-10 11:23:04';
 			$initial_b = '2021-06-10 11:23:05';
-			$final_b = $finalDate . ' 23:59:59';
+			$final_b = $finalDate;
 			$scores_a = $this->getOldScores($bolsas, $presupuestos, $initial_a, $final_a);
 			$scores_b = $this->getNewScores($bolsas, $presupuestos, $initial_b, $final_b);
 
@@ -34,7 +34,6 @@ trait Scores
 			$scores = array_merge($scores_a, $scores_b);
         }
         $scores = $this->orderScores($scores, $finalDate);
-
         return $scores;
     }
 
@@ -79,7 +78,7 @@ trait Scores
             return $tmpRes;
 
         });
-        return $commentsArr;
+        return mb_convert_encoding($commentsArr, 'UTF-8', 'UTF-8');
     }
 
     function getOldScores($bolsas, $presupuestos, $initialDate, $finalDate)
@@ -150,7 +149,7 @@ trait Scores
 
         });
 
-        return $commentsArr;
+        return mb_convert_encoding($commentsArr, 'UTF-8', 'UTF-8');
     }
 
     function orderScores($scoresArr, $finalDate)
