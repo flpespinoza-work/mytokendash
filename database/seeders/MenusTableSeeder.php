@@ -45,7 +45,7 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 1,
-                'name' => 'Notificaciones',
+                'name' => 'Campañas',
                 'order' => 1,
                 'icon' => 'heroicon-s-bell',
                 'route' => 'notifications',

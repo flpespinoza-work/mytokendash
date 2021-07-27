@@ -72,6 +72,15 @@ return [
             'password'  => env('TOKENCASH_DB_PASSWORD')
         ],
 
+        'tokencash_campanas' => [
+            'driver' => 'mysql',
+            'host'      => env('TOKENCASH_CAMPANAS_DB_HOST'),
+            'port'      => env('TOKENCASH_CAMPANAS_DB_PORT'),
+            'database'  => env('TOKENCASH_CAMPANAS_DB_NAME'),
+            'username'  => env('TOKENCASH_CAMPANAS_DB_USERNAME'),
+            'password'  => env('TOKENCASH_CAMPANAS_DB_PASSWORD')
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

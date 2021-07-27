@@ -178,6 +178,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Kreait\Laravel\Firebase\ServiceProvider::class
 
     ],
 
