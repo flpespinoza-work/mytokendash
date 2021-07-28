@@ -28,7 +28,8 @@ class Index extends Component
         'body' => '',
         'gender' => '',
         'inactive' => '',
-        'coupon' => ''
+        'coupon' => '',
+        'file' => null
     ];
 
     public function mount()

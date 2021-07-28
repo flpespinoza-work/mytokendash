@@ -5,9 +5,12 @@ namespace App\Listeners;
 use App\Events\SendNewNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\Traits\Notifications;
 
 class NewNotificationListener
 {
+    use Notifications;
+
     /**
      * Create the event listener.
      *
@@ -26,6 +29,6 @@ class NewNotificationListener
      */
     public function handle(SendNewNotification $event)
     {
-        //
+        dd($event);
     }
 }

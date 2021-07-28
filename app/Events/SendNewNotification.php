@@ -14,14 +14,16 @@ class SendNewNotification
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $pushId;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($pushId)
     {
-        //
+        $this->pushId = $pushId;
     }
 
     /**
