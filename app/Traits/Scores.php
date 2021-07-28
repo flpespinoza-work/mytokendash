@@ -5,11 +5,21 @@ use Illuminate\Support\Facades\DB;
 
 trait Scores
 {
-    function getScores($establecimiento, $initialDate, $finalDate)
+    function getScores($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $scores = [];
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $bolsas = fn_obtener_giftcards($establecimiento);
         $presupuestos = fn_obtener_presupuestos($establecimiento);
 

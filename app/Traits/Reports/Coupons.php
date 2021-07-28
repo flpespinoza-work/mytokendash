@@ -6,12 +6,22 @@ use Illuminate\Support\Facades\DB;
 trait Coupons
 {
 
-    function getRedemedCouponsDetail($establecimiento, $initialDate, $finalDate)
+    function getRedemedCouponsDetail($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
         $couponsArr = [];
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $presupuestos = fn_obtener_presupuestos($establecimiento);
         $bolsas = fn_obtener_giftcards($establecimiento);
         $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
@@ -88,8 +98,19 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getPrintedRedeemedCoupons($establecimiento, $initialDate, $finalDate)
+    function getPrintedRedeemedCoupons($establecimiento, $initialDate, $finalDate, $period)
     {
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $reportId = fn_generar_reporte_id($finalDate);
         $couponsArr = cache()->remember('reporte-cupones-impresos-canjeados', $reportId, function() use($establecimiento, $initialDate, $finalDate) {
             $printed = $this->getPrintedCoupons($establecimiento, $initialDate, $finalDate);
@@ -106,6 +127,7 @@ trait Coupons
                     'MONTO_CANJE' => $registro['MONTO_CANJE'],
                 ];
             }
+
             $result['TOTALS'] = [
                 'printed_coupons' => $tmpResult['TOTALS']['printed_coupons'],
                 'printed_ammount' => $tmpResult['TOTALS']['printed_ammount'],
@@ -219,11 +241,20 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getRedeemedCoupons($establecimiento, $initialDate, $finalDate)
+    function getRedeemedCoupons($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $reportId = fn_generar_reporte_id($finalDate);
         $giftcards = fn_obtener_giftcards($establecimiento, true); //SUPRA, sin GIFTCARD_
         $rememberReport = fn_recordar_reporte_tiempo($finalDate);
@@ -301,11 +332,20 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getPrintedCoupons($establecimiento, $initialDate, $finalDate)
+    function getPrintedCoupons($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $presupuestos = fn_obtener_presupuestos($establecimiento); //['supra']
         $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
         $rememberReport = fn_recordar_reporte_tiempo($finalDate);
@@ -320,8 +360,8 @@ trait Coupons
             ->whereIn('CUP_PRESUPUESTO', $presupuestos)
             ->whereBetween('CUP_TS', [$initialDate, $finalDate])
             ->groupBy('DIA', 'CUP_PRESUPUESTO')
-            ->orderBy('CUP_PRESUPUESTO')
             ->orderBy('DIA')
+            ->orderBy('CUP_PRESUPUESTO')
             ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
                 foreach($coupons as $coupon)
                 {

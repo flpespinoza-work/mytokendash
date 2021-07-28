@@ -50,7 +50,7 @@ class Sales extends Component
 
     public function generateReport()
     {
-        $this->sales = $this->getSales($this->store, $this->initialDate, $this->finalDate);
+        $this->sales = $this->getSales($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()

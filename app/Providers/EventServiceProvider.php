@@ -23,6 +23,7 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [
             UserLoginListener::class,
         ],
+        'App\Events\SendNewNotification' => ['App\Listeners\NewNotificationListener']
     ];
 
     /**

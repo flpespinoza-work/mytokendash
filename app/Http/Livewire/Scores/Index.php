@@ -27,7 +27,6 @@ class Index extends Component
     {
         if(isset($this->scores['comments']))
         {
-            dd($this->scores);
             $columnChartModel = (new ColumnChartModel())
                 ->setTitle('Calificaciones')
                 ->addColumn('5', $this->scores['stars_5'], '#f6ad55')
@@ -46,6 +45,6 @@ class Index extends Component
 
     public function getScoreList()
     {
-        $this->scores = $this->getScores($this->store, $this->initialDate, $this->finalDate);
+        $this->scores = $this->getScores($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 }

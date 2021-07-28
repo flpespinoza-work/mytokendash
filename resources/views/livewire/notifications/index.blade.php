@@ -18,7 +18,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="store" class="block text-sm font-medium text-gray-700">Selecciona un establecimiento</label>
-                                        <select wire:model.defer="campaign.store" id="store" name="store" autocomplete="store" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <select wire:model="campaign.store" id="store" name="store" autocomplete="store" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option></option>
                                             @foreach ($stores as $store => $name)
                                             <option value="{{ $store }}">{{ $name }}</option>
@@ -28,7 +28,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="type" class="block text-sm font-medium text-gray-700">Tipo de notificación</label>
-                                        <select wire:model.defer="campaign.type" id="type" name="type" autocomplete="type" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <select wire:model="campaign.type" id="type" name="type" autocomplete="type" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option></option>
                                             <option value="INFORMATIVA">Informativa</option>
                                             <option value="CANJE_CUPON">Cupón</option>
@@ -37,12 +37,12 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="name" class="block text-sm font-medium text-gray-700">Nombre de la campaña</label>
-                                        <input type="text" id="name" wire:model.defer="campaign.name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                        <input type="text" id="name" wire:model="campaign.name" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="title" class="block text-sm font-medium text-gray-700">Encabezado de la campaña</label>
-                                        <input type="text" id="title" wire:model.defer="campaign.title" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                        <input type="text" id="title" wire:model="campaign.title" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     </div>
 
                                     <div class="col-span-6">
@@ -50,12 +50,12 @@
                                         <textarea name="body"
                                         maxlength="120"
                                         class="w-full h-24 mt-3 text-xs border border-gray-200 rounded-md shadow-sm resize-none md:text-sm p2 focus:ring-2 focus:ring-orange-light focus:border-orange-lightest"
-                                        wire:model.defer="campaign.body"></textarea>
+                                        wire:model="campaign.body"></textarea>
                                     </div>
 
                                     <div class="col-span-6 md:col-span-3">
                                         <label for="store" class="block text-sm font-medium text-gray-700">Sexo</label>
-                                        <select wire:model.defer="campaign.gender" id="gender" name="gender" autocomplete="gender" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <select wire:model="campaign.gender" id="gender" name="gender" autocomplete="gender" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                             <option></option>
                                             <option value="femenino">Femenino</option>
                                             <option value="masculino">Masculino</option>
@@ -63,8 +63,8 @@
                                         </select>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="inactive" class="block text-sm font-medium text-gray-700">Tiempo sin actividad</label>
-                                        <input type="text" id="inactive" wire:model.defer="campaign.inactive" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                        <label for="inactive" class="block text-sm font-medium text-gray-700">Tiempo sin actividad(días)</label>
+                                        <input type="text" id="inactive" wire:model="campaign.inactive" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     </div>
 
                                     <div class="col-span-6">
@@ -91,7 +91,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="inactive" class="block text-sm font-medium text-gray-700">Código cupón(Campañas de inducción)</label>
-                                        <input type="text" id="coupon" wire:model.defer="campaign.coupon" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                        <input type="text" id="coupon" wire:model="campaign.coupon" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     </div>
                                 </div>
                             </div>

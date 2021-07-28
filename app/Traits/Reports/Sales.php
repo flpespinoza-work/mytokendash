@@ -6,12 +6,22 @@ use Illuminate\Support\Facades\DB;
 trait Sales
 {
 
-    function getSales($establecimiento, $initialDate, $finalDate)
+    function getSales($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
         $salesArr = [];
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $nodos = fn_obtener_nodo_establecimiento($establecimiento);
         $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
         $rememberReport = fn_recordar_reporte_tiempo($finalDate);
@@ -84,12 +94,21 @@ trait Sales
         return $salesArr;
     }
 
-    function getSalesDetail($establecimiento, $initialDate, $finalDate)
+    function getSalesDetail($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
         $salesArr = [];
-        $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
-        $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
         $nodos = fn_obtener_nodo_establecimiento($establecimiento);
         $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
         $rememberReport = fn_recordar_reporte_tiempo($finalDate);

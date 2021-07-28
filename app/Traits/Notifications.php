@@ -3,6 +3,8 @@
 namespace App\Traits;
 use Illuminate\Support\Facades\DB;
 
+use App\Events\SendNewNotification;
+
 trait Notifications
 {
     function getCampaigns()
@@ -21,19 +23,22 @@ trait Notifications
 
     function saveCampaign($campaign)
     {
+        $campaign['date'] = date('Y-m-d H:i:s');
+        $campaign['date_liberar'] = date('Y-m-d H:i:s', strtotime('+2 minutes'));
+
         //Si viene archivo, subir por ftp y formar json para NOT_ACCION
         if($campaign['coupon'])
         {
-            $json_accion = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => '', 'CUPON' => $campaign['coupon']]);
+            $campaign['json'] = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => '', 'CUPON' => $campaign['coupon']]);
         }
         elseif($campaign['file'])
         {
             $this->uploadFile($campaign['file']); //TO-DO
-            $json_accion = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => 'https://tokencash.mx/push/' . $campaign['file']['name'], 'CUPON' => '']);
+            $campaign['json'] = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => 'https://tokencash.mx/push/' . $campaign['file']['name'], 'CUPON' => '']);
         }
         else
         {
-            $json_accion = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => 'https://tokencash.mx/push/warning.jpg', 'CUPON' => '']);
+            $campaign['json'] = json_encode(['URL' => 'https://www.tokencash.mx', 'IMG' => 'https://tokencash.mx/push/warning.jpg', 'CUPON' => '']);
         }
 
         //Guardar en la tabla de dat_notificacion y retornar el id del registro
@@ -51,10 +56,11 @@ trait Notifications
         {
             //Obtener la bolsa del establecimiento
             $bolsa = fn_obtener_giftcards($campaign['store']);
+            //Obtener el nodo del establecimiento
+            $campaign['node'] = fn_obtener_nodo_establecimiento($campaign['store'])[0];
             $consulta = "SELECT
                 NOD_USU_ID,
                 NOD_USU_CONFIGURACION
-
             FROM
                 cat_dbm_nodos_usuarios
             INNER JOIN
@@ -62,10 +68,62 @@ trait Notifications
             ON
                 NOD_USU_NODO = TAE_SAL_NODO
             WHERE
-                TAE_SAL_BOLSA = \"$bolsa\"
+                TAE_SAL_BOLSA = '{$bolsa[0]}'
             AND
                 LENGTH(NOD_USU_CONFIGURACION) > (180)";
-            //Formar Query que se guardara en la tabla de dat_campush, revisar si viene datos de sexo, inactividad
+            //Revisar si viene datos de sexo
+            if($campaign['gender'])
+            {
+                switch($campaign['gender'])
+                {
+                    case 'masculino':
+                        $consulta .= " AND ((JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"H\" OR (JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"h\")";
+                        break;
+                    case 'femenino':
+                        $consulta .= " AND ((JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"M\" OR (JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"m\" OR (JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"f\")";
+                        break;
+                    case 'otro':
+                        $consulta .= " AND ((JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"LGBT\" OR (JSON_EXTRACT(NOD_USU_CONFIGURACION, \"$.SEXO\")) = \"lgtb\")";
+                        break;
+                }
+            }
+            //Revisar si tiene datos de  inactividad
+            if($campaign['inactive'])
+            {
+                $consulta .= " AND TIMESTAMPDIFF(DAY, TAE_SAL_UTS, NOW()) > {$campaign['inactive']}";
+            }
+            //Guardar en la tabla de dat_notificacion
+            $extDb = DB::connection('tokencash_campanas');
+            $notiId = $extDb->table('dat_notificacion')
+            ->insertGetId([
+                'NOT_TS' => $campaign['date'],
+                'NOT_UTS' => $campaign['date'],
+                'NOT_NODO_ID' => $campaign['node'],
+                'NOT_TIPO' => $campaign['type'],
+                'NOT_ESTADO' => '1',
+                'NOT_VALIDACION' => '1',
+                'NOT_TITULO' => $campaign['title'],
+                'NOT_CUERPO' => $campaign['body'],
+                'NOT_ACCION' => $campaign['json'],
+            ]);
+
+            // Guardar en la tabla dat_campush
+            $pushId = $extDb->table('dat_campush')
+            ->insertGetId([
+                'CAMP_TS' => $campaign['date'],
+                'CAMP_UTS' => $campaign['date'],
+                'CAMP_NOMBRE' => $campaign['name'],
+                'CAMP_NOT_ID' => $notiId,
+                'CAMP_AUTORIZACION' => '2',
+                'CAMP_CONSULTA' => $consulta,
+                'CAMP_ESTABLECIMIENTO' => $campaign['node'],
+                'CAMP_LIBERACION' => $campaign['date_liberar'],
+                'CAMP_AUTOR' => auth()->user()->email,
+            ]);
+
+            //Enviar aviso de que se creo una nueva campaña
+            event(new SendNewNotification($pushId));
+
         }
     }
 

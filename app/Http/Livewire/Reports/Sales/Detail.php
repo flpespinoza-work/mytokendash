@@ -49,7 +49,7 @@ class Detail extends Component
 
     public function generateReport()
     {
-        $this->sales = $this->getSalesDetail($this->store, $this->initialDate, $this->finalDate);
+        $this->sales = $this->getSalesDetail($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()

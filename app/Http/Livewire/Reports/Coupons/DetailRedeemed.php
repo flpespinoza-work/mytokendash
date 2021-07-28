@@ -31,7 +31,7 @@ class DetailRedeemed extends Component
 
     public function generateReport()
     {
-        $this->coupons = $this->getRedemedCouponsDetail($this->store, $this->initialDate, $this->finalDate);
+        $this->coupons = $this->getRedemedCouponsDetail($this->store, $this->initialDate, $this->finalDate, $this->period);
         //dd($this->coupons);
     }
 

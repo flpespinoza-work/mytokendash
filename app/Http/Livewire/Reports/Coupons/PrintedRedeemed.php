@@ -59,7 +59,7 @@ class PrintedRedeemed extends Component
 
     public function generateReport()
     {
-        $this->coupons = $this->getPrintedRedeemedCoupons($this->store, $this->initialDate, $this->finalDate);
+        $this->coupons = $this->getPrintedRedeemedCoupons($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()

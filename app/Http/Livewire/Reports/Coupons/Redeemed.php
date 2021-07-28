@@ -60,7 +60,7 @@ class Redeemed extends Component
 
     public function generateReport()
     {
-        $this->coupons = $this->getRedeemedCoupons($this->store, $this->initialDate, $this->finalDate);
+        $this->coupons = $this->getRedeemedCoupons($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()
