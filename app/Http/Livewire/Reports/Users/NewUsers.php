@@ -30,7 +30,7 @@ class NewUsers extends Component
 
     public function generateReport()
     {
-        $this->users = $this->getUsers($this->store, $this->initialDate, $this->finalDate);
+        $this->users = $this->getUsers($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()

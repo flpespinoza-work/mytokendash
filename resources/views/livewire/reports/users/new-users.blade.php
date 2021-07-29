@@ -21,6 +21,16 @@
                 <input type="text" id="finalDate" wire:model.lazy="finalDate" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm sm:text-sm">
             </div>
 
+            <div class="w-1/5 px-2 space-y-2">
+                <label for="store" class="block text-sm font-medium text-gray-700">Periodo</label>
+                <select wire:model.lazy="period" id="period" name="period"class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option></option>
+                    <option value="30">30 días</option>
+                    <option value="60">60 días</option>
+                    <option value="90">90 días</option>
+                </select>
+            </div>
+
             <div class="w-1/5 px-2">
                 <button type="submit" class="px-5 py-2 text-sm font-semibold bg-gray-700 rounded-md text-gray-50">Generar reporte</button>
             </div>

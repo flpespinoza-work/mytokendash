@@ -29,6 +29,11 @@ class NewNotificationListener
      */
     public function handle(SendNewNotification $event)
     {
-        dd($event);
+        //Obtener informacion de la notificacion
+        $notificacion = $this->getNotificationTipo($event->notId);
+        //Obtener usuarios
+        $usuarios = $this->getNewNotificationUsers();
+        //Enviar la notificacion
+        $this->sendNewNotification($event->notId, $notificacion, $usuarios);
     }
 }
