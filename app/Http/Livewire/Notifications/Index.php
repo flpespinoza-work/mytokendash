@@ -10,14 +10,6 @@ class Index extends Component
     use Notifications;
 
     public $stores;
-    /*public $store;
-    public $type;
-    public $name;
-    public $title;
-    public $body;
-    public $gender;
-    public $inactive;
-    public $coupon;*/
     public $campaigns;
 
     public $campaign = [
