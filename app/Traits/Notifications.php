@@ -21,6 +21,9 @@ trait Notifications
     {
         //Guardar registros en la tabla de dat_notificacion_usuario
         $this->saveUsers($idNot, array_keys($usuarios));
+        //Obtener datos de la notificacion, tabla dat_notificacion
+        $notificacion = $this->getNotification($idNot);
+
     }
 
     function sendCouponNotification($idNot, $usuarios)
@@ -57,6 +60,17 @@ trait Notifications
 
         return $result;
 
+    }
+
+    function getNotification($idNot)
+    {
+        $extDb = DB::connection('tokencash');
+        $result = $extDb->table('dat_notificacion')
+        ->select('NOT_TITULO', 'NOT_CUERPO', 'NOT_ACCION')
+        ->where('NOT_ID', $idNot)
+        ->first();
+
+        return $result;
     }
 
     function getNotificationTipo($idNot)
