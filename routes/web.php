@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::get('/reports/users/new-users', [UserReportsController::class, 'newUsers'])->name('reports.users.new');
     Route::get('/reports/users/history', [UserReportsController::class, 'history'])->name('reports.users.history');
+    Route::get('/reports/users/activity', [UserReportsController::class, 'activity'])->name('reports.users.activity'); //Agregar al menu y las vistas.
 
     Route::get('/reports/sales/sales-detail', [SaleReportsController::class, 'detailSales'])->name('reports.sales.detail');
     Route::get('/reports/sales/sales-history', [SaleReportsController::class, 'historySales'])->name('reports.sales.history');
