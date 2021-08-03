@@ -1,5 +1,6 @@
+@dd($campaigns)
 <div>
-    <div class="max-w-screen-md">
+    <div class="flex flex-col max-w-screen-lg">
         <div class="mt-10 sm:mt-0">
             <div class="md:grid md:grid-cols-3 md:gap-6">
                 <div class="md:col-span-3">
@@ -106,14 +107,105 @@
                 </div>
             </div>
         </div>
+
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div class="flex flex-col mt-8">
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            Nombre
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            Tipo
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            Android
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            iOS
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            Fallidas
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                            Exitosas
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($campaigns as $campaign)
+                    <tr>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            {{ $campaign->CAMP_NOMBRE }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($campaign->NOT_TIPO == 'INFORMATIVA')
+                                <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                                Informativa
+                                </span>
+                            @else
+                                <span class="inline-flex px-2 text-xs font-semibold leading-5 text-blue-800 bg-blue-100 rounded-full">
+                                Cupón
+                                </span>
+                            @endif
+
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            {{ $campaign->CAMP_ANDROID }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            {{ $campaign->CAMP_IOS }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            {{ $campaign->CAMP_FALLIDAS }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            {{ $campaign->CAMP_EXITOSAS }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            <div class="flex items-center justify-end space-x-2 lg:space-x-4">
+                                <a href="" class="text-gray-400 hover:text-gray-dark">
+                                    <x-heroicon-s-clock class="w-5 h-5" />
+                                </a>
+                                <a href="" class="text-gray-400 hover:text-gray-dark">
+                                    <x-heroicon-s-chart-square-bar class="w-5 h-5" />
+                                </a>
+                                <a href="" class="text-gray-400 hover:text-red">
+                                    <x-heroicon-s-chat class="w-5 h-5" />
+                                </a>
+                                <a href="" class="text-gray-400 hover:text-red">
+                                    <x-heroicon-s-trash class="w-5 h-5" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            No tienes campañas
+                        </td>
+                    </tr>
+                    @endforelse
+
+
+                    <!-- More people... -->
+                </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
     </div>
-
-
-
-
-
-
-
 
 </div>
 

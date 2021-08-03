@@ -19,11 +19,10 @@ trait Notifications
 
     function sendInfoNotification($idNot, $usuarios)
     {
-        //Guardar registros en la tabla de dat_notificacion_usuario
+        //Guardar registros en la tabla de dat_notificacion_usuario, solo ANDROID
         $this->saveUsers($idNot, array_keys($usuarios));
         //Obtener datos de la notificacion, tabla dat_notificacion
         $notificacion = $this->getNotification($idNot);
-
     }
 
     function sendCouponNotification($idNot, $usuarios)
@@ -31,28 +30,38 @@ trait Notifications
 
     }
 
+
     function saveUsers($idNot, $usuarios)
     {
         $extDb = DB::connection('tokencash_campanas');
-        foreach($usuarios as $usuario)
+        foreach($usuarios as $usuario => $jsonConf)
         {
-            $extDb->table('dat_notificacion_usuario')
-            ->insertOrIgnore([
-                'NOT_USU_TS' => date('Y-m-d H:i:s'),
-                'NOT_USU_UTS' => date('Y-m-d H:i:s'),
-                'NOT_USU_NOTIFICACION_ID' => $idNot,
-                'NOT_USU_USUARIO_ID' => $usuario,
-                'NOT_USU_ESTADO' => '0',
-            ]);
+            $conf = json_decode($jsonConf,true);
+            if($conf['PLATAFORMA'] == 'ANDROID')
+            {
+                $extDb->table('dat_notificacion_usuario')
+                ->insertOrIgnore([
+                    'NOT_USU_TS' => date('Y-m-d H:i:s'),
+                    'NOT_USU_UTS' => date('Y-m-d H:i:s'),
+                    'NOT_USU_NOTIFICACION_ID' => $idNot,
+                    'NOT_USU_USUARIO_ID' => $usuario,
+                    'NOT_USU_ESTADO' => '0',
+                ]);
+            }
         }
+    }
+
+    function medirCampana($notId)
+    {
+
     }
 
     function getCampaigns()
     {
-        $extDb = DB::connection('tokencash_campanas');
+        $extDb = DB::connection('tokencash');
         $result = $extDb->table('dat_campush')
         ->join('dat_notificacion', 'dat_notificacion.NOT_ID', '=', 'dat_campush.CAMP_NOT_ID')
-        ->select(DB::raw('CAMP_NOMBRE, NOT_TIPO, CAMP_FALLIDAS, CAMP_EXITOSAS'))
+        ->select(DB::raw('NOT_ID, TRIM(CAMP_NOMBRE) CAMP_NOMBRE, NOT_TIPO, CAMP_FALLIDAS, CAMP_EXITOSAS, CAMP_ANDROID, CAMP_IOS'))
         ->where('NOT_NODO_ID', '=', '242624')
         ->orderBy('NOT_TS')
         ->get()

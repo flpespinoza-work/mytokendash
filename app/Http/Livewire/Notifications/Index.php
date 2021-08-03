@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Notifications;
 use Livewire\Component;
 use App\Models\Store;
 use App\Traits\Notifications;
+
 class Index extends Component
 {
     use Notifications;
