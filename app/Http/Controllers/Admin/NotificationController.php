@@ -11,4 +11,9 @@ class NotificationController extends Controller
     {
         return view('admin.notifications.index');
     }
+
+    public function stats($campaign)
+    {
+        return view('admin.notifications.stats', ['campaign' => $campaign]);
+    }
 }

@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     // Notificaciones
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::get('/notifications/{notification}/stats', [NotificationController::class, 'stats'])->name('notifications.stats');
 
     // Menus
     Route::get('/menus', [MenuController::class, 'index'])->name('menus');

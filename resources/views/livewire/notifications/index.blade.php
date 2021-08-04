@@ -1,4 +1,3 @@
-@dd($campaigns)
 <div>
     <div class="flex flex-col max-w-screen-lg">
         <div class="mt-10 sm:mt-0">
@@ -175,7 +174,7 @@
                                 <a href="" class="text-gray-400 hover:text-gray-dark">
                                     <x-heroicon-s-clock class="w-5 h-5" />
                                 </a>
-                                <a href="" class="text-gray-400 hover:text-gray-dark">
+                                <a href="{{ route('notifications.stats', $campaign->NOT_ID) }}" class="text-gray-400 hover:text-gray-dark">
                                     <x-heroicon-s-chart-square-bar class="w-5 h-5" />
                                 </a>
                                 <a href="" class="text-gray-400 hover:text-red">
