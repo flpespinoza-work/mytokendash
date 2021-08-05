@@ -16,4 +16,9 @@ class UserReportsController extends Controller
     {
         return view('admin.reports.users.history');
     }
+
+    public function activity()
+    {
+        return view('admin.reports.users.activity');
+    }
 }
