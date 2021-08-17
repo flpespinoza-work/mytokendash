@@ -298,6 +298,38 @@ class StoreTableSeeder extends Seeder
                     'budget' => '340771',
                     'giftcard' => '4448482448'
                 ]
+            ],
+            'Gaxxor' => [
+                [
+                    'name' => 'Shell Arcos del Milenio',
+                    'node' => '242624',
+                    'budget' => 'supra',
+                    'giftcard' => 'SUPRA'
+                ],
+                [
+                    'name' => 'Shell Nogalera',
+                    'node' => '245928',
+                    'budget' => 'isspx',
+                    'giftcard' => 'SNOGA'
+                ],
+                [
+                    'name' => 'Shell Mercado del Mar',
+                    'node' => '245929',
+                    'budget' => 'smm',
+                    'giftcard' => 'SMERCADOMAR'
+                ],
+                [
+                    'name' => 'Shell Etzatlan',
+                    'node' => '254437',
+                    'budget' => 'SETZPRE',
+                    'giftcard' => 'SHELLETZ'
+                ],
+                [
+                    'name' => 'Shell Cuauhtemoc',
+                    'node' => '273193',
+                    'budget' => '273324',
+                    'giftcard' => '3123281304'
+                ]
             ]
         ];
 

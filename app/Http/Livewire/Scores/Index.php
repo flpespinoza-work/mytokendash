@@ -29,11 +29,13 @@ class Index extends Component
         {
             $columnChartModel = (new ColumnChartModel())
                 ->setTitle('Calificaciones')
-                ->addColumn('5', $this->scores['stars_5'], '#f6ad55')
-                ->addColumn('4', $this->scores['stars_4'], '#fc8181')
-                ->addColumn('3', $this->scores['stars_3'], '#90cdf4')
-                ->addColumn('2', $this->scores['stars_2'], '#90cdf4')
-                ->addColumn('1', $this->scores['stars_1'], '#90cdf4')
+                ->setHorizontal(true)
+                ->setDataLabelsEnabled(false)
+                ->addColumn('😆', $this->scores['stars_5'], '#09D17F')
+                ->addColumn('😊', $this->scores['stars_4'], '#A8E485')
+                ->addColumn('😐', $this->scores['stars_3'], '#F7DA38')
+                ->addColumn('😠', $this->scores['stars_2'], '#F7A038')
+                ->addColumn('🤬', $this->scores['stars_1'], '#F54924')
             ;
 
 

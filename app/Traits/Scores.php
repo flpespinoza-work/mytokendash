@@ -43,7 +43,8 @@ trait Scores
 			//Unir los dos resultados
 			$scores = array_merge($scores_a, $scores_b);
         }
-        $scores = $this->orderScores($scores, $finalDate);
+        if(!empty($scores))
+            $scores = $this->orderScores($scores, $finalDate);
         return $scores;
     }
 
@@ -51,9 +52,10 @@ trait Scores
     {
         $extDb = DB::connection('tokencash');
         $commentsArr = [];
-        $reportId = md5(session()->getId());
+        $reportId = fn_generar_reporte_id( implode("",$bolsas) . implode("",$presupuestos) . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
 
-        $commentsArr = cache()->remember('lista-comentarios-nuevos-' . $reportId, 60*60*3, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-nuevos-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
             $extDb->table('dat_comentarios')
             ->join('doc_dbm_ventas', 'doc_dbm_ventas.VEN_ID', '=', 'dat_comentarios.COM_VENTA_ID')
@@ -61,8 +63,8 @@ trait Scores
             ->select(DB::raw('VEN_FECHA_HORA, COM_FECHA_HORA, NOD_USU_NODO, COM_ESTABLECIMIENTO_ID, COM_COMENTARIO, COM_CALIFICACION, COM_VENDEDOR, COM_TIPO, COM_ADICIONAL_ID'))
             ->where('VEN_ESTADO', '=', 'VIGENTE')
             ->where(function($query) use($bolsas, $presupuestos){
-                $query->whereIn('VEN_BOLSA', $bolsas)
-                      ->orWhereIn('VEN_BOLSA', $presupuestos);
+                $query->where('VEN_BOLSA', 'GIFTCARD_' . $bolsas[0])
+                      ->orWhere('VEN_BOLSA', 'PRESUPUESTO_' . $presupuestos[0]);
 
             })
             ->whereBetween('VEN_FECHA_HORA', [$initialDate, $finalDate])
@@ -85,6 +87,7 @@ trait Scores
                     ];
                 }
             });
+
             return $tmpRes;
 
         });
@@ -95,9 +98,10 @@ trait Scores
     {
         $extDb = DB::connection('tokencash');
         $commentsArr = [];
-        $reportId = md5(session()->getId());
+        $reportId = fn_generar_reporte_id( implode("",$bolsas) . implode("",$presupuestos) . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
 
-        $commentsArr = cache()->remember('lista-comentarios-anterior-' . $reportId, 60*60*3, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
+        $commentsArr = cache()->remember('lista-comentarios-anterior-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $bolsas, $presupuestos){
             $tmpRes = [];
             $extDb->table('doc_dbm_ventas')
             ->join('cat_dbm_nodos_usuarios', 'doc_dbm_ventas.VEN_DESTINO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')

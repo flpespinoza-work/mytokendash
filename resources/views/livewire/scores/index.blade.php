@@ -35,7 +35,7 @@
                 </div>
             </form>
         </div>
-        @isset($scores['comments'])
+        @if(isset($scores['comments']))
         <div class="items-center mt-8 space-y-3 sm:space-y-0 sm:space-x-4 sm:flex">
             <div class="w-full p-4 bg-white border border-gray-100 rounded-md shadow-sm sm:w-1/2 md:w-64">
                 <h5 class="text-sm font-medium text-gray-500">Calificaciones Totales </h5>
@@ -55,29 +55,58 @@
             <h5 class="text-base font-medium">Comentarios</h5>
             <div class="mt-8 overflow-x-hidden bg-white border border-gray-300 rounded-md" x-data="{ openTab: 5 }  ">
                 <ul class="flex items-center justify-between border-b border-gray-300">
-                    <li @click="openTab = 5" :class="openTab === 5 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">5</a></li>
-                    <li @click="openTab = 4" :class="openTab === 4 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">4</a></li>
-                    <li @click="openTab = 3" :class="openTab === 3 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">3</a></li>
-                    <li @click="openTab = 2" :class="openTab === 2 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">2</a></li>
-                    <li @click="openTab = 1" :class="openTab === 1 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">1</a></li>
-                    <li @click="openTab = 0" :class="openTab === 0 ? 'bg-white' : 'bg-gray-100'" class="flex-1"><a class="block w-full py-5 font-semibold text-center cursor-pointer text-xxs sm:text-xs">Solo comentarios</a></li>
+                    <li @click="openTab = 5" :class="openTab === 5 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-2 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">
+                            <x-emojis.contento class="w-12 h-12 mx-auto" />
+                        </a>
+                    </li>
+                    <li @click="openTab = 4" :class="openTab === 4 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-2 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">
+                            <x-emojis.feliz class="w-12 h-12 mx-auto" />
+                        </a>
+                    </li>
+                    <li @click="openTab = 3" :class="openTab === 3 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-2 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">
+                            <x-emojis.neutral class="w-12 h-12 mx-auto" />
+                        </a>
+                    </li>
+                    <li @click="openTab = 2" :class="openTab === 2 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-2 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">
+                            <x-emojis.molesto class="w-12 h-12 mx-auto" />
+                        </a>
+                    </li>
+                    <li @click="openTab = 1" :class="openTab === 1 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-2 font-semibold text-center border-r border-gray-300 cursor-pointer sm:text-xs text-xxs md:text-sm">
+                            <x-emojis.enojado class="w-12 h-12 mx-auto" />
+                        </a>
+                    </li>
+                    <li @click="openTab = 0" :class="openTab === 0 ? 'bg-white' : 'bg-gray-100'" class="flex-1">
+                        <a class="block w-full py-6 font-semibold text-center cursor-pointer text-xxs sm:text-xs">Solo comentarios</a>
+                    </li>
                 </ul>
                 <div class="w-full px-16 py-8">
                     @foreach ($scores['comments'] as $score => $comments)
-                        <div class="space-y-2" id="score-{{$score}}" x-show="openTab === {{ $score }}">
+                        <div class="space-y-3" id="score-{{$score}}" x-show="openTab === {{ $score }}">
                             @foreach ($comments as $comment)
-                               <div class="p-4 space-y-3 border rounded-md bg-gray-50">
-                                    <div class="flex items-center space-x-3">
+                               <div class="space-y-3 overflow-hidden border rounded-md">
+                                    <div class="flex items-center p-3 border-b border-gray-200 bg-gray-50">
                                         <p class="font-semibold text-gray-600 text-xxs">{{ $comment['FECHA_COMENTARIO'] }}</p>
-                                        <p class="inline-flex px-2 py-1 font-medium rounded-full bg-orange-lightest text-orange-dark text-xxs">Usuario: {{ $comment['USUARIO'] }}</p>
+                                        <p class="inline-flex px-2 py-1 font-medium rounded-full bg-orange-lightest text-orange-darker text-xxs mx-1.5">Usuario: {{ $comment['USUARIO'] }}</p>
                                         @if ($comment['TIPO_VENTA'] == 'CANJE')
                                         <p class="inline-flex px-2 py-1 font-medium text-green-600 lowercase bg-green-100 rounded-full text-xxs">{{ $comment['TIPO_VENTA'] }}</p>
                                         @else
                                         <p class="inline-flex px-2 py-1 font-medium text-blue-600 lowercase bg-blue-100 rounded-full text-xxs">{{ $comment['TIPO_VENTA'] }}</p>
                                         @endif
+                                        <button class="flex items-center ml-auto text-xs font-medium text-gray-600">
+                                            <x-heroicon-s-chat class="w-4 h-4"/>
+                                            <span class="mr-1">Responder</span>
+                                        </button>
                                     </div>
-                                    <p class="text-xs">Atendió: <span class="text-xxs">{{ $comment['VENDEDOR'] }}</span></p>
-                                    <p class="text-xs sm:text-sm md:text-base">{{ $comment['COMENTARIO'] }}</p>
+                                    <div class="px-4 py-2 space-y-2 bg-white">
+                                        <p class="text-xs">Atendió: <span class="text-xxs">{{ $comment['VENDEDOR'] }}</span></p>
+                                        <p class="text-xs sm:text-sm">{{ $comment['COMENTARIO'] }}</p>
+                                    </div>
+
                                 </div>
                             @endforeach
                         </div>
@@ -85,7 +114,11 @@
                 </div>
             </div>
         </div>
-        @endisset
+        @else
+        <div class="w-full p-3 mt-12">
+            <h3 class="text-center">No hay comentarios y calificaciones para este establecimiento en las fechas indicadas</h3>
+        </div>
+        @endif
     </div>
 </div>
 

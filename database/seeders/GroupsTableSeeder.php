@@ -35,6 +35,9 @@ class GroupsTableSeeder extends Seeder
             ],
             [
                 'name' => 'ATH'
+            ],
+            [
+                'name' => 'Gaxxor'
             ]
         ];
 

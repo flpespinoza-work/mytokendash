@@ -52,8 +52,14 @@ trait Sales
                     ];
                 }
             });
-            $tmpRes['TOTALS'] = $totalSales;
-            $tmpRes['TOTALS']['average_sale'] = $totalSales['ammount'] / $totalSales['sales'];
+
+            if(count($tmpRes))
+            {
+                $tmpRes['TOTALS'] = $totalSales;
+                $tmpRes['TOTALS']['average_sale'] = $totalSales['ammount'] / $totalSales['sales'];
+            }
+
+
             return $tmpRes;
         });
 
