@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use App\Models\Store;
 use App\Models\Group;
-
+use Illuminate\Support\Facades\Date;
 
 //Obtener establecimientos desde dbm tokencash
 if(!function_exists('fn_obtener_establecimientos_tokencash'))
@@ -86,6 +86,14 @@ if(!function_exists('fn_obtener_nodo_establecimiento'))
     }
 }
 
+if(!function_exists('fn_generar_listado'))
+{
+    function fn_generar_listado()
+    {
+        return false;
+    }
+}
+
 
 //Generar identificador para los reportes
 if(!function_exists('fn_generar_reporte_id'))
@@ -96,6 +104,14 @@ if(!function_exists('fn_generar_reporte_id'))
     }
 }
 
+if(!function_exists('fn_upload_image'))
+{
+    function fn_upload_image()
+    {
+        return 'Subir archivo';
+    }
+}
+
 //Generar la cantidad de minutos que un reporte estara en la cache
 if(!function_exists('fn_recordar_reporte_tiempo'))
 {
@@ -103,9 +119,9 @@ if(!function_exists('fn_recordar_reporte_tiempo'))
     {
         if(date('Y-m-d') > date('Y-m-d', strtotime($fecha)))
         {
-            return 60*10; //10 minutos para reportes de hoy
+            return  Date::now()->addMinutes(10);
         }
 
-        return 60*60*24*7; // 7 dias para reportes anteriores
+        return Date::now()->addWeek();
     }
 }
