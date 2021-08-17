@@ -12,6 +12,7 @@ class Balance extends Component
     public function render()
     {
         $balance = $this->getBalance();
+        dd($balance);
         return view('livewire.reports.balance.balance', compact('balance'));
     }
 }
