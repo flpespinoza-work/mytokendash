@@ -13,16 +13,11 @@ class Dashboard extends Component
     public function mount()
     {
         $this->stores = Store::all()->pluck('id', 'name')->toArray();
+        $this->store = $this->stores[array_key_first($this->stores)];
     }
 
     public function render()
     {
-        $this->store = $this->stores[array_key_first($this->stores)];
         return view('livewire.dashboard');
-    }
-
-    public function updateStore()
-    {
-        $this->emitTo('dashboard.cupones-impresos', 'updateStore', $this->store);
     }
 }

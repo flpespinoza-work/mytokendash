@@ -11,8 +11,6 @@ class CuponesImpresos extends Component
 
     public $store;
 
-    protected $listeners = ['updateStore'];
-
     public function mount($store)
     {
         $this->store = $store;
@@ -23,11 +21,5 @@ class CuponesImpresos extends Component
         $coupons = [];
         $coupons = $this->getTodayPrintedCoupons([$this->store])->toArray();
         return view('livewire.dashboard.cupones-impresos')->with(['coupons' => $coupons[0]]);
-    }
-
-    public function updateStore($store)
-    {
-        dd($store);
-        $this->store = $store;
     }
 }

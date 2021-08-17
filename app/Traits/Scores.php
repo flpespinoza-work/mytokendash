@@ -245,7 +245,7 @@ trait Scores
 
         //Ordenar comantarios en stars
         uksort($stars['comments'], function($a, $b){
-            return $a < $b;
+            return $a <=> $b;
         });
 
         return $stars;
