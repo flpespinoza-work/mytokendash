@@ -74,7 +74,7 @@
                                 <a href="{{ route('users.edit', $user) }}" class="text-gray-400 hover:text-gray-dark">
                                     <x-heroicon-s-pencil-alt class="w-5 h-5" />
                                 </a>
-                                <a href="{{ route('users.edit', $user) }}" class="text-gray-400 hover:text-red">
+                                <a href="#" wire:click="delete({{$user->id}})" class="text-gray-400 hover:text-red">
                                     <x-heroicon-s-trash class="w-5 h-5" />
                                 </a>
                             </div>

@@ -112,7 +112,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Roles y permisos',
                 'order' => 1,
                 'icon' => 'heroicon-s-identification',
-                'route' => null,
+                'route' => 'roles.index',
                 'route-group' => null
             ],
             [
@@ -125,10 +125,10 @@ class MenusTableSeeder extends Seeder
             ],
             [
                 'menu_id' => 3,
-                'name' => 'Menús',
+                'name' => 'Menús y Roles',
                 'order' => 3,
                 'icon' => 'heroicon-s-menu-alt-2',
-                'route' => null,
+                'route' => 'menus.roles',
                 'route-group' => null
             ],
             [
@@ -136,7 +136,7 @@ class MenusTableSeeder extends Seeder
                 'name' => 'Respuestas',
                 'order' => 4,
                 'icon' => 'heroicon-s-chat-alt',
-                'route' => null,
+                'route' => 'responses.index',
                 'route-group' => null
             ],
             [
@@ -153,6 +153,14 @@ class MenusTableSeeder extends Seeder
                 'order' => 1,
                 'icon' => null,
                 'route' => 'reports.users.history',
+                'route-group' => null
+            ],
+            [
+                'menu_id' => 7,
+                'name' => 'Actividad de usuario',
+                'order' => 2,
+                'icon' => null,
+                'route' => 'reports.users.activity',
                 'route-group' => null
             ],
             [

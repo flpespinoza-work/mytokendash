@@ -17,6 +17,7 @@ class CreateResponsesTable extends Migration
             $table->id();
             $table->string('response');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

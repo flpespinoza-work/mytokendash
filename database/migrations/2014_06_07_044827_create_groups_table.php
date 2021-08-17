@@ -20,6 +20,7 @@ class CreateGroupsTable extends Migration
             $table->string('contact_phone', 10)->nullable();
             $table->string('contact_email', 256)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

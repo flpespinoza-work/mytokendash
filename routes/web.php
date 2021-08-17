@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SaleReportsController;
 use App\Http\Controllers\Admin\BalanceReportsController;
 use App\Http\Controllers\Admin\GlobalReportsController;
 use App\Http\Controllers\Admin\ScoreController;
+use App\Http\Controllers\Admin\RoleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,52 +35,54 @@ Route::group(['middleware' => ['auth']], function(){
     })->name('dashboard');
 
     // Notificaciones
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
-    Route::get('/notifications/{notification}/stats', [NotificationController::class, 'stats'])->name('notifications.stats');
+    Route::get('/notificaciones', [NotificationController::class, 'index'])->name('notifications');
+    Route::get('/notificaciones/{notification}/estadisticas', [NotificationController::class, 'stats'])->name('notifications.stats');
 
-    // Menus
-    Route::get('/menus', [MenuController::class, 'index'])->name('menus');
+    // Menus, Roles y Permisos
+    //Route::get('/menus', [MenuController::class, 'index'])->name('menus');
     Route::get('/menus-roles', [MenuController::class, 'roles'])->name('menus.roles');
+    Route::resource('roles', RoleController::class, ['except' => ['store', 'update', 'destroy']]);
+
 
     // Users
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
+    Route::get('/usuarios/crear', [UserController::class, 'create'])->name('users.create');
+    Route::get('/usuarios/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/usuarios/{user}/editar', [UserController::class, 'edit'])->name('users.edit');
 
     // Grupos
-    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-    Route::get('/groups/create', [GroupController::class, 'create'])->name('groups.create');
-    Route::get('/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
-    Route::get('/groups/{group}/show', [GroupController::class, 'show'])->name('groups.show');
-    Route::get('/groups/{group}/stores/create', [GroupController::class, 'store'])->name('groups.store');
+    Route::get('/grupos', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/grupos/crear', [GroupController::class, 'create'])->name('groups.create');
+    Route::get('/grupos/{group}/editar', [GroupController::class, 'edit'])->name('groups.edit');
+    Route::get('/grupos/{group}', [GroupController::class, 'show'])->name('groups.show');
+    Route::get('/grupos/{group}/establecimientos/crear', [GroupController::class, 'store'])->name('groups.store');
 
     //Respuestas
-    Route::get('/responses', [ResponseController::class, 'index'])->name('responses.index');
+    Route::get('/respuestas', [ResponseController::class, 'index'])->name('responses.index');
 
     //Calificaciones
-    Route::get('/scores', [ScoreController::class, 'scores'])->name('scores');
+    Route::get('/calificaciones', [ScoreController::class, 'scores'])->name('scores');
 
     //Reportes
-    Route::get('/reports/coupons/printed', [CouponReportsController::class, 'printed'])->name('reports.coupons.printed');
-    Route::get('/reports/coupons/redeemed', [CouponReportsController::class, 'redeemed'])->name('reports.coupons.redeemed');
-    Route::get('/reports/coupons/last-printed', [CouponReportsController::class, 'lastPrinted'])->name('reports.coupons.last-printed');
-    Route::get('/reports/coupons/printed-redeemed', [CouponReportsController::class, 'printedRedeemed'])->name('reports.coupons.printed-redeemed');
-    Route::get('/reports/coupons/detail-redeemed', [CouponReportsController::class, 'detailRedeemed'])->name('reports.coupons.detail-redeemed');
-    Route::get('/reports/coupons/printed-redeemed-history', [CouponReportsController::class, 'printedRedeemedHistory'])->name('reports.coupons.printed-redeemed-history');
+    Route::get('/reportes/cupones/impresos', [CouponReportsController::class, 'printed'])->name('reports.coupons.printed');
+    Route::get('/reportes/cupones/canjeados', [CouponReportsController::class, 'redeemed'])->name('reports.coupons.redeemed');
+    Route::get('/reportes/cupones/ultimo-impreso', [CouponReportsController::class, 'lastPrinted'])->name('reports.coupons.last-printed');
+    Route::get('/reportes/cupones/impresos-canjeados', [CouponReportsController::class, 'printedRedeemed'])->name('reports.coupons.printed-redeemed');
+    Route::get('/reportes/cupones/detalle-canjes', [CouponReportsController::class, 'detailRedeemed'])->name('reports.coupons.detail-redeemed');
+    Route::get('/reportes/cupones/historico', [CouponReportsController::class, 'printedRedeemedHistory'])->name('reports.coupons.printed-redeemed-history');
 
-    Route::get('/reports/users/new-users', [UserReportsController::class, 'newUsers'])->name('reports.users.new');
-    Route::get('/reports/users/history', [UserReportsController::class, 'history'])->name('reports.users.history');
-    Route::get('/reports/users/activity', [UserReportsController::class, 'activity'])->name('reports.users.activity'); //Agregar al menu y las vistas.
+    Route::get('/reportes/usuarios/nuevos', [UserReportsController::class, 'newUsers'])->name('reports.users.new');
+    Route::get('/reportes/usuarios/historico', [UserReportsController::class, 'history'])->name('reports.users.history');
+    Route::get('/reportes/usuarios/actividad', [UserReportsController::class, 'activity'])->name('reports.users.activity'); //Agregar al menu y las vistas.
 
-    Route::get('/reports/sales/sales-detail', [SaleReportsController::class, 'detailSales'])->name('reports.sales.detail');
-    Route::get('/reports/sales/sales-history', [SaleReportsController::class, 'historySales'])->name('reports.sales.history');
-    Route::get('/reports/sales/sales', [SaleReportsController::class, 'sales'])->name('reports.sales.sales');
+    Route::get('/reportes/ventas/detalle-ventas', [SaleReportsController::class, 'detailSales'])->name('reports.sales.detail');
+    Route::get('/reportes/ventas/historico', [SaleReportsController::class, 'historySales'])->name('reports.sales.history');
+    Route::get('/reportes/ventas/ventas', [SaleReportsController::class, 'sales'])->name('reports.sales.sales');
 
-    Route::get('/reports/balance', [BalanceReportsController::class, 'balance'])->name('reports.balance');
+    Route::get('/reportes/saldo', [BalanceReportsController::class, 'balance'])->name('reports.balance');
 
-    Route::get('/reports/globals.redeems', [GlobalReportsController::class, 'redeems'])->name('reports.globals.redeems');
-    Route::get('/reports/globals.registers', [GlobalReportsController::class, 'registers'])->name('reports.globals.registers');
+    Route::get('/reportes/globales/redeems', [GlobalReportsController::class, 'redeems'])->name('reports.globals.redeems');
+    Route::get('/reportes/globales/registers', [GlobalReportsController::class, 'registers'])->name('reports.globals.registers');
 
 
 });

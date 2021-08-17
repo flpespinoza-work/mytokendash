@@ -16,14 +16,26 @@ class GroupsTableSeeder extends Seeder
     {
         $groups = [
             [
-                'name' => 'Gasomax'
+                'name' => 'ATG'
             ],
             [
-                'name' => 'Shell'
+                'name' => 'Euro'
             ],
             [
-                'name' => 'Redpetroil'
+                'name' => 'Hormadi'
             ],
+            [
+                'name' => 'Servicio El Milagro'
+            ],
+            [
+                'name' => 'Guerra'
+            ],
+            [
+                'name' => 'Petro'
+            ],
+            [
+                'name' => 'ATH'
+            ]
         ];
 
         DB::table('groups')->insert($groups);

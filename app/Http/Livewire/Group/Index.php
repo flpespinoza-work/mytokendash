@@ -10,6 +10,9 @@ class Index extends Component
 {
     use WithPagination;
 
+    protected $listeners = ['groupAdded'];
+
+
     protected $queryString = [
         'search' => [
             'except' => '',
@@ -28,5 +31,10 @@ class Index extends Component
                 ->simplePaginate($this->perPage);
 
         return view('livewire.group.index', compact('groups'));
+    }
+
+    public function groupAdded($group)
+    {
+        Group::create($group);
     }
 }

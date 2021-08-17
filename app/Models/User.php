@@ -5,13 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     protected $guarded = [];
 
@@ -27,11 +28,6 @@ class User extends Authenticatable
     public function group()
     {
         return $this->belongsTo(Group::class);
-    }
-
-    public function subgroups()
-    {
-        return $this->belongsToMany(SubGroup::class, 'subgroup_user', 'user_id', 'subgroup_id');
     }
 
     public function stores()

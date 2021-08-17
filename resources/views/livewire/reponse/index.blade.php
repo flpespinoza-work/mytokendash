@@ -29,9 +29,6 @@
                         </x-table.cell>
                         <x-table.cell>
                             <div class="flex items-center justify-end space-x-2 lg:space-x-4">
-                                <a href="#" class="text-gray-400 hover:text-gray-dark">
-                                    <x-heroicon-s-pencil-alt class="w-5 h-5" />
-                                </a>
                                 <a href="#" wire:click="confirmResponseDeletion({{$response->id}})" class="text-gray-400 hover:text-red">
                                     <x-heroicon-s-trash class="w-5 h-5" />
                                 </a>

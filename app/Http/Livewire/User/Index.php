@@ -31,4 +31,9 @@ class Index extends Component
 
         return view('livewire.user.index', compact('users'));
     }
+
+    public function delete(User $user)
+    {
+        $user->delete();
+    }
 }

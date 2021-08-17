@@ -4,8 +4,10 @@
     </td>
     @foreach ($roles as $role)
         <td class="text-center">
-            <input type="checkbox" name="menu_rol[]"
+            <input type="checkbox"
+            name="menu_rol[{{ $menu['id'] }}]"
             value="{{ $role['id'] }}"
+            wire:click="$emitSelf('toggleMenuRole', {{ $role['id'] }}, {{ $menu['id'] }}, $event.target.checked)"
             class="border-2 border-gray-300 rounded-md"
             {{in_array($role['id'], array_column($menuRoles[$menu["id"]], "id"))? "checked" : ""}}
             >

@@ -3,4 +3,7 @@
     <div>
         <livewire:group.index />
     </div>
+    <div>
+        <livewire:group-modal />
+    </div>
 </x-admin-layout>

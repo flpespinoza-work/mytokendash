@@ -2,9 +2,9 @@
     <div class="flex flex-col w-full pb-10">
         <div class="flex items-end w-full">
             <form class="items-end flex-1 md:flex" wire:submit.prevent="getScoreList">
-                <div class="w-1/5 px-2 space-y-2">
+                <div class="w-1/5 px-2 space-y-2" wire:ignore>
                     <label for="store" class="block text-sm font-medium text-gray-700">Establecimientos</label>
-                    <select wire:model.defer="store" id="store" name="store" autocomplete="store" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <select id="store" name="store" autocomplete="store" class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         <option></option>
                         @foreach ($stores as $store => $name)
                         <option value="{{ $store }}">{{ $name }}</option>
@@ -100,6 +100,14 @@
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 
     <script>
+            $(document).ready(function() {
+                $('#store').select2();
+                $('#store').on('change', function (e) {
+                    var data = $('#store').select2("val");
+                    @this.set('store', data);
+                });
+            });
+
     var startDate,
         endDate,
         updateStartDate = function() {

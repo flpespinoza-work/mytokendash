@@ -4,16 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Store extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
-    public function subgroup()
+    public function group()
     {
-        return $this->belongsTo(SubGroup::class, 'subgroup_id', 'id');
+        return $this->belongsTo(Group::class);
     }
 
     public function users()

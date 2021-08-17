@@ -19,7 +19,7 @@ class Index extends Component
 
     protected function rules() {
         return [
-            'response' => 'required|max:120|unique:'
+            'response' => 'required|max:120'
         ];
     }
 
@@ -28,15 +28,9 @@ class Index extends Component
         'response.max' => 'El mensaje no debe sobrepasar los 120 caracteres',
     ];
 
-    private function resetForm()
-    {
-        $this->response = '';
-    }
-
     public function render()
     {
         $responses = Response::paginate($this->perPage);
-        //dd($this->responses);
         return view('livewire.reponse.index', compact('responses'));
     }
 
@@ -49,12 +43,11 @@ class Index extends Component
                 'response' => $this->response
             ]);
 
-            $this->resetForm();
-            session()->flash('success', 'Respuesta creada');
+            $this->reset();
         }
         catch(\Illuminate\Database\QueryException $e)
         {
-
+            dd($e);
         }
     }
 
@@ -67,7 +60,6 @@ class Index extends Component
     {
         $response->delete();
         $this->deletingResponse = false;
-        session()->flash('success', 'Registro eliminado');
     }
 
 }

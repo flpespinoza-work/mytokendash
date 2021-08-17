@@ -65,6 +65,12 @@
                         <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
                           Nodo
                         </th>
+                        <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
+                            Giftcard
+                          </th>
+                          <th scope="col" class="px-3 py-2 text-sm font-medium tracking-wider text-left text-gray-500 capitalize lg:py-3 lg:px-6">
+                            Presupuesto
+                          </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -74,8 +80,14 @@
                           {{ $store->name }}
                         </td>
                         <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
-                          {{ $store->tokencash_nodo }}
+                          {{ $store->tokencash_node }}
                         </td>
+                        <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
+                            {{ $store->giftcard }}
+                          </td>
+                          <td class="px-3 py-2 text-sm lg:px-6 lg:py-3 whitespace-nowrap">
+                            {{ $store->budget }}
+                          </td>
                       </tr>
                       @empty
                       <tr>
