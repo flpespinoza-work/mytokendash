@@ -20,7 +20,6 @@ class CuponesImpresos extends Component
     {
         $coupons = [];
         $coupons = $this->getTodayPrintedCoupons($this->store)->toArray();
-        //dd(count($coupons));
         if(count($coupons) < 1)
         {
             $coupons['CUPONES'] = 0;

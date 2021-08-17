@@ -13,7 +13,7 @@ class Dashboard extends Component
     public function mount()
     {
         $this->stores = Store::all()->pluck('id', 'name')->toArray();
-        $this->store = $this->stores[array_key_first($this->stores)];
+        $this->store = 46;
     }
 
     public function render()
