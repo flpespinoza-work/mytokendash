@@ -170,7 +170,7 @@ trait Scores
     {
         //Ordenar por calificacion
         usort($scoresArr['COMMENTS'], function($a, $b){
-            return $a['CALIFICACION'] > $b['CALIFICACION'];
+            return $a['CALIFICACION'] <=> $b['CALIFICACION'];
         });
 
         //Ordernar comentarios por fecha
