@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Menu;
 use App\Models\Menu;
 use Livewire\Component;
 use App\Models\Role;
+use Illuminate\Support\Facades\Cache;
 
 class Roles extends Component
 {
@@ -28,5 +29,7 @@ class Roles extends Component
         else{
             $m->roles()->detach($role);
         }
+
+        cache()->tags('Menu')->forget("MenuSidebar.roleid.$role");
     }
 }

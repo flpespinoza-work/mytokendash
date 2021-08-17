@@ -31,7 +31,12 @@
                 </div>
 
                 <div class="w-1/5 px-2">
-                    <button type="submit" class="px-5 py-2 text-sm font-semibold bg-gray-700 rounded-md text-gray-50">Generar reporte</button>
+                    <button type="submit" class="flex items-center px-5 py-2 text-sm font-semibold bg-gray-700 rounded-md text-gray-50">
+                        <span wire:loading wire:target="getScoreList" class="mr-2">
+                            <x-loader class="w-5 h-5"/>
+                        </span>
+                        Generar reporte
+                    </button>
                 </div>
             </form>
         </div>
@@ -46,9 +51,14 @@
                 <span class="inline-block mt-2 text-lg font-semibold text-gray-dark md:text-xl xl:text-5xl">{{ $scores['scorePromedio'] }} %</span>
             </div>
         </div>
+        <div class="items-center md:flex md:space-x-2">
+            <div class="w-full p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:w-2/4 h-96">
+                <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model="$columnChartModel"/>
+            </div>
 
-        <div class="w-full p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:w-2/4 h-96">
-            <livewire:livewire-column-chart key="{{ $columnChartModel->reactiveKey() }}" :column-chart-model="$columnChartModel"/>
+            <div class="w-full p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:w-2/4 h-96">
+                <livewire:livewire-column-chart key="{{ $columnChartModelScore->reactiveKey() }}" :column-chart-model="$columnChartModelScore"/>
+            </div>
         </div>
 
         <div class="flex flex-col mt-10">
