@@ -11,8 +11,6 @@ class Pagos extends Component
 
     public $store;
 
-    protected $listeners = ['updateStore'];
-
     public function mount($store)
     {
         $this->store = $store;
@@ -29,8 +27,4 @@ class Pagos extends Component
         return view('livewire.dashboard.pagos')->with(['sales' => $sales]);
     }
 
-    public function updateStore($store)
-    {
-        $this->store = $store;
-    }
 }

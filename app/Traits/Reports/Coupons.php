@@ -220,12 +220,12 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getTodayRedeemedCoupons()
+    function getTodayRedeemedCoupons($establecimiento)
     {
         $extDb = DB::connection('tokencash');
         $initialDate = date('Y-m-d 00:00:00');
         $finalDate = date('Y-m-d H:i:s');
-        $giftcards = ['SUPRA'];
+        $giftcards = fn_obtener_giftcards($establecimiento, true);
         $couponsArr = [];
 
         $couponsArr = $extDb->table('dat_cupones')
@@ -293,10 +293,10 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getTodayPrintedDetailCoupons($presupuestos)
+    function getTodayPrintedDetailCoupons($establecimiento)
     {
         $extDb = DB::connection('tokencash');
-        $presupuestos = ['supra'];
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
         $couponsArr = [];
 
         $couponsArr = $extDb->table('dat_cupones')
@@ -312,12 +312,12 @@ trait Coupons
         return $couponsArr;
     }
 
-    function getTodayPrintedCoupons($presupuestos)
+    function getTodayPrintedCoupons($establecimiento)
     {
         $extDb = DB::connection('tokencash');
         $initialDate = date('Y-m-d 00:00:00');
         $finalDate = date('Y-m-d H:i:s');
-        $presupuestos = ['supra'];
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
         $couponsArr = [];
 
         $couponsArr = $extDb->table('dat_cupones')

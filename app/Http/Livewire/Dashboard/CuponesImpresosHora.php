@@ -22,7 +22,8 @@ class CuponesImpresosHora extends Component
          * Obtener desde el inicio del dia y agrupar por hora
          */
         $lineChartModel = null;
-        $coupons = $this->getTodayPrintedDetailCoupons([$this->store]);
+        $coupons = null;
+        $coupons = $this->getTodayPrintedDetailCoupons($this->store);
         //dd($coupons);
         $lineChartModel = $coupons->reduce(function (LineChartModel $lineChartModel, $data) {
 
