@@ -175,7 +175,7 @@ trait Scores
 
         //Ordernar comentarios por fecha
         usort($scoresArr['COMMENTS'], function($a, $b){
-            return $a['FECHA_COMENTARIO'] < $b['FECHA_COMENTARIO'];
+            return $a['FECHA_COMENTARIO'] <=> $b['FECHA_COMENTARIO'];
         });
 
         //Puntuacion para calificaciones
