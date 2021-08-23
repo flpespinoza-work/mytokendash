@@ -380,5 +380,53 @@ trait Coupons
         });
         return $couponsArr;
     }
+
+    function getPrintedCouponsAlt($establecimiento, $initialDate, $finalDate, $period = false)
+    {
+        $extDb = DB::connection('tokencash_vistas');
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
+        $presupuestos = fn_obtener_presupuestos($establecimiento); //['supra']
+        $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
+        $couponsArr = [];
+
+        $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $presupuestos){
+            $tmpRes = [];
+            $totales = [ 'printed_coupons' => 0, 'printed_ammount' => 0];
+            $extDb->table('reporte_cupones_impresos')
+            ->select(DB::raw('DATE_FORMAT(CUP_TS, "%d/%m/%Y") DIA, COUNT(CUP_PRESUPUESTO) CUPONES, SUM(CUP_ADI_AMOUNT) MONTO'))
+            ->whereIn('CUP_PRESUPUESTO', $presupuestos)
+            ->whereBetween('CUP_TS', [$initialDate, $finalDate])
+            ->groupBy('DIA', 'CUP_PRESUPUESTO')
+            ->orderBy('DIA')
+            ->orderBy('CUP_PRESUPUESTO')
+            ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
+                foreach($coupons as $coupon)
+                {
+                    $totales['printed_coupons'] += $coupon->CUPONES;
+                    $totales['printed_ammount'] += $coupon->MONTO;
+                    $tmpRes['REGISTROS'][$coupon->DIA] = [
+                        'DIA' => $coupon->DIA,
+                        'CUPONES' => $coupon->CUPONES,
+                        'MONTO_IMPRESO' => $coupon->MONTO
+                    ];
+                }
+            });
+            $tmpRes['TOTALS'] = $totales;
+            $tmpRes['TOTALS']['average_ammount'] = $totales['printed_ammount'] / $totales['printed_coupons'];
+            return $tmpRes;
+        });
+        return $couponsArr;
+    }
 }
 

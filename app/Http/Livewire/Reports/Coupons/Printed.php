@@ -63,7 +63,7 @@ class Printed extends Component
 
     public function generateReport()
     {
-        $this->coupons = $this->getPrintedCoupons($this->store, $this->initialDate, $this->finalDate, $this->period);
+        $this->coupons = $this->getPrintedCouponsAlt($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()
