@@ -32,7 +32,12 @@
             </div>
 
             <div class="w-1/5 px-2">
-                <button type="submit" class="px-5 py-2 text-sm font-semibold bg-gray-700 rounded-md text-gray-50">Generar reporte</button>
+                <button type="submit" class="flex items-center px-5 py-2 text-sm font-semibold bg-gray-700 rounded-md text-gray-50">
+                    <span wire:loading wire:target="generateReport" class="mr-2">
+                        <x-loader class="w-5 h-5"/>
+                    </span>
+                    Generar reporte
+                </button>
             </div>
         </form>
 
