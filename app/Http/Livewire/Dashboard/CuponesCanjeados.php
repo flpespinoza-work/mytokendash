@@ -18,7 +18,11 @@ class CuponesCanjeados extends Component
 
     public function render()
     {
-        $coupons = $this->getTodayRedeemedCoupons($this->store)->toArray();
-        return view('livewire.dashboard.cupones-canjeados')->with(['coupons' => $coupons[0]]);
+        $coupons = null;
+        $coupons = $this->getTodayRedeemedCouponsAlt($this->store);
+        if(!empty($coupons))
+            $coupons = $coupons[0];
+
+        return view('livewire.dashboard.cupones-canjeados')->with(['coupons' => $coupons]);
     }
 }

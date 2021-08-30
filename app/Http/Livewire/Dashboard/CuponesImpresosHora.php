@@ -23,8 +23,7 @@ class CuponesImpresosHora extends Component
          */
         $lineChartModel = null;
         $coupons = null;
-        $coupons = $this->getTodayPrintedDetailCoupons($this->store);
-        //dd($coupons);
+        $coupons = $this->getTodayPrintedDetailCouponsAlt($this->store);
         $lineChartModel = $coupons->reduce(function (LineChartModel $lineChartModel, $data) {
 
             $lineChartModel->addSeriesPoint($data->PRESUPUESTO, $data->TIEMPO_CUPON, $data->CUPONES);

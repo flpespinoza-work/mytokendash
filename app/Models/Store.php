@@ -21,4 +21,14 @@ class Store extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return "GIFTCARD_{$this->giftcard}";
+    }
+
+    public function getFullPresupuestoAttribute()
+    {
+        return "PRESUPUESTO_{$this->budget}";
+    }
 }

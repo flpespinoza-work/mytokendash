@@ -58,13 +58,17 @@
             <h5 class="text-sm font-medium text-gray-500">Promedio por cupón:</h5>
             <span class="inline-block mt-2 text-lg font-semibold text-gray-darker md:text-xl xl:text-2xl">${{ number_format($coupons['TOTALS']['average_ammount'], 3) }} </span>
         </div>
+        <div class="w-1/2 p-4 bg-white border border-gray-100 rounded-md shadow-sm md:w-64">
+            <h5 class="text-sm font-medium text-gray-500">Promedio de venta:</h5>
+            <span class="inline-block mt-2 text-lg font-semibold text-gray-darker md:text-xl xl:text-2xl">${{ number_format($coupons['TOTALS']['average_sale'], 3) }} </span>
+        </div>
     </div>
     <div class="items-center w-full md:flex md:space-x-8">
         <div class="w-full h-56 p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:w-1/2 md:h-96">
-            <livewire:livewire-line-chart :line-chart-model="$lineChartModel"/>
+            <livewire:livewire-area-chart :area-chart-model="$lineChartModel" :wire:key="time().$store"/>
         </div>
         <div class="w-full h-56 p-3 mt-5 bg-white border border-gray-100 rounded-md shadow-sm md:w-1/2 md:h-96">
-            <livewire:livewire-line-chart :line-chart-model="$montoChartModel"/>
+            <livewire:livewire-area-chart :area-chart-model="$montoChartModel" :wire:key="time().$store"/>
         </div>
     </div>
     <div class="mt-10 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -94,7 +98,7 @@
                         {{ $coupon['CUPONES'] }}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {{ $coupon['MONTO_IMPRESO'] }}
+                        ${{ $coupon['MONTO_IMPRESO'] }}
                     </td>
                 </tr>
                 @empty

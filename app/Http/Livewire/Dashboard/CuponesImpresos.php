@@ -18,13 +18,10 @@ class CuponesImpresos extends Component
 
     public function render()
     {
-        $coupons = [];
-        $coupons = $this->getTodayPrintedCoupons($this->store)->toArray();
-        if(count($coupons) < 1)
-        {
-            $coupons['CUPONES'] = 0;
-            $coupons['MONTO'] = 0;
-        }
+        $coupons = null;
+        $coupons = $this->getTodayPrintedCouponsAlt($this->store);
+        if(!empty($coupons))
+            $coupons = $coupons[0];
 
         return view('livewire.dashboard.cupones-impresos')->with(['coupons' => $coupons]);
     }

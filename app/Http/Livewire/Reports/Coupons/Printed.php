@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Reports\Coupons;
 use App\Exports\PrintedCouponsExport;
 use Livewire\Component;
 use App\Traits\Reports\Coupons;
-use Asantibanez\LivewireCharts\Models\LineChartModel;
+use Asantibanez\LivewireCharts\Models\AreaChartModel;
 use App\Models\Store;
 
 class Printed extends Component
@@ -28,13 +28,16 @@ class Printed extends Component
     {
         if(isset($this->coupons['REGISTROS']))
         {
+            $lineChartModel = null;
+            $montoChartModel = null;
+
             $couponsList = collect($this->coupons['REGISTROS']);
 
-            $lineChartModel = $couponsList->reduce(function (LineChartModel $lineChartModel, $data, $key) use($couponsList) {
+            $lineChartModel = $couponsList->reduce(function (AreaChartModel $lineChartModel, $data, $key) use($couponsList) {
                 $coupon = $couponsList[$key];
 
                 return $lineChartModel->addPoint($key, $coupon['CUPONES']);
-            }, (new LineChartModel())
+            }, (new AreaChartModel())
                 ->setTitle('Cupones impresos')
                 ->setAnimated(true)
                 ->setSmoothCurve()
@@ -42,16 +45,16 @@ class Printed extends Component
                 ->setXAxisVisible(true)
             );
 
-            $montoChartModel = $couponsList->reduce(function (LineChartModel $montoChartModel, $data, $key) use($couponsList) {
+            $montoChartModel = $couponsList->reduce(function (AreaChartModel $montoChartModel, $data, $key) use($couponsList) {
                 $coupon = $couponsList[$key];
-
                 return $montoChartModel->addPoint($key, $coupon['MONTO_IMPRESO']);
-            }, (new LineChartModel())
+            }, (new AreaChartModel())
                 ->setTitle('Dinero impreso')
                 ->setAnimated(true)
                 ->setSmoothCurve()
                 ->withGrid()
                 ->setXAxisVisible(true)
+                ->setColor('#CF0924')
             );
 
             return view('livewire.reports.coupons.printed')->with(['lineChartModel' => $lineChartModel, 'montoChartModel' => $montoChartModel]);

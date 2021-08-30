@@ -67,6 +67,64 @@ trait Coupons
         return mb_convert_encoding($couponsArr, 'UTF-8', 'UTF-8');
     }
 
+    function getRedemedCouponsDetailAlt($establecimiento, $initialDate, $finalDate, $period = false)
+    {
+        $extDb = DB::connection('tokencash');
+        $couponsArr = [];
+
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
+        $bolsas = fn_obtener_giftcards($establecimiento, true);
+        $reportId = fn_generar_reporte_id( $establecimiento . strtotime($initialDate) . strtotime($finalDate) );
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
+
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-detallado-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $presupuestos, $bolsas){
+            $tmpRes = [];
+            $totales = [ 'redeemed_coupons' => 0, 'redeemed_ammount' => 0];
+
+            $extDb->table('dat_reporte_cupones_canjeados')
+            ->join('cat_dbm_nodos_usuarios', 'dat_reporte_cupones_canjeados.REP_CAN_CUPON_NODO', '=', 'cat_dbm_nodos_usuarios.NOD_USU_NODO')
+            ->join('bal_tae_saldos', 'cat_dbm_nodos_usuarios.NOD_USU_NODO', '=', 'bal_tae_saldos.TAE_SAL_NODO')
+            ->selectRaw('NOD_USU_NODO USUARIO_NODO, REP_CAN_CUPON_CANJE_FECHA_HORA CANJE_FECHA_HORA, REP_CAN_CUPON_MONTO CANJE_MONTO, REP_CAN_CUPON_GIFTCARD GIFTCARD_CUPON, TAE_SAL_MONTO SALDO_USUARIO, REP_CAN_CUPON_CODIGO CODIGO_CUPON, REP_CAN_CUPON_FECHA_HORA CUPON_FECHA_HORA, REP_CAN_CUPON_CANJE_ID ID_CUPON')
+            ->whereIn('REP_CAN_CUPON_PRESUPUESTO', $presupuestos)
+            ->whereIn('TAE_SAL_BOLSA', $bolsas)
+            ->whereBetween('REP_CAN_CUPON_CANJE_FECHA_HORA', [$initialDate, $finalDate])
+            ->orderBy('CANJE_FECHA_HORA', 'desc')
+            ->orderBy('USUARIO_NODO')
+            ->chunk(100, function($coupons) use(&$tmpRes, &$totales) {
+                foreach($coupons as $coupon)
+                {
+                    $totales['redeemed_coupons'] += 1;
+                    $totales['redeemed_ammount'] += $coupon->CANJE_MONTO;
+
+                    $tmpRes['REGISTROS'][] = [
+                        'USUARIO_NODO' => $coupon->USUARIO_NODO,
+                        'CODIGO_CUPON' => $coupon->CODIGO_CUPON,
+                        'CUPON_FECHA_HORA' => $coupon->CUPON_FECHA_HORA,
+                        'CANJE_FECHA_HORA' => $coupon->CANJE_FECHA_HORA,
+                        'CANJE_MONTO' => $coupon->CANJE_MONTO,
+                        'SALDO_USUARIO' => $coupon->SALDO_USUARIO,
+                    ];
+                }
+            });
+            $tmpRes['TOTALS'] = $totales;
+            $tmpRes['TOTALS']['average_ammount'] = $totales['redeemed_ammount'] / $totales['redeemed_coupons'];
+            return $tmpRes;
+        });
+
+        return mb_convert_encoding($couponsArr, 'UTF-8', 'UTF-8');
+    }
+
     function getLastPrintedCoupon()
     {
         $extDb = DB::connection('tokencash');
@@ -83,7 +141,7 @@ trait Coupons
             ->whereIn('CUP_PRESUPUESTO', $presupuestos)
             ->groupBy('CUP_GIFTCARD')
             ->orderBy('DIA', 'DESC')
-            ->chunk(5, function($coupons) use(&$tmpRes) {
+            ->chunk(100, function($coupons) use(&$tmpRes) {
                 foreach($coupons as $coupon)
                 {
                     $tmpRes['REGISTROS'][] = [
@@ -142,11 +200,68 @@ trait Coupons
         return $couponsArr;
     }
 
+    function getPrintedRedeemedCouponsAlt($establecimiento, $initialDate, $finalDate, $period)
+    {
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
+        $reportId = fn_generar_reporte_id($finalDate);
+        $couponsArr = cache()->remember('reporte-cupones-impresos-canjeados', $reportId, function() use($establecimiento, $initialDate, $finalDate) {
+            $printed = $this->getPrintedCouponsAlt($establecimiento, $initialDate, $finalDate);
+            $redeemed = $this->getRedeemedCouponsAlt($establecimiento, $initialDate, $finalDate);
+            $tmpResult = array_merge_recursive($printed, $redeemed);
+            //Convertir en un array unico por dia con impresos y canjeados
+            foreach($tmpResult['REGISTROS'] as $dia => $registro )
+            {
+                $result['REGISTROS'][$dia] = [
+                    'DIA' => $dia,
+                    'CUPONES' => $registro['CUPONES'],
+                    'MONTO_IMPRESO' => $registro['MONTO_IMPRESO'],
+                    'CANJES' => $registro['CANJES'],
+                    'MONTO_CANJE' => $registro['MONTO_CANJE'],
+                ];
+            }
+
+            $result['TOTALS'] = [
+                'printed_coupons' => $tmpResult['TOTALS']['printed_coupons'],
+                'printed_ammount' => $tmpResult['TOTALS']['printed_ammount'],
+                'redeemed_coupons' => $tmpResult['TOTALS']['redeemed_coupons'],
+                'redeemed_ammount' => $tmpResult['TOTALS']['redeemed_ammount'],
+                'average_printed_ammount' => $tmpResult['TOTALS']['average_ammount'][0],
+                'average_redeemed_ammount' => $tmpResult['TOTALS']['average_ammount'][1],
+            ];
+            return $result;
+        });
+
+        return $couponsArr;
+    }
+
     function getPrintedRedeemedCouponsHistory($establecimiento)
     {
         $couponsArr = cache()->remember('reporte-cumulado-cupones-impresos-canjeados', 60*5, function() use($establecimiento) {
             $printed = $this->getPrintedCouponsHistory($establecimiento);
             $redeemed = $this->getRedemedCouponsHistory($establecimiento);
+            $result = array_merge_recursive($printed, $redeemed);
+            //Convertir en un array unico por dia con impresos y canjeados
+            return $result;
+        });
+
+        return $couponsArr;
+    }
+
+    function getPrintedRedeemedCouponsHistoryAlt($establecimiento)
+    {
+        $couponsArr = cache()->remember('reporte-cumulado-cupones-impresos-canjeados', 60*5, function() use($establecimiento) {
+            $printed = $this->getPrintedCouponsHistoryAlt($establecimiento);
+            $redeemed = $this->getRedemedCouponsHistoryAlt($establecimiento);
             $result = array_merge_recursive($printed, $redeemed);
             //Convertir en un array unico por dia con impresos y canjeados
             return $result;
@@ -172,7 +287,38 @@ trait Coupons
             ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
             ->groupBy('CUP_GIFTCARD')
             ->orderBy('MONTO', 'desc')
-            ->chunk(10, function($coupons) use(&$tmpRes) {
+            ->chunk(100, function($coupons) use(&$tmpRes) {
+                foreach($coupons as $coupon)
+                {
+                    $tmpRes[] = [
+                        'CUPONES_CANJEADOS' => $coupon->CUPONES,
+                        'MONTO_CANJEADO' => $coupon->MONTO,
+                        'PROMEDIO_CANJE' => $coupon->MONTO / $coupon->CUPONES
+                    ];
+                }
+            });
+
+            return $tmpRes;
+        });
+
+        return $couponsArr;
+    }
+
+    function getRedemedCouponsHistoryAlt($establecimiento)
+    {
+        $extDb = DB::connection('tokencash');
+        $couponsArr = [];
+        $reportId = md5(session()->getId());
+        $giftcards = fn_obtener_giftcards($establecimiento, true);
+
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-historico-' . $reportId, 60*5, function() use($extDb, $giftcards){
+            $tmpRes = [];
+            $extDb->table('dat_reporte_cupones_canjeados')
+            ->selectRaw('COUNT(REP_CAN_ID) CUPONES, SUM(REP_CAN_CUPON_MONTO) MONTO')
+            ->whereIn('REP_CAN_CUPON_GIFTCARD', $giftcards)
+            ->groupBy('REP_CAN_CUPON_GIFTCARD')
+            ->orderBy('MONTO', 'desc')
+            ->chunk(100, function($coupons) use(&$tmpRes) {
                 foreach($coupons as $coupon)
                 {
                     $tmpRes[] = [
@@ -204,7 +350,37 @@ trait Coupons
             ->whereIn('CUP_PRESUPUESTO', $presupuestos)
             ->groupBy('CUP_GIFTCARD')
             ->orderBy('MONTO', 'desc')
-            ->chunk(10, function($coupons) use(&$tmpRes) {
+            ->chunk(100, function($coupons) use(&$tmpRes) {
+                foreach($coupons as $coupon)
+                {
+                    $tmpRes[] = [
+                        'CUPONES_IMPRESOS' => $coupon->CUPONES,
+                        'MONTO_IMPRESO' => $coupon->MONTO,
+                        'PROMEDIO_IMPRESO' => $coupon->MONTO / $coupon->CUPONES
+                    ];
+                }
+            });
+
+            return $tmpRes;
+        });
+        return $couponsArr;
+    }
+
+    function getPrintedCouponsHistoryAlt($establecimiento)
+    {
+        $extDb = DB::connection('tokencash');
+        $couponsArr = [];
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
+        $reportId = md5(session()->getId());
+
+        $couponsArr = cache()->remember('reporte-cupones-acumulados-impresos-' . $reportId, 60*5, function() use($extDb, $presupuestos){
+            $tmpRes = [];
+            $extDb->table('dat_reporte_cupones_impresos')
+            ->selectRaw('COUNT(REP_IMP_ID) CUPONES, SUM(REP_IMP_CUPON_MONTO) MONTO')
+            ->whereIn('REP_IMP_CUPON_PRESUPUESTO', $presupuestos)
+            ->groupBy('REP_IMP_CUPON_GIFTCARD')
+            ->orderBy('MONTO', 'desc')
+            ->chunk(100, function($coupons) use(&$tmpRes) {
                 foreach($coupons as $coupon)
                 {
                     $tmpRes[] = [
@@ -241,6 +417,25 @@ trait Coupons
         return $couponsArr;
     }
 
+    function getTodayRedeemedCouponsAlt($establecimiento)
+    {
+        $extDb = DB::connection('tokencash');
+        $initialDate = date('Y-m-d 00:00:00');
+        $finalDate = date('Y-m-d H:i:s');
+        $giftcards = fn_obtener_giftcards($establecimiento);
+        $couponsArr = [];
+
+        $couponsArr = $extDb->table('dat_reporte_cupones_canjeados')
+            ->selectRaw('REP_CAN_CUPON_GIFTCARD GIFTCARD, COUNT(REP_CAN_ID) CANJES, SUM(REP_CAN_CUPON_MONTO) MONTO')
+            ->whereIn('REP_CAN_CUPON_GIFTCARD', $giftcards)
+            ->whereBetween('REP_CAN_CUPON_CANJE_FECHA_HORA', [$initialDate, $finalDate])
+            ->groupBy('REP_CAN_CUPON_GIFTCARD')
+            ->orderBy('GIFTCARD')
+            ->get()
+            ->toArray();
+        return $couponsArr;
+    }
+
     function getRedeemedCoupons($establecimiento, $initialDate, $finalDate, $period = false)
     {
         $extDb = DB::connection('tokencash');
@@ -272,7 +467,56 @@ trait Coupons
             ->whereRaw("(BINARY NOD_USU_CERTIFICADO REGEXP '[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]+[o][CEFIKLNQSTWXYbcdgkmprsuvy24579]+[a-zA-Z0-9]' OR NOD_USU_CERTIFICADO = '')")
             ->groupBy('DIA', 'CUP_GIFTCARD')
             ->orderBy('DIA')
-            ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
+            ->chunk(100, function($coupons) use(&$tmpRes, &$totales) {
+                foreach($coupons as $coupon)
+                {
+                    $totales['redeemed_coupons'] += $coupon->CANJES;
+                    $totales['redeemed_ammount'] += $coupon->MONTO;
+
+                    $tmpRes['REGISTROS'][$coupon->DIA] = [
+                        'DIA' => $coupon->DIA,
+                        'CANJES' => $coupon->CANJES,
+                        'MONTO_CANJE' => $coupon->MONTO
+                    ];
+                }
+            });
+            $tmpRes['TOTALS'] = $totales;
+            $tmpRes['TOTALS']['average_ammount'] = $totales['redeemed_ammount'] / $totales['redeemed_coupons'];
+            return $tmpRes;
+        });
+
+        return $couponsArr;
+    }
+
+    function getRedeemedCouponsAlt($establecimiento, $initialDate, $finalDate, $period = false)
+    {
+        $extDb = DB::connection('tokencash');
+        if($period)
+        {
+            $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
+            $finalDate = date('Y-m-d H:i:s');
+        }
+        else
+        {
+            $initialDate = date('Y-m-d', strtotime(str_replace("/", "-", $initialDate))) . ' 00:00:00';
+            $finalDate = date('Y-m-d', strtotime(str_replace("/", "-", $finalDate))) . ' 23:59:59';
+        }
+
+        $reportId = fn_generar_reporte_id($finalDate);
+        $giftcards = fn_obtener_giftcards($establecimiento); //SUPRA, sin GIFTCARD_
+        $rememberReport = fn_recordar_reporte_tiempo($finalDate);
+        $couponsArr = [];
+        $couponsArr = cache()->remember('reporte-cupones-canjeados-' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $giftcards){
+            $tmpRes = [];
+            $totales = [ 'redeemed_coupons' => 0, 'redeemed_ammount' => 0];
+
+            $extDb->table('dat_reporte_cupones_canjeados')
+            ->select(DB::raw('DATE_FORMAT(REP_CAN_CUPON_CANJE_FECHA_HORA, "%d/%m/%Y") DIA, COUNT(REP_CAN_ID) CANJES, SUM(REP_CAN_CUPON_MONTO) MONTO'))
+            ->whereIn('REP_CAN_CUPON_GIFTCARD', $giftcards)
+            ->whereBetween('REP_CAN_CUPON_CANJE_FECHA_HORA', [$initialDate, $finalDate])
+            ->groupBy('DIA', 'REP_CAN_CUPON_GIFTCARD')
+            ->orderBy('DIA')
+            ->chunk(100, function($coupons) use(&$tmpRes, &$totales) {
                 foreach($coupons as $coupon)
                 {
                     $totales['redeemed_coupons'] += $coupon->CANJES;
@@ -312,6 +556,24 @@ trait Coupons
         return $couponsArr;
     }
 
+    function getTodayPrintedDetailCouponsAlt($establecimiento)
+    {
+        $extDb = DB::connection('tokencash');
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
+        $couponsArr = [];
+
+        $couponsArr = $extDb->table('dat_reporte_cupones_impresos')
+        ->select(DB::raw('DATE_FORMAT(REP_IMP_CUPON_FECHA_HORA, "%H") TIEMPO_CUPON, REP_IMP_CUPON_PRESUPUESTO PRESUPUESTO, COUNT(REP_IMP_CUPON_ID) CUPONES, SUM(REP_IMP_CUPON_MONTO) MONTO'))
+        ->whereIn('REP_IMP_CUPON_PRESUPUESTO', $presupuestos)
+        ->whereRaw('REP_IMP_CUPON_FECHA_HORA BETWEEN CONCAT(CURRENT_DATE(), " 00:00:00") AND NOW()')
+        ->groupBy('REP_IMP_CUPON_PRESUPUESTO')
+        ->groupBy('TIEMPO_CUPON')
+        ->orderBy('TIEMPO_CUPON')
+        ->get();
+
+        return $couponsArr;
+    }
+
     function getTodayPrintedCoupons($establecimiento)
     {
         $extDb = DB::connection('tokencash');
@@ -327,8 +589,29 @@ trait Coupons
         ->whereBetween('CUP_TS', [$initialDate, $finalDate])
         ->groupBy('CUP_PRESUPUESTO')
         ->orderBy('CUP_PRESUPUESTO')
-        ->get();
+        ->get()
+        ->toArray();
 
+        return $couponsArr;
+    }
+
+    function getTodayPrintedCouponsAlt($establecimiento)
+    {
+        $extDb = DB::connection('tokencash');
+        $initialDate = date('Y-m-d 00:00:00');
+        $finalDate = date('Y-m-d H:i:s');
+        $presupuestos = fn_obtener_presupuestos($establecimiento);
+        $couponsArr = [];
+
+        $couponsArr = $extDb->table('dat_reporte_cupones_impresos')
+        ->selectRaw('REP_IMP_CUPON_PRESUPUESTO PRESUPUESTO, COUNT(REP_IMP_ID) CUPONES, SUM(REP_IMP_CUPON_MONTO) MONTO')
+        ->whereIn('REP_IMP_CUPON_PRESUPUESTO', $presupuestos)
+        ->whereBetween('REP_IMP_CUPON_FECHA_HORA', [$initialDate, $finalDate])
+        ->groupBy('REP_IMP_CUPON_PRESUPUESTO')
+        ->orderBy('REP_IMP_CUPON_PRESUPUESTO')
+        ->get()
+        ->toArray();
+        //dd($couponsArr);
         return $couponsArr;
     }
 
@@ -362,7 +645,7 @@ trait Coupons
             ->groupBy('DIA', 'CUP_PRESUPUESTO')
             ->orderBy('DIA')
             ->orderBy('CUP_PRESUPUESTO')
-            ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
+            ->chunk(100, function($coupons) use(&$tmpRes, &$totales) {
                 foreach($coupons as $coupon)
                 {
                     $totales['printed_coupons'] += $coupon->CUPONES;
@@ -383,7 +666,7 @@ trait Coupons
 
     function getPrintedCouponsAlt($establecimiento, $initialDate, $finalDate, $period = false)
     {
-        $extDb = DB::connection('tokencash_vistas');
+        $extDb = DB::connection('tokencash');
         if($period)
         {
             $initialDate = date('Y-m-d', strtotime("-{$period} days")) . ' 00:00:00';
@@ -402,19 +685,20 @@ trait Coupons
 
         $couponsArr = cache()->remember('reporte-cupones-impresos' . $reportId, $rememberReport, function() use($extDb, $initialDate, $finalDate, $presupuestos){
             $tmpRes = [];
-            $totales = [ 'printed_coupons' => 0, 'printed_ammount' => 0];
-            $extDb->table('reporte_cupones_impresos')
-            ->select(DB::raw('DATE_FORMAT(CUP_TS, "%d/%m/%Y") DIA, COUNT(CUP_PRESUPUESTO) CUPONES, SUM(CUP_ADI_AMOUNT) MONTO'))
-            ->whereIn('CUP_PRESUPUESTO', $presupuestos)
-            ->whereBetween('CUP_TS', [$initialDate, $finalDate])
-            ->groupBy('DIA', 'CUP_PRESUPUESTO')
+            $totales = [ 'printed_coupons' => 0, 'printed_ammount' => 0, 'printed_sale' => 0];
+            $extDb->table('dat_reporte_cupones_impresos')
+            ->select(DB::raw('DATE_FORMAT(REP_IMP_CUPON_FECHA_HORA, "%d/%m/%Y") DIA, COUNT(REP_IMP_ID) CUPONES, SUM(REP_IMP_CUPON_MONTO) MONTO, SUM(REP_IMP_CUPON_PRECIO_VENTA) PRECIO'))
+            ->whereIn('REP_IMP_CUPON_PRESUPUESTO', $presupuestos)
+            ->whereBetween('REP_IMP_CUPON_FECHA_HORA', [$initialDate, $finalDate])
+            ->groupBy('DIA', 'REP_IMP_CUPON_PRESUPUESTO')
             ->orderBy('DIA')
-            ->orderBy('CUP_PRESUPUESTO')
-            ->chunk(10, function($coupons) use(&$tmpRes, &$totales) {
+            ->orderBy('REP_IMP_CUPON_PRESUPUESTO')
+            ->chunk(100, function($coupons) use(&$tmpRes, &$totales) {
                 foreach($coupons as $coupon)
                 {
                     $totales['printed_coupons'] += $coupon->CUPONES;
                     $totales['printed_ammount'] += $coupon->MONTO;
+                    $totales['printed_sale'] += $coupon->PRECIO;
                     $tmpRes['REGISTROS'][$coupon->DIA] = [
                         'DIA' => $coupon->DIA,
                         'CUPONES' => $coupon->CUPONES,
@@ -424,6 +708,7 @@ trait Coupons
             });
             $tmpRes['TOTALS'] = $totales;
             $tmpRes['TOTALS']['average_ammount'] = $totales['printed_ammount'] / $totales['printed_coupons'];
+            $tmpRes['TOTALS']['average_sale'] = $totales['printed_sale'] / $totales['printed_coupons'];
             return $tmpRes;
         });
         return $couponsArr;

@@ -59,7 +59,6 @@ trait Sales
                 $tmpRes['TOTALS']['average_sale'] = $totalSales['ammount'] / $totalSales['sales'];
             }
 
-
             return $tmpRes;
         });
 

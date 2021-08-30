@@ -51,6 +51,7 @@ class Redeemed extends Component
                 ->setSmoothCurve()
                 ->withGrid()
                 ->setXAxisVisible(true)
+                ->setColor('#CF0924')
             );
             return view('livewire.reports.coupons.redeemed')->with(['areaChartModel' => $areaChartModel, 'montoChartModel' => $montoChartModel]);
         }
@@ -60,7 +61,7 @@ class Redeemed extends Component
 
     public function generateReport()
     {
-        $this->coupons = $this->getRedeemedCoupons($this->store, $this->initialDate, $this->finalDate, $this->period);
+        $this->coupons = $this->getRedeemedCouponsAlt($this->store, $this->initialDate, $this->finalDate, $this->period);
     }
 
     public function exportReport()

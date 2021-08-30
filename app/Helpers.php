@@ -51,10 +51,12 @@ if(!function_exists('fn_obtener_establecimientos'))
 //Obtener presupuestos
 if(!function_exists('fn_obtener_presupuestos'))
 {
-    function fn_obtener_presupuestos($establecimiento)
+    function fn_obtener_presupuestos($establecimiento, $no_pre = false)
     {
-        $presupuestos = Store::where('id', $establecimiento)->pluck('budget')->toArray();
-        return $presupuestos;
+        if(!$no_pre)
+            return Store::where('id', $establecimiento)->get()->pluck('budget');
+        else
+            return Store::where('id', $establecimiento)->get()->pluck('full_presupuesto');
     }
 }
 
@@ -63,16 +65,10 @@ if(!function_exists('fn_obtener_giftcards'))
 {
     function fn_obtener_giftcards($establecimiento, $no_gift = false)
     {
-        $giftcards = Store::where('id', $establecimiento)->pluck('giftcard')->toArray();
         if(!$no_gift)
-            return $giftcards;
-        //Recorrer las giftcard y quitar GIFTCARD_
-        foreach($giftcards as $giftcard)
-        {
-            $ngiftcards[] = str_replace('GIFTCARD_', '', $giftcard);
-        }
-
-        return $ngiftcards;
+            return Store::where('id', $establecimiento)->get()->pluck('giftcard');
+        else
+            return Store::where('id', $establecimiento)->get()->pluck('full_name');
     }
 }
 
@@ -81,7 +77,7 @@ if(!function_exists('fn_obtener_nodo_establecimiento'))
 {
     function fn_obtener_nodo_establecimiento($establecimiento)
     {
-        $nodos = Store::where('id', $establecimiento)->pluck('tokencash_node')->toArray();
+        $nodos = Store::where('id', $establecimiento)->pluck('tokencash_node');
         return $nodos;
     }
 }
