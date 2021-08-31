@@ -21,7 +21,7 @@ class PrintedRedeemed extends Component
 
     public function mount()
     {
-        $this->stores = Store::orderBy('name')->pluck('name', 'id')->toArray();
+        $this->stores = fn_obtener_establecimientos();
     }
 
     public function render()

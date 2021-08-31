@@ -6,7 +6,6 @@ use App\Exports\PrintedCouponsExport;
 use Livewire\Component;
 use App\Traits\Reports\Coupons;
 use Asantibanez\LivewireCharts\Models\AreaChartModel;
-use App\Models\Store;
 
 class Printed extends Component
 {
