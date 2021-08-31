@@ -21,19 +21,7 @@ class Printed extends Component
 
     public function mount()
     {
-        $user = auth()->user();
-        if($user->hasRole('superadmin'))
-        {
-            $this->stores = Store::orderBy('name')->pluck('name', 'id')->toArray();
-        }
-        if($user->hasRole('group admin'))
-        {
-            $this->stores = $user->group->stores->pluck('name', 'id')->toArray();
-        }
-
-
-
-
+        $this->stores = fn_obtener_establecimientos();
     }
 
     public function render()

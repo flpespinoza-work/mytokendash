@@ -37,12 +37,19 @@ if(!function_exists('fn_obtener_establecimientos'))
 {
     function fn_obtener_establecimientos()
     {
-        $user = session()->user;
-        if($user->is_superadmin())
+        $user = auth()->user();
+        if($user->isSuperAdmin())
         {
-
+            return Store::orderBy('name')->pluck('name', 'id')->toArray();
         }
-       $group = session()->user()->group;
+        else if($user->hasRole('group admin'))
+        {
+            return $user->group->stores->pluck('name', 'id')->toArray();
+        }
+        else
+        {
+            return $user->stores->pluck('name', 'id')->toArray();
+        }
     }
 }
 
