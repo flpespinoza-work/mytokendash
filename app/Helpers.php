@@ -84,8 +84,27 @@ if(!function_exists('fn_obtener_nodo_establecimiento'))
 {
     function fn_obtener_nodo_establecimiento($establecimiento)
     {
-        $nodos = Store::where('id', $establecimiento)->pluck('tokencash_node');
-        return $nodos;
+        $nodo = Store::where('id', $establecimiento)->pluck('tokencash_node');
+        return $nodo;
+    }
+}
+
+// Obtener los vendedores del establecimiento
+if(!function_exists('fn_obtener_vendedores_establecimiento'))
+{
+    function fn_obtener_vendedores_establecimiento($establecimiento)
+    {
+        $nodo = Store::where('id', $establecimiento)->pluck('tokencash_node');
+
+        $extDb = DB::connection('tokencash');
+        $vendedores = $extDb->table('cat_dbm_nodos_usuarios')
+        ->select('NOD_USU_NUMERO', 'NOD_USU_NOMBRE')
+        ->where('NOD_USU_NODO', $nodo)
+        ->where('NOD_USU_ACTIVO', '=', '1')
+        ->where('NOD_USU_SUSPENDIDO', '!=', '1')
+        ->orderBy('NOD_USU_NOMBRE')
+        ->get();
+        dd($vendedores);
     }
 }
 
